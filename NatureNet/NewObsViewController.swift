@@ -41,6 +41,8 @@ class NewObsViewController: UIViewController,UITableViewDelegate,UITableViewData
     
     var isFromGallery: Bool = false
     
+    var rightBarButtonItem: UIBarButtonItem!
+    
     
     @IBOutlet weak var obsProjectLabel: UILabel!
     @IBOutlet weak var obsDescTextView: UITextView!
@@ -60,7 +62,7 @@ class NewObsViewController: UIViewController,UITableViewDelegate,UITableViewData
         navigationItem.leftBarButtonItem = barButtonItem
         
         //TODO should check that user is logged in when this button is pressed
-        let rightBarButtonItem = UIBarButtonItem(title: "Send", style: .Plain, target: self, action: #selector(NewObsViewController.postObservation))
+        rightBarButtonItem = UIBarButtonItem(title: "Send", style: .Plain, target: self, action: #selector(NewObsViewController.postObservation))
         rightBarButtonItem.tintColor = UIColor.whiteColor()
         navigationItem.rightBarButtonItem = rightBarButtonItem
         
@@ -359,6 +361,7 @@ class NewObsViewController: UIViewController,UITableViewDelegate,UITableViewData
     func postObservation()
     {
         print("post")
+        self.rightBarButtonItem.enabled = false
         
 //        var observations = Firebase(url: "https://naturenet-staging.firebaseio.com/observations")
 //        let obs = ["id": uid as! AnyObject,"display_name": self.joinName.text as! AnyObject, "affiliation": self.joinAffliation.text as! AnyObject]
@@ -472,6 +475,8 @@ class NewObsViewController: UIViewController,UITableViewDelegate,UITableViewData
                                 
                                 
                             }
+                            
+                            self.rightBarButtonItem.enabled = true
                         }
                         else
                         {
@@ -552,7 +557,7 @@ class NewObsViewController: UIViewController,UITableViewDelegate,UITableViewData
         alert.addAction(dismissAction)
         self.presentViewController(alert, animated: true, completion: nil)
         
-        
+        self.rightBarButtonItem.enabled = true
         
         /*    }
          else

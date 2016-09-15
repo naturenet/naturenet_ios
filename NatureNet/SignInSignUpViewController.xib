@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="16A313a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="16A320" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -12,6 +12,7 @@
                 <outlet property="firstConsentButton" destination="hUL-Hn-AmR" id="FJo-k9-DYh"/>
                 <outlet property="fourthConsentButton" destination="nu9-bf-7cn" id="KG9-5v-KgY"/>
                 <outlet property="joinAffliation" destination="8U8-yU-gNi" id="Stp-9u-mEy"/>
+                <outlet property="joinButton" destination="XfY-5R-5Jq" id="K1E-s3-oDf"/>
                 <outlet property="joinEmail" destination="ke6-Ff-ewe" id="fgK-7b-drw"/>
                 <outlet property="joinName" destination="zRn-Wf-s27" id="Xye-zU-X2t"/>
                 <outlet property="joinPassword" destination="kjF-9F-h0k" id="VV7-ig-qIZ"/>
@@ -20,6 +21,7 @@
                 <outlet property="password" destination="Vkd-41-SWo" id="8cc-19-lea"/>
                 <outlet property="profileIconImageView" destination="XHy-zP-loL" id="Zg1-JW-S4U"/>
                 <outlet property="secondConsentButton" destination="Vfx-R0-xdq" id="Qjl-1I-E8g"/>
+                <outlet property="signInButton" destination="WFn-BA-gSR" id="lhM-Ch-WjD"/>
                 <outlet property="signInView" destination="hIV-8u-Hhl" id="02l-QL-gwx"/>
                 <outlet property="thirdConsentButton" destination="X6g-Yl-NH7" id="dQQ-qw-ptW"/>
                 <outlet property="username" destination="y76-c6-ccX" id="SbO-HP-Hhl"/>

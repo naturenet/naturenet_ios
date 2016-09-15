@@ -289,7 +289,6 @@ class RearViewController: UIViewController,UITableViewDelegate, UITableViewDataS
         
         var licenseString = "Various third party software was used in the creation of this app. They are as follow:"
         
-        licenseString += "\n\nAlamofire\nhttps://github.com/Alamofire/Alamofire"
         
         licenseString += "\n\nCloudinary\nhttps://github.com/cloudinary/cloudinary_ios"
         

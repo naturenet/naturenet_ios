@@ -1,5 +1,4 @@
 PODS:
-  - Alamofire (3.3.0)
   - Cloudinary (1.0.15)
   - Firebase/Analytics (3.4.0):
     - FirebaseAnalytics (~> 3.3)
@@ -46,7 +45,6 @@ PODS:
   - Kingfisher (2.4.1)
 
 DEPENDENCIES:
-  - Alamofire (~> 3.0)
   - Cloudinary
   - Firebase/Auth
   - Firebase/Core
@@ -55,7 +53,6 @@ DEPENDENCIES:
   - Kingfisher (~> 2.4)
 
 SPEC CHECKSUMS:
-  Alamofire: 9054db4a1b1ca9e363223183e01cea380159a27c
   Cloudinary: f80af4565ec08c521d5e58cb56d9fbe1e4595e40
   Firebase: 754562547af419cc2f4b15247fee419081924bc2
   FirebaseAnalytics: 228be2991cb28efb96cdafc4d62f64680e615c69

@@ -319,6 +319,9 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
 
 
         commentTF.delegate = self
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DetailedObservationViewController.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil);
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DetailedObservationViewController.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil);
 
         getCommentsDetails(observationCommentsArrayfromExploreView)
 
@@ -375,14 +378,14 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
     func keyboardWillShow(notification: NSNotification) {
 
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
-            self.view.frame.origin.y -= keyboardSize.height
+            self.commentView.frame.origin.y -= keyboardSize.height
         }
 
     }
 
     func keyboardWillHide(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
-            self.view.frame.origin.y += keyboardSize.height
+            self.commentView.frame.origin.y += keyboardSize.height
         }
     }
 //    func setViewToMoveUp(moveUp: Bool, tempTF: UITextField!)

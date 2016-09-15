@@ -7,12 +7,11 @@
 //
 
 import UIKit
-import Alamofire
 import Firebase
 import Cloudinary
 //import SWRevealViewController
 
-class SignInSignUpViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegate,UIPickerViewDelegate,UIPickerViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate{
+class SignInSignUpViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegate,UIPickerViewDelegate,UIPickerViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate,CLUploaderDelegate{
     
     var pageTitle :String!
 
@@ -60,7 +59,10 @@ class SignInSignUpViewController: UIViewController, UITextFieldDelegate, UIScrol
     var isFourthConsentChecked: Bool = false
     
     var isDefaultImage: Bool = false
+    var imageForUpload = NSData()
     
+    @IBOutlet weak var signInButton: UIButton!
+    @IBOutlet weak var joinButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -313,14 +315,15 @@ class SignInSignUpViewController: UIViewController, UITextFieldDelegate, UIScrol
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject])
     {
         picker .dismissViewControllerAnimated(true, completion: nil)
-        profileIconImageView.image=info[UIImagePickerControllerOriginalImage] as? UIImage
+        print(info[UIImagePickerControllerOriginalImage])
         if(info[UIImagePickerControllerOriginalImage] != nil)
         {
-            isDefaultImage = true
+            isDefaultImage = false
+            profileIconImageView.image=info[UIImagePickerControllerOriginalImage] as? UIImage
         }
         else
         {
-            isDefaultImage = false
+            isDefaultImage = true
         }
         
         
@@ -532,6 +535,8 @@ class SignInSignUpViewController: UIViewController, UITextFieldDelegate, UIScrol
     
     @IBAction func signInButtonClicked(sender: UIButton) {
         
+        signInButton.enabled = false
+        
         if(username.text != "" || password.text != "")
         {
         
@@ -545,6 +550,8 @@ class SignInSignUpViewController: UIViewController, UITextFieldDelegate, UIScrol
                                 let alert = UIAlertController(title: "Alert", message:error!.localizedDescription ,preferredStyle: UIAlertControllerStyle.Alert)
                                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
                                 self.presentViewController(alert, animated: true, completion: nil)
+                                
+                                self.signInButton.enabled = true
                                 
                             } else {
                                 // We are now logged in
@@ -676,136 +683,213 @@ class SignInSignUpViewController: UIViewController, UITextFieldDelegate, UIScrol
 //                                            print("JSON: \(JSON)")
 //                                        }
 //                                }
-                                
+                                self.signInButton.enabled = true
                                 
                             }
             })
         }
         else
         {
+            
             let alert = UIAlertController(title: "Alert", message: "Please Enter All the Details", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
+            signInButton.enabled = true
         }
         
     }
     
+    func uploadImage() {
+        
+        var Cloudinary:CLCloudinary!
+        
+        imageForUpload = Utility.resizeImage(profileIconImageView.image!)
+        
+        let infoPath = NSBundle.mainBundle().pathForResource("Info.plist", ofType: nil)!
+        let info = NSDictionary(contentsOfFile: infoPath)!
+        //print(info.objectForKey("CloudinaryAccessUrl"))
+        
+        Cloudinary = CLCloudinary(url: info.objectForKey("CloudinaryAccessUrl") as! String)
+        let uploader = CLUploader(Cloudinary, delegate:self)
+        
+        uploader.upload(imageForUpload, options: nil, withCompletion:onCloudinaryCompletion, andProgress:onCloudinaryProgress)
+        
+    }
+    
+    func onCloudinaryCompletion(successResult:[NSObject : AnyObject]!, errorResult:String!, code:Int, idContext:AnyObject!) {
+        if(errorResult == nil) {
+            let publicId = successResult["public_id"] as! String
+            let url = successResult["secure_url"] as? String
+            print("now cloudinary uploaded, public id is: \(publicId) and \(url), ready for uploading media")
+            // push media after cloudinary is finished
+            //let params = ["link": publicId] as Dictionary<String, Any>
+            //self.doPushNew(self.apiService!, params: params)
+            let userDefaults = NSUserDefaults.standardUserDefaults()
+            if(url != "")
+            {
+                userDefaults.setValue(url, forKey: "observationImageUrl")
+                
+                submitUserData()
+            }
+            
+        }
+        else {
+            let alert = UIAlertController(title: "Alert", message: errorResult.localizedLowercaseString, preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+            joinButton.enabled = true
+        }
+        
+        
+    }
+    
+    
+    
+    func onCloudinaryProgress(bytesWritten:Int, totalBytesWritten:Int, totalBytesExpectedToWrite:Int, idContext:AnyObject!) {
+        //do any progress update you may need
+        let progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite) as Float
+        //self.updateProgressDelegate?.onUpdateProgress(progress)
+        
+        print("uploading to cloudinary... wait! \(progress * 100)"+"%")
+        
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        userDefaults.setValue("\(progress * 100)", forKey: "progress")
+        
+        if(progress==100)
+        {
+            
+        }
+                
+    }
+    func submitUserData()
+    {
+        let myRootRef = FIRAuth.auth()
+        // Write data to Firebase
+        
+        
+        myRootRef!.createUserWithEmail(joinEmail.text!, password: joinPassword.text!,
+                                       completion: { result, error in
+                                        if error != nil {
+                                            // There was an error creating the account
+                                            let alert = UIAlertController(title: "Alert", message:error!.localizedDescription ,preferredStyle: UIAlertControllerStyle.Alert)
+                                            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+                                            self.presentViewController(alert, animated: true, completion: nil)
+                                            //print(error.description)
+                                            self.joinButton.enabled = true
+                                            
+                                        } else {
+                                            
+                                            
+                                            let uid = result!.uid
+                                            print("Successfully created user account with uid: \(uid)")
+                                            //                                        let alert = UIAlertController(title: "Alert", message:"Successfully created user account with uid: \(uid)" ,preferredStyle: UIAlertControllerStyle.Alert)
+                                            //                                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+                                            //                                        self.presentViewController(alert, animated: true, completion: nil)
+                                            let authref = FIRAuth.auth()//Firebase(url: FIREBASE_URL+"users/")
+                                            authref!.signInWithEmail(self.joinEmail.text!, password: self.joinPassword.text!,
+                                                completion: { authData, error in
+                                                    if error != nil {
+                                                        
+                                                    }
+                                                    else
+                                                    {
+                                                        print("Successfully logged in by user with uid: \(uid)")
+                                                        
+                                                        let userDefaults = NSUserDefaults.standardUserDefaults()
+                                                        var usersAvatarUrl = userDefaults.objectForKey("observationImageUrl") as? String
+                                                        
+                                                        let ref = FIRDatabase.database().referenceWithPath("users/")
+                                                        
+                                                        let usersRef = ref.childByAppendingPath("\(uid)")
+                                                        //let usersPubReftoid = usersRef.childByAppendingPath("public")
+                                                        
+                                                        print(uid)
+                                                        print(usersRef)
+                                                        print(self.joinUsername.text)
+                                                        print(self.AffiliationId)
+                                                        print(FIRServerValue.timestamp())
+                                                        print(usersAvatarUrl)
+                                                        //print(uid)
+                                                        
+                                                        if(usersAvatarUrl == nil || usersAvatarUrl == "")
+                                                        {
+                                                            usersAvatarUrl = "https://res.cloudinary.com/university-of-colorado/image/upload/v1470239519/static/default_avatar.png"
+                                                        }
+                                                        
+                                                        let usersPub = ["id": uid as AnyObject,"display_name": self.joinUsername.text as! AnyObject,"affiliation": self.AffiliationId as AnyObject, "created_at": FIRServerValue.timestamp(),"updated_at": FIRServerValue.timestamp(),"avatar":usersAvatarUrl as! AnyObject]
+                                                        
+                                                        
+                                                        usersRef.setValue(usersPub)
+                                                        
+                                                        //let usersPrivateReftoid = usersRef.childByAppendingPath("private")
+                                                        //let usersPrivate = ["email": self.joinEmail.text as! AnyObject]
+                                                        //usersRef.setValue(usersPub)
+                                                        
+                                                        let refPrivate = FIRDatabase.database().referenceWithPath("users-private/")//Firebase(url: FIREBASE_URL+"users-private/")
+                                                        
+                                                        
+                                                        let usersPrivateRef = refPrivate.childByAppendingPath("\(uid)")
+                                                        
+                                                        //let usersConsentPrivate = ["upload": self.isFirstConsentChecked as AnyObject,"share": self.isSecondConsentChecked as AnyObject,"recording": self.isThirdConsentChecked as AnyObject,"survey": self.isFourthConsentChecked as AnyObject]
+                                                        //let usersPubReftoid = usersRef.childByAppendingPath("public")
+                                                        //let usersPrivate = ["id": uid as! AnyObject,"name": self.joinName.text as! AnyObject,"consent": usersConsentPrivate as AnyObject, "created_at": FirebaseServerValue.timestamp(),"updated_at": FirebaseServerValue.timestamp()]
+                                                        let usersPrivate = ["id": uid as! AnyObject,"name": self.joinName.text as! AnyObject,"created_at": FIRServerValue.timestamp(),"updated_at": FIRServerValue.timestamp()]
+                                                        usersPrivateRef.setValue(usersPrivate)
+                                                        
+                                                        //let userConsent = usersPrivateRef.childByAppendingPath("consent")
+                                                        //let usersConsentPrivate = ["required": true as AnyObject]
+                                                        //userConsent.setValue(usersConsentPrivate)
+                                                        
+                                                        //let usersPrivateReftoid = usersRef.childByAppendingPath("private")
+                                                        //let usersPrivate = ["email": self.joinEmail.text as! AnyObject]
+                                                        //usersRef.setValue(usersPub)
+                                                        
+                                                        
+                                                        //self.dismissVC()
+                                                        
+                                                        
+                                                        
+                                                        
+                                                        
+                                                        //let userDefaults = NSUserDefaults.standardUserDefaults()
+                                                        userDefaults.setValue(self.AffiliationId, forKey: "userAffiliation")
+                                                        userDefaults.setValue(self.joinUsername.text, forKey: "userDisplayName")
+                                                        userDefaults.setValue("true", forKey: "isSignedIn")
+                                                        userDefaults.setValue(uid, forKey: "userID")
+                                                        userDefaults.setValue(self.encodeString(self.joinEmail.text!), forKey: "email")
+                                                        userDefaults.setValue(self.encodeString(self.joinPassword.text!), forKey: "password")
+                                                        
+                                                        userDefaults.setValue(usersAvatarUrl, forKey: "usersAvatar")
+                                                        
+                                                        self.dismissVC()
+                                                        self.joinButton.enabled = true
+                                                        
+                                                    }
+                                                    
+                                            })
+                                        }
+        })
+    }
+
+    
     @IBAction func joinButtonClicked(sender: UIButton) {
+        
+        joinButton.enabled = false
         
         if(joinUsername.text != "" || joinPassword.text != "" || joinName.text != "" || joinEmail.text != "" || joinAffliation.text != "" )
         {
             
             if(isDefaultImage == false)
             {
-                let upImage = UploadImageToCloudinary()
-                upImage.uploadToCloudinary(Utility.resizeImage(profileIconImageView.image!))
+                //let upImage = UploadImageToCloudinary()
+                //upImage.uploadToCloudinary(Utility.resizeImage(profileIconImageView.image!))
+                
+                uploadImage()
             }
-
-            
-            let myRootRef = FIRAuth.auth()
-            // Write data to Firebase
-            
-           
-            myRootRef!.createUserWithEmail(joinEmail.text!, password: joinPassword.text!,
-                                 completion: { result, error in
-                                    if error != nil {
-                                        // There was an error creating the account
-                                        let alert = UIAlertController(title: "Alert", message:error!.localizedDescription ,preferredStyle: UIAlertControllerStyle.Alert)
-                                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-                                        self.presentViewController(alert, animated: true, completion: nil)
-                                        //print(error.description)
-                                        
-                                    } else {
-                                       
-                                        
-                                        let uid = result!.uid
-                                        print("Successfully created user account with uid: \(uid)")
-//                                        let alert = UIAlertController(title: "Alert", message:"Successfully created user account with uid: \(uid)" ,preferredStyle: UIAlertControllerStyle.Alert)
-//                                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-//                                        self.presentViewController(alert, animated: true, completion: nil)
-                                        let authref = FIRAuth.auth()//Firebase(url: FIREBASE_URL+"users/")
-                                        authref!.signInWithEmail(self.joinEmail.text!, password: self.joinPassword.text!,
-                                            completion: { authData, error in
-                                                if error != nil {
-                                                    
-                                                }
-                                                else
-                                                {
-                                                    print("Successfully logged in by user with uid: \(uid)")
-                                                    
-                                                    let userDefaults = NSUserDefaults.standardUserDefaults()
-                                                    var usersAvatarUrl = userDefaults.objectForKey("observationImageUrl") as? String
-                                                    
-                                                    let ref = FIRDatabase.database().referenceWithPath("users/")
-                                                    
-                                                    let usersRef = ref.childByAppendingPath("\(uid)")
-                                                    //let usersPubReftoid = usersRef.childByAppendingPath("public")
-                                                    
-                                                    print(uid)
-                                                    print(usersRef)
-                                                    print(self.joinUsername.text)
-                                                    print(self.AffiliationId)
-                                                    print(FIRServerValue.timestamp())
-                                                    print(usersAvatarUrl)
-                                                    //print(uid)
-                                                    
-                                                    if(usersAvatarUrl == nil || usersAvatarUrl == "")
-                                                    {
-                                                        usersAvatarUrl = "https://res.cloudinary.com/university-of-colorado/image/upload/v1470239519/static/default_avatar.png"
-                                                    }
-                                                    
-                                                    let usersPub = ["id": uid as AnyObject,"display_name": self.joinUsername.text as! AnyObject,"affiliation": self.AffiliationId as AnyObject, "created_at": FIRServerValue.timestamp(),"updated_at": FIRServerValue.timestamp(),"avatar":usersAvatarUrl as! AnyObject]
-                                                    
-                                                    
-                                                    usersRef.setValue(usersPub)
-                                                    
-                                                    //let usersPrivateReftoid = usersRef.childByAppendingPath("private")
-                                                    //let usersPrivate = ["email": self.joinEmail.text as! AnyObject]
-                                                    //usersRef.setValue(usersPub)
-                                                    
-                                                    let refPrivate = FIRDatabase.database().referenceWithPath("users-private/")//Firebase(url: FIREBASE_URL+"users-private/")
-                                                    
-                                                    
-                                                                let usersPrivateRef = refPrivate.childByAppendingPath("\(uid)")
-                                                                
-                                                                //let usersConsentPrivate = ["upload": self.isFirstConsentChecked as AnyObject,"share": self.isSecondConsentChecked as AnyObject,"recording": self.isThirdConsentChecked as AnyObject,"survey": self.isFourthConsentChecked as AnyObject]
-                                                                //let usersPubReftoid = usersRef.childByAppendingPath("public")
-                                                                //let usersPrivate = ["id": uid as! AnyObject,"name": self.joinName.text as! AnyObject,"consent": usersConsentPrivate as AnyObject, "created_at": FirebaseServerValue.timestamp(),"updated_at": FirebaseServerValue.timestamp()]
-                                                                let usersPrivate = ["id": uid as! AnyObject,"name": self.joinName.text as! AnyObject,"created_at": FIRServerValue.timestamp(),"updated_at": FIRServerValue.timestamp()]
-                                                                usersPrivateRef.setValue(usersPrivate)
-                                                                
-                                                                //let userConsent = usersPrivateRef.childByAppendingPath("consent")
-                                                                //let usersConsentPrivate = ["required": true as AnyObject]
-                                                                //userConsent.setValue(usersConsentPrivate)
-                                                                
-                                                                //let usersPrivateReftoid = usersRef.childByAppendingPath("private")
-                                                                //let usersPrivate = ["email": self.joinEmail.text as! AnyObject]
-                                                                //usersRef.setValue(usersPub)
-                                                    
-                                                                
-                                                                //self.dismissVC()
-                                                                
-                                                    
-                                                
-
-                                                    
-                                                    //let userDefaults = NSUserDefaults.standardUserDefaults()
-                                                    userDefaults.setValue(self.AffiliationId, forKey: "userAffiliation")
-                                                    userDefaults.setValue(self.joinUsername.text, forKey: "userDisplayName")
-                                                    userDefaults.setValue("true", forKey: "isSignedIn")
-                                                    userDefaults.setValue(uid, forKey: "userID")
-                                                    userDefaults.setValue(self.encodeString(self.joinEmail.text!), forKey: "email")
-                                                    userDefaults.setValue(self.encodeString(self.joinPassword.text!), forKey: "password")
-                                                    
-                                                    userDefaults.setValue(usersAvatarUrl, forKey: "usersAvatar")
-                                                    
-                                                    self.dismissVC()
-
-                                                }
-                                        
-                                            })
-                                    }
-            })
+            else
+            {
+                submitUserData()
+            }
             
         }
         
@@ -815,6 +899,7 @@ class SignInSignUpViewController: UIViewController, UITextFieldDelegate, UIScrol
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
             print("Please Enter All the Details")
+            joinButton.enabled = true
 
         }
         
