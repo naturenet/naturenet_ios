@@ -34,7 +34,6 @@
 		9F1B6DDB1D16FE650012F66E /* CommunitiesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1B6DD91D16FE650012F66E /* CommunitiesTableViewCell.swift */; };
 		9F1B6DDC1D16FE650012F66E /* CommunitiesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F1B6DDA1D16FE650012F66E /* CommunitiesTableViewCell.xib */; };
 		9F1B6DDE1D1AF4040012F66E /* shutdown.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F1B6DDD1D1AF4040012F66E /* shutdown.png */; };
-		9F1B6DE21D1DAC2E0012F66E /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9F1B6DE01D1DAC2E0012F66E /* Info.plist */; };
 		9F2222951CE25E9100A845E2 /* user.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F2222941CE25E9100A845E2 /* user.png */; };
 		9F2222A71CE25FA400A845E2 /* add design challenges.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F2222961CE25FA400A845E2 /* add design challenges.png */; };
 		9F2222A81CE25FA400A845E2 /* add design ideas.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F2222971CE25FA400A845E2 /* add design ideas.png */; };
@@ -528,7 +527,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = NatureNet;
 				TargetAttributes = {
 					9F9BB3B71C9B214C0076E68E = {
@@ -625,7 +624,6 @@
 				9FC2D1A11CEB7749000B398B /* DesignIdeasAndChallengesTableViewCell.xib in Resources */,
 				9F2222B41CE25FA400A845E2 /* observations navy.png in Resources */,
 				9F14A77E1C9B425E00CAB0F6 /* MapViewController.xib in Resources */,
-				9F1B6DE21D1DAC2E0012F66E /* Info.plist in Resources */,
 				9F2222B51CE25FA400A845E2 /* photo.png in Resources */,
 				9F1B6DDE1D1AF4040012F66E /* shutdown.png in Resources */,
 				9F2222B01CE25FA400A845E2 /* group.png in Resources */,

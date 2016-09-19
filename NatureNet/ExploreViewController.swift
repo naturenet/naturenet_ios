@@ -37,23 +37,9 @@ class ExploreViewController: UIViewController,UICollectionViewDelegateFlowLayout
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
-//        if(isPushed==true)
-//        {
-//            if self.revealViewController() != nil {
-//                self.view.addGestureRecognizer(revealViewController().panGestureRecognizer())
-//                self.revealViewController().rearViewRevealWidth = 290
-//                let barButtonItem = UIBarButtonItem(image: UIImage(named: "menu.png"), style: .Plain, target: self.revealViewController(), action: "revealToggle:")
-//                navigationItem.leftBarButtonItem = barButtonItem
-//                
-//            }
-//
-//        }
-//        else
-//        {
-            let barButtonItem = UIBarButtonItem(image: UIImage(named: "double_down.png"), style: .Plain, target: self, action: #selector(ExploreViewController.dismissVC))
-            navigationItem.leftBarButtonItem = barButtonItem
-        //}
+        
+        let barButtonItem = UIBarButtonItem(image: UIImage(named: "double_down.png"), style: .Plain, target: self, action: #selector(ExploreViewController.dismissVC))
+        navigationItem.leftBarButtonItem = barButtonItem
         
         self.navigationItem.title="EXPLORE"
         
@@ -71,8 +57,6 @@ class ExploreViewController: UIViewController,UICollectionViewDelegateFlowLayout
         collectionView.delegate = self
         collectionView!.backgroundColor = UIColor.whiteColor()
         collectionView.alwaysBounceVertical=true
-        //collectionView.alwaysBounceHorizontal=true
-        //collectionView.frame=self.view.frame
         
         //Registering custom Cell
         self.collectionView.registerNib(UINib(nibName: "ExploreCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "ExploreCell")
@@ -85,17 +69,16 @@ class ExploreViewController: UIViewController,UICollectionViewDelegateFlowLayout
         print(observerIdsfromMapView)
         print(observerIdsfromMapView.count)
         
-        
-        
         for i in 0 ..< observerIdsfromMapView.count
         {
             let usersRootRef = FIRDatabase.database().referenceWithPath("users/\(observerIdsfromMapView[i])")
             //Firebase(url:USERS_URL+"\(observerIdsfromMapView[i])")
-            usersRootRef.observeEventType(.Value, withBlock: { snapshot in
+            usersRootRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                 
                 print(usersRootRef)
                 //print(snapshot.value.count)
                 //self.observerNamesArray = []
+                self.observerAffiliationsArray.removeAllObjects()
                 
                 if !(snapshot.value is NSNull)
                 {
@@ -104,7 +87,7 @@ class ExploreViewController: UIViewController,UICollectionViewDelegateFlowLayout
                         let observerAffiliationString = snapshot.value!.objectForKey("affiliation") as! String
                         let sitesRootRef = FIRDatabase.database().referenceWithPath("sites/"+observerAffiliationString)
                         //Firebase(url:FIREBASE_URL + "sites/"+aff!)
-                        sitesRootRef.observeEventType(.Value, withBlock: { snapshot in
+                        sitesRootRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                             
                             
                             print(sitesRootRef)
@@ -112,13 +95,15 @@ class ExploreViewController: UIViewController,UICollectionViewDelegateFlowLayout
                             
                             if !(snapshot.value is NSNull)
                             {
-                                
-                                
                                 print(snapshot.value!.objectForKey("name"))
                                 if(snapshot.value!.objectForKey("name") != nil)
                                 {
                                     //cell.exploreDate.text = snapshot.value!.objectForKey("name") as? String
                                     self.observerAffiliationsArray.addObject((snapshot.value!.objectForKey("name") as? String)!)
+                                }
+                                else
+                                {
+                                    self.observerAffiliationsArray.addObject("No Affiliation")
                                 }
                                 
                                 
@@ -148,23 +133,20 @@ class ExploreViewController: UIViewController,UICollectionViewDelegateFlowLayout
                     }
                     else
                     {
-                        self.observerNamesArray.addObject("")
+                        self.observerNamesArray.addObject("No Diaplay Name")
                     }
                     
                     
-                    
-                    
-                    //print(observerAffiliation)
-                    //print(observerDisplayName)
                     if((snapshot.value!.objectForKey("avatar")) != nil)
                     {
+                        print(snapshot.value!)
                         let observerAvatar = snapshot.value!.objectForKey("avatar")
                         print(observerAvatar)
                         let observerAvatarUrl  = NSURL(string: observerAvatar as! String)
                         if(UIApplication.sharedApplication().canOpenURL(observerAvatarUrl!) == true)
                         {
                             //self.observerAvatarsArray.addObject(NSData(contentsOfURL: observerAvatarUrl!)!)
-                            self.observerAvatarsUrlArray.addObject(observerAvatar!)
+                            self.observerAvatarsUrlArray.addObject(observerAvatarUrl!)
                         }
                         else
                         {
@@ -172,7 +154,7 @@ class ExploreViewController: UIViewController,UICollectionViewDelegateFlowLayout
                             
                             
                             //self.observerAvatarsArray.addObject(NSData(contentsOfURL: tempImageUrl!)!)
-                            self.observerAvatarsUrlArray.addObject((tempImageUrl?.absoluteString)!)
+                            self.observerAvatarsUrlArray.addObject(tempImageUrl!)
                         }
                         //let observerAvatarData = NSData(contentsOfURL: observerAvatarUrl!)
                     }
@@ -181,12 +163,12 @@ class ExploreViewController: UIViewController,UICollectionViewDelegateFlowLayout
                         let tempImageUrl = NSBundle.mainBundle().URLForResource("user", withExtension: "png")
                         
                         //self.observerAvatarsArray.addObject(NSData(contentsOfURL: tempImageUrl!)!)
-                        self.observerAvatarsUrlArray.addObject((tempImageUrl?.absoluteString)!)
+                        self.observerAvatarsUrlArray.addObject(tempImageUrl!)
                         
                     }
                     self.observationsCount = self.observationIdsfromMapView.count
                     print(self.observationsCount)
-                    self.collectionView.reloadData()
+                    //self.collectionView.reloadData()
                     
                 }
                 
@@ -198,123 +180,11 @@ class ExploreViewController: UIViewController,UICollectionViewDelegateFlowLayout
                     self.presentViewController(alert, animated: true, completion: nil)
 
             })
-
-            
-//            let url = NSURL(string: USERS_URL+"\(observerIdsfromMapView[i]).json")
-//            var userData:NSData? = nil
-//            do {
-//                userData = try NSData(contentsOfURL: url!, options: NSDataReadingOptions())
-//                print(userData)
-//            }
-//            catch {
-//                print("Handle \(error) here")
-//            }
-//            
-//            if let data = userData {
-//                // Convert data to JSON here
-//                do{
-//                    let json: NSDictionary = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions()) as! NSDictionary
-//                    print(json)
-//                        
-//                        //print(observerData.objectForKey("affiliation"))
-//                        //print(observerData.objectForKey("display_name"))
-//                        //print(observerData)
-//                        if((json.objectForKey("affiliation")) != nil)
-//                        {
-//                            let observerAffiliationString = json.objectForKey("affiliation") as! String
-//                            
-//                            observerAffiliationsArray.addObject(observerAffiliationString)
-//                        }
-//                        else
-//                        {
-//                            observerAffiliationsArray.addObject("")
-//                        }
-//                        if((json.objectForKey("display_name")) != nil)
-//                        {
-//                            let observerDisplayNameString = json.objectForKey("display_name") as! String
-//                            observerNamesArray.addObject(observerDisplayNameString)
-//                        }
-//                        else
-//                        {
-//                            observerNamesArray.addObject("")
-//                        }
-//                        
-//                        
-//                        
-//                        
-//                        //print(observerAffiliation)
-//                        //print(observerDisplayName)
-//                        if((json.objectForKey("avatar")) != nil)
-//                        {
-//                            let observerAvatar = json.objectForKey("avatar")
-//                            print(observerAvatar)
-//                            let observerAvatarUrl  = NSURL(string: observerAvatar as! String)
-//                            if(UIApplication.sharedApplication().canOpenURL(observerAvatarUrl!) == true)
-//                            {
-//                                observerAvatarsArray.addObject(NSData(contentsOfURL: observerAvatarUrl!)!)
-//                                observerAvatarsUrlArray.addObject(observerAvatar!)
-//                            }
-//                            else
-//                            {
-//                                let tempImageUrl = NSBundle.mainBundle().URLForResource("user", withExtension: "png")
-//                                
-//                                
-//                                observerAvatarsArray.addObject(NSData(contentsOfURL: tempImageUrl!)!)
-//                                observerAvatarsUrlArray.addObject((tempImageUrl?.absoluteString)!)
-//                            }
-//                            //let observerAvatarData = NSData(contentsOfURL: observerAvatarUrl!)
-//                        }
-//                        else
-//                        {
-//                            let tempImageUrl = NSBundle.mainBundle().URLForResource("user", withExtension: "png")
-//                            
-//                            observerAvatarsArray.addObject(NSData(contentsOfURL: tempImageUrl!)!)
-//                            observerAvatarsUrlArray.addObject((tempImageUrl?.absoluteString)!)
-//                           
-//                    }
-//
-//                    
-//                    
-//                            
-//                            
-//                }catch let error as NSError {
-//                    print("json error: \(error.localizedDescription)")
-//                    let alert = UIAlertController(title: "Alert", message:error.localizedDescription ,preferredStyle: UIAlertControllerStyle.Alert)
-//                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-//                    self.presentViewController(alert, animated: true, completion: nil)
-//                }
-//
-//            }
             print(observationsCount)
         }
         print(observerAffiliationsArray)
         print(observerNamesArray)
-        //print(observerAvatarsArray)
-        
-//        newObsAndDIViewtemp.view.frame = CGRectMake(0 ,self.view.frame.size.height-newObsAndDIViewtemp.view.frame.size.height-8 - 60, newObsAndDIViewtemp.view.frame.size.width, newObsAndDIViewtemp.view.frame.size.height)
-//        self.view.addSubview(newObsAndDIViewtemp.view)
-//        //self.view.bringSubviewToFront(newObsAndDIView.view)
-//        newObsAndDIViewtemp.camButton.addTarget(self, action: #selector(ExploreViewController.openNewObsView), forControlEvents: .TouchUpInside)
-
     }
-//    func openNewObsView()
-//    {
-//        print("gverver")
-//        let cgVC = CameraAndGalleryViewController()
-//        self.addChildViewController(cgVC)
-//        cgVC.view.frame = CGRectMake(0, self.view.frame.size.height - cgVC.view.frame.size.height+68, cgVC.view.frame.size.width, cgVC.view.frame.size.height)
-//        self.view.addSubview(cgVC.view)
-//        UIView.animateWithDuration(0.3, animations: {
-//            
-//            cgVC.view.frame = CGRectMake(0, self.view.frame.size.height - cgVC.view.frame.size.height+68, cgVC.view.frame.size.width, cgVC.view.frame.size.height)
-//            
-//        }) { (isComplete) in
-//            
-//            cgVC.didMoveToParentViewController(self)
-//            
-//        }
-//    }
-
     
     func dismissVC(){
         
@@ -339,47 +209,24 @@ class ExploreViewController: UIViewController,UICollectionViewDelegateFlowLayout
         
         cell.layer.borderColor = UIColor.lightGrayColor().CGColor
         cell.layer.borderWidth = 1.0
-        //        if let currentItem = beachDict[beachArray[indexPath.item]] {
-        //            //Setting title for the images from description
-        //            let title = currentItem.first?.description
-        //            let index = title!.rangeOfString("-")?.startIndex
-        //            if let value = index {
-        //                cell.cellTitle.text = title?.substringFromIndex(value.successor())
-        //            }else {
-        //                cell.cellTitle.text = currentItem.first?.description
-        //            }
-        //
-        //            //Fetch image from parse
-        //            if let imageFile = currentItem.first?.imageFile {
-        //                imageFile.getDataInBackgroundWithBlock({ (imageData, error) -> Void in
-        //                    if error == nil {
-        //                        if let result = imageData {
-        //                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-        //                                cell.currentImage = result
-        //                            })
-        //
-        //                        }
-        //                    }
-        //                })
-        //            }
-        //        }
         
         let observationsImageUrlString = exploreObservationsImagesArray[indexPath.row] as! String
         print(observationsImageUrlString)
         let newimageURLString = observationsImageUrlString.stringByReplacingOccurrencesOfString("upload", withString: "upload/t_ios-thumbnail", options: NSStringCompareOptions.LiteralSearch, range: nil)
         //observerImageUrlData = NSData(contentsOfURL: observerImageUrl)
-        
-        if let observationsImageUrl  = NSURL(string: newimageURLString)
-        {
+        let observationsImageUrl  = NSURL(string: newimageURLString)
+        //if let observationsImageUrl  = NSURL(string: newimageURLString)
+        //{
             //cell.exploreImageView.image = UIImage(data: observerImageUrlData)
             print(observationsImageUrl)
-            cell.exploreImageView.kf_setImageWithURL(observationsImageUrl, placeholderImage: UIImage(named: "default-no-image.png"))
-        }
+            cell.exploreImageView.kf_setImageWithURL(observationsImageUrl!, placeholderImage: UIImage(named: "default-no-image.png"))
+        //}
         cell.bringSubviewToFront(cell.exploreProfileSubView)
         cell.exploreImageView.contentMode = UIViewContentMode.ScaleAspectFit
         
         //cell.exploreProfileIcon.image = UIImage(data: observerAvatarsArray[indexPath.row] as! NSData)
-        cell.exploreProfileIcon.kf_setImageWithURL(NSURL.fileURLWithPath(observerAvatarsUrlArray[indexPath.row] as! String), placeholderImage: UIImage(named: "user.png"))
+        print(observerAvatarsUrlArray[indexPath.row])
+        cell.exploreProfileIcon.kf_setImageWithURL(observerAvatarsUrlArray[indexPath.row] as! NSURL, placeholderImage: UIImage(named: "user.png"))
         
         if(observerNamesArray[indexPath.row] as! String != "")
         {
@@ -390,41 +237,8 @@ class ExploreViewController: UIViewController,UICollectionViewDelegateFlowLayout
             cell.exploreProfileName.text = "No Display Name"
         }
         
-        //if(observerAffiliationsArray[indexPath.row] as! String != "")
-        //{
-//            let sitesRootRef = FIRDatabase.database().referenceWithPath("sites/"+(observerAffiliationsArray[indexPath.row] as! String))
-//            //Firebase(url:FIREBASE_URL + "sites/"+aff!)
-//            sitesRootRef.observeEventType(.Value, withBlock: { snapshot in
-//                
-//                
-//                print(sitesRootRef)
-//                print(snapshot.value)
-//                
-//                if !(snapshot.value is NSNull)
-//                {
-//                    
-//                    
-//                    print(snapshot.value!.objectForKey("name"))
-//                    if(snapshot.value!.objectForKey("name") != nil)
-//                    {
-//                        cell.exploreDate.text = snapshot.value!.objectForKey("name") as? String
-//                        //self.observerAffiliationsArray.addObject((snapshot.value!.objectForKey("name") as? String)!)
-//                    }
-//                    
-//                    
-//                    
-//                }
-//                
-//                }, withCancelBlock: { error in
-//                    print(error.description)
-//            })
-
-            cell.exploreDate.text = (observerAffiliationsArray[indexPath.row] as! String)
-        //}
-//        else
-//        {
-//            cell.exploreDate.text = "No Affiliation"
-//        }
+       
+        cell.exploreDate.text = (observerAffiliationsArray[indexPath.row] as! String)
         
         
         return cell

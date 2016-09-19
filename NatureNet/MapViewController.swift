@@ -246,7 +246,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
     {
         
         let observationsRootRef = FIRDatabase.database().referenceWithPath("observations")
-        observationsRootRef.queryOrderedByChild("key").queryLimitedToLast(observationsLimit).observeEventType(.Value, withBlock: { snapshot in
+        observationsRootRef.queryOrderedByChild("key").queryLimitedToLast(4).observeSingleEventOfType(.Value, withBlock: { snapshot in
             
             //Empty all the arrays
             self.commentsDictArray.removeAllObjects()
@@ -261,7 +261,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
 
             
             print(observationsRootRef)
-            //print(snapshot.value!.count)
+            print(snapshot.value!)
             
             if !(snapshot.value is NSNull)
             {
@@ -360,62 +360,29 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
                         observationImageAndText = tempDic
                     }
                     
-                    if(observationData.objectForKey("activity_location") != nil)
+                    if(observationData.objectForKey("activity") != nil)
                     {
-                        let actloc = observationData.objectForKey("activity_location") as! String
                         
-                        print(observationData)
-                        print(actloc)
+                        let obsActivity = observationData.objectForKey("activity") as! String
                         
-                        let geoObservationsRootRef = FIRDatabase.database().referenceWithPath("geo/activities/\(actloc)")
-                        //Firebase(url:FIREBASE_URL + "geo/activities/\(actloc)")
-                        geoObservationsRootRef.observeEventType(.Value, withBlock: { snapshot in
+                        let activitiesRootRef = FIRDatabase.database().referenceWithPath("activities/\(obsActivity)")
+                        //Firebase(url:FIREBASE_URL + "activities")
+                        activitiesRootRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                             
-                            print(geoObservationsRootRef)
-                            //print(snapshot.value!.count)
+                            print(activitiesRootRef)
+                            print(snapshot.value!)
                             
                             if !(snapshot.value is NSNull)
                             {
-                                let geoActivity = snapshot.value!.objectForKey("activity") as! String
                                 
-                                let activitiesRootRef = FIRDatabase.database().referenceWithPath("activities")
-                                //Firebase(url:FIREBASE_URL + "activities")
-                                activitiesRootRef.observeEventType(.Value, withBlock: { snapshot in
+                                if(snapshot.value!.objectForKey("name") != nil)
+                                {
                                     
-                                    print(activitiesRootRef)
-                                    print(snapshot.value!.count)
+                                    self.observationProjectNames.addObject(snapshot.value!.objectForKey("name")!)
                                     
-                                    if !(snapshot.value is NSNull)
-                                    {
-                                        for j in 0 ..< snapshot.value!.count
-                                        {
-                                            
-                                            let activity = snapshot.value!.allKeys[j] as! String
-                                            let activityDictionary = snapshot.value!.objectForKey(activity) as! NSDictionary
-                                            //print(activityDictionary.objectForKey("name"))
-                                            if(activityDictionary.objectForKey("name") != nil && actloc != "")
-                                            {
-                                                //print(geoActivity)
-                                                //print(activity)
-                                                if(activity == geoActivity)
-                                                {
-                                                    self.observationProjectNames.addObject(activityDictionary.objectForKey("name")!)
-                                                }
-                                            }
-                                            
-                                        }
-                                    }
-                                    
-                                    
-                                    }, withCancelBlock: { error in
-                                        print(error.description)
-                                        let alert = UIAlertController(title: "Alert", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
-                                        let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
-                                        alert.addAction(action)
-                                        self.presentViewController(alert, animated: true, completion: nil)
+                                }
 
-                                })
-
+                                
                             }
                             
                             
@@ -425,9 +392,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
                                 let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
                                 alert.addAction(action)
                                 self.presentViewController(alert, animated: true, completion: nil)
-
+                                
                         })
 
+                        
                     }
 
                     if(observationData.objectForKey("id") != nil)
@@ -462,7 +430,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
                     }
                     else
                     {
-                        self.observationTextArray.addObject("")
+                        self.observationTextArray.addObject("No Description")
                     }
                     
                     if(observationData.objectForKey("observer") != nil)
@@ -478,6 +446,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
                     
 
                 }
+            }
+            else
+            {
+                
             }
             
             
@@ -691,7 +663,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
             let usersRootRef = FIRDatabase.database().referenceWithPath("users/\(self.observerIds[view.tag])")
                 print(usersRootRef)
                 //Firebase(url:USERS_URL+"\(self.observerIds[view.tag])")
-            usersRootRef.observeEventType(.Value, withBlock: { snapshot in
+            usersRootRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                     
                     print(usersRootRef)
                     //print(snapshot.value!.count)
