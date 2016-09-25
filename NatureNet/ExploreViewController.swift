@@ -248,7 +248,8 @@ class ExploreViewController: UIViewController,UICollectionViewDelegateFlowLayout
         didSelectItemAtIndexPath indexPath: NSIndexPath) {
         //print(indexPath)
         let detailedObservationVC = DetailedObservationViewController()
-        detailedObservationVC.observerImageUrl = observerAvatarsUrlArray[indexPath.row] as! String
+        print(observerAvatarsUrlArray[indexPath.row].absoluteString)
+        detailedObservationVC.observerImageUrl = observerAvatarsUrlArray[indexPath.row].absoluteString
         detailedObservationVC.observerDisplayName = observerNamesArray[indexPath.row] as! String;
         detailedObservationVC.observerAffiliation = observerAffiliationsArray[indexPath.row] as! String;
         detailedObservationVC.observationText = observationTextArray[indexPath.row] as! String;

@@ -45,6 +45,9 @@ class RearViewController: UIViewController,UITableViewDelegate, UITableViewDataS
         menuTableView.scrollEnabled = false
         
         profileView.backgroundColor=UIColor(red: 48.0/255.0, green: 204.0/255.0, blue: 114.0/255.0, alpha: 1.0)
+        //profileView.backgroundColor = UIColor.redColor()
+        profileView.translatesAutoresizingMaskIntoConstraints = true
+        profileView.autoresizingMask = [UIViewAutoresizing.FlexibleLeftMargin, UIViewAutoresizing.FlexibleRightMargin, UIViewAutoresizing.None, UIViewAutoresizing.FlexibleBottomMargin]
         
         self.navigationController!.navigationBar.barTintColor = UIColor(red: 48.0/255.0, green: 204.0/255.0, blue: 114.0/255.0, alpha: 1.0)
         self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()

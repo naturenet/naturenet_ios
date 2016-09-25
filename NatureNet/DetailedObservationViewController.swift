@@ -92,7 +92,7 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
         self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
         self.navigationController!.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
 
-
+        self.view.bringSubviewToFront(commentView)
 
 //        detailObsScrollView.frame = CGRectMake(UIScreen.mainScreen().bounds.origin.x, UIScreen.mainScreen().bounds.origin.y, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height-commentView.frame.size.height)
 //

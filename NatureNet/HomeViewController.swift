@@ -56,17 +56,19 @@ class HomeViewController: UIViewController {
         if((userDefaults.stringForKey("isSignedIn")) != "true")
         {
             
-            if(UIScreen.mainScreen().nativeBounds.height <= 1136)
-            {
-                joinNatureNetButton.hidden = true
-                let rightBarButtonItem = UIBarButtonItem(title: "Join", style: .Plain, target: self, action: #selector(joinNatureNet))
-                rightBarButtonItem.tintColor = UIColor.whiteColor()
-                navigationItem.rightBarButtonItem = rightBarButtonItem
-            }
-            else
-            {
-                joinNatureNetButton.hidden = false
-            }
+//            if(UIScreen.mainScreen().nativeBounds.height <= 1136)
+//            {
+//                joinNatureNetButton.hidden = true
+//                let rightBarButtonItem = UIBarButtonItem(title: "Join", style: .Plain, target: self, action: #selector(joinNatureNet))
+//                rightBarButtonItem.tintColor = UIColor.whiteColor()
+//                navigationItem.rightBarButtonItem = rightBarButtonItem
+//            }
+//            else
+//            {
+//                joinNatureNetButton.hidden = false
+//            }
+            
+            joinNatureNetButton.hidden = false
             
         }
         else

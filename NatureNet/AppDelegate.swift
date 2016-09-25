@@ -105,7 +105,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            }
 //        }
         
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(AppDelegate.calendarDayDidChange(_:)), name:NSCalendarDayChangedNotification, object:nil)
+        print(NSDate())
+        
+        let today = NSDate()
+        let calendar = NSCalendar.currentCalendar()
+        let isTomorrow = calendar.isDateInToday(today)
+        
+        let components = calendar.components([.Hour , .Minute , .Second], fromDate:today)
+        let hour = components.hour
+        let minutes = components.minute
+        let seconds = components.second
+        
+        print(hour)
+        print(minutes)
+        
+        if(hour==23 && minutes == 59)
+        {
+            let userDefaults = NSUserDefaults.standardUserDefaults()
+            let laterUploads = userDefaults.objectForKey("observationsForLater")
+            NSUserDefaults.standardUserDefaults().removePersistentDomainForName(NSBundle.mainBundle().bundleIdentifier!)
+            userDefaults.setObject(laterUploads, forKey: "observationsForLater")
+        }
+        
         return true
+    }
+    func calendarDayDidChange(notification : NSNotification)
+    {
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        let laterUploads = userDefaults.objectForKey("observationsForLater")
+        NSUserDefaults.standardUserDefaults().removePersistentDomainForName(NSBundle.mainBundle().bundleIdentifier!)
+        userDefaults.setObject(laterUploads, forKey: "observationsForLater")
+
     }
     
     func applicationWillResignActive(application: UIApplication) {
@@ -130,6 +162,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //put later array into user defaults for storage
         let laterData = NSKeyedArchiver.archivedDataWithRootObject(laterArray)
         userDefaults.setObject(laterData, forKey: "observationsForLater")
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(AppDelegate.calendarDayDidChange(_:)), name:NSCalendarDayChangedNotification, object:nil)
     }
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
 
@@ -139,15 +173,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+        NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(AppDelegate.calendarDayDidChange(_:)), name:NSCalendarDayChangedNotification, object:nil)
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         //UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+        NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(AppDelegate.calendarDayDidChange(_:)), name:NSCalendarDayChangedNotification, object:nil)
     }
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(AppDelegate.calendarDayDidChange(_:)), name:NSCalendarDayChangedNotification, object:nil)
     }
     
 }
