@@ -139,7 +139,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
                     self.locValue.latitude = siteLocationArray[0] as! Double
                     self.locValue.longitude = siteLocationArray[1] as! Double
                     
-                    self.setMapViewCoordinates(self.locValue)
+                    self.setMapViewCoordinates(self.locValue,zoomOut:false)
                     
                     
                     }, withCancelBlock: { error in
@@ -152,6 +152,13 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
                 })
 
                 
+            }
+            else
+            {
+                self.locValue.latitude = 40.0
+                self.locValue.longitude = -96.0
+                
+                self.setMapViewCoordinates(self.locValue, zoomOut:!CLLocationManager.locationServicesEnabled())
             }
             
         }
@@ -178,12 +185,20 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
     }
     
     // MARK: - *** Setting MapView Coordinates and getting current location ***
-    func setMapViewCoordinates(locationCoord: CLLocationCoordinate2D)
+    func setMapViewCoordinates(locationCoord: CLLocationCoordinate2D, zoomOut: Bool)
     {
-        let regionRadius: CLLocationDistance = 600
-        let coordinateRegion = MKCoordinateRegionMakeWithDistance(locationCoord,
-                                                                      regionRadius * 4.0, regionRadius * 4.0)
-        self.mapView.setRegion(coordinateRegion, animated: true)
+        if(zoomOut == true)
+        {
+            let coordinateRegion = MKCoordinateRegionMakeWithDistance(locationCoord,
+                                                                      5000000, 5000000)
+            self.mapView.setRegion(coordinateRegion, animated: true)
+        }
+        else
+        {
+            let coordinateRegion = MKCoordinateRegionMakeWithDistance(locationCoord,
+                                                                      2400, 2400)
+            self.mapView.setRegion(coordinateRegion, animated: true)
+        }
         
     }
     
@@ -193,7 +208,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
         locValue = locations.last!.coordinate
         print("locations = \(locValue.latitude) \(locValue.longitude)")
         
-        self.setMapViewCoordinates(locValue)
+        self.setMapViewCoordinates(locValue,zoomOut:false)
     }
     
     //Open Camera and Gallery Selection View
@@ -259,11 +274,12 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
             self.observationImagesArray.removeAllObjects()
             self.observationIds.removeAllObjects()
             self.observationUpdatedTimestampsArray.removeAllObjects()
-            var tagAnnotation = 0;
+            //var tagAnnotation = 0;
 
             
             print(observationsRootRef)
             print(snapshot.value!)
+            print(snapshot.value!.allValues)
             
             if !(snapshot.value is NSNull)
             {
@@ -346,7 +362,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
                     var latAndLongs: NSArray = []
                     var observationImageAndText: NSDictionary = [:]
                     latAndLongs = (observationData.objectForKey("l") as? NSArray)!
-                    
+                    print(observationData)
                     if(((observationData.objectForKey("l") != nil) || (!(observationData.objectForKey("l") is NSNull))) && ((latAndLongs[0].intValue != 0) && (latAndLongs[1].intValue != 0)))
                     {
                         
@@ -355,8 +371,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
                         print(latAndLongs)
                         let annotationLatAndLong = CLLocation(latitude: latAndLongs[0].doubleValue, longitude: latAndLongs[1].doubleValue)
                         
-                        self.mapViewCoordinate(annotationLatAndLong, tagForAnnotation: tagAnnotation)
-                        tagAnnotation = tagAnnotation+1
+                        self.mapViewCoordinate(annotationLatAndLong, tagForAnnotation: i)
+                        //tagAnnotation = tagAnnotation+1
                         
                     }
                     else{
@@ -519,7 +535,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
     {
         let initialLocation = CLLocation(latitude: annotationLocation.coordinate.latitude, longitude: annotationLocation.coordinate.longitude)
         
-        self.setMapViewCoordinates(locValue)
+        //self.setMapViewCoordinates(locValue, zoomOut: CLLocationManager.locationServicesEnabled())
         let annotation = MKPointAnnotation()
         annotation.coordinate = CLLocationCoordinate2DMake(initialLocation.coordinate.latitude, initialLocation.coordinate.longitude)
         annotation.title = String(tagForAnnotation)
@@ -566,43 +582,43 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
     
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
         
-        let identifier = "MyPin"
-        
-        if annotation.isKindOfClass(MKUserLocation) {
-            return nil
-        }
-        
-        // Reuse the annotation if possible
-        var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(identifier)
+//        let identifier = "MyPin"
+//        
+//        if annotation.isKindOfClass(MKUserLocation) {
+//            return nil
+//        }
+//        
+//        // Reuse the annotation if possible
+        let annotationView = MKAnnotationView()
         let str :String? = annotation.title!
         let tag: Int? = Int(str!)
-    
-        
-        //if annotationView == nil
-        //{
-            annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "MyPin")
-            annotationView!.canShowCallout = false
-            annotationView!.contentMode = UIViewContentMode.ScaleAspectFit
-            annotationView?.tag = tag!
-            
+//    
+//        
+//        //if annotationView == nil
+//        //{
+//            annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "MyPin")
+            annotationView.canShowCallout = false
+            annotationView.contentMode = UIViewContentMode.ScaleAspectFit
+            annotationView.tag = tag!
+//            
             let annotationImageView = UIImageView(image: UIImage(named:"marker.png"))
-            
+//            
             var annotationImageRect = annotationImageView.frame as CGRect
             annotationImageRect.size.height = 44
             annotationImageRect.size.width = 44
-            
+//            
             annotationImageView.frame = annotationImageRect
-            annotationView?.frame = annotationImageRect
-            
-            annotationView?.addSubview(annotationImageView)
-            
-//        }
-//        else
-//        {
-//            annotationView!.annotation = annotation
-//        }
-        
-        
+            annotationView.frame = annotationImageRect
+//            
+            annotationView.addSubview(annotationImageView)
+//            
+////        }
+////        else
+////        {
+////            annotationView!.annotation = annotation
+////        }
+//        
+//        
         return annotationView
     }
     
@@ -613,7 +629,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
     }
     func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView)
     {
-        print("annotation")
+        print(view.tag)
+        //let str :String? = view.title!
+        //let tag: Int? = Int(str!)
         
         UIView.animateWithDuration(0.3, animations: {
            

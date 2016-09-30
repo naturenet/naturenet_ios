@@ -40,6 +40,8 @@ let DESIGN_URL = "https://naturenet.firebaseio.com/ideas.json?orderBy=%22updated
 let COMMENTS_URL = "https://naturenet.firebaseio.com/comments/"
 let SITES_URL = "https://naturenet-staging.firebaseio.com/sites/"
 
+let MAP_ZOOM_SCALE = 2400.0
+
 class ConnectionManager{
     
     static let sharedManager = ConnectionManager()

@@ -18,7 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var viewController: UIViewController?
     var frontNavController : UINavigationController? = nil
     var laterArray : [ObservationForLater] = []
-
+    let date = NSDate()
+    let cal = NSCalendar.currentCalendar()
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
@@ -47,9 +48,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //Enabling Firebase persistent data
         FIRDatabase.database().persistenceEnabled = true
-        
-        
-
         
         //these cannot be purged from the cache
         let geoActivitiesRootRef = FIRDatabase.database().referenceWithPath("geo/activities/")
@@ -106,39 +104,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        }
         
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(AppDelegate.calendarDayDidChange(_:)), name:NSCalendarDayChangedNotification, object:nil)
-        print(NSDate())
+        //NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(AppDelegate.calendarDayDidChange(_:)), name:NSCalendarDayChangedNotification, object:nil)
+        //print(NSDate())
+        //let midnightLastNight = NSDate()
         
-        let today = NSDate()
-        let calendar = NSCalendar.currentCalendar()
-        let isTomorrow = calendar.isDateInToday(today)
+        cal.timeZone = NSTimeZone.localTimeZone()
         
-        let components = calendar.components([.Hour , .Minute , .Second], fromDate:today)
-        let hour = components.hour
-        let minutes = components.minute
-        let seconds = components.second
+        checkCurrentTimeIfNotLogOutTheUser(date,cal: cal)
+        //print(cal.isDateInToday(userDefaults.objectForKey("lastStartTime") as! NSDate))
         
-        print(hour)
-        print(minutes)
-        
-        if(hour==23 && minutes == 59)
-        {
-            let userDefaults = NSUserDefaults.standardUserDefaults()
-            let laterUploads = userDefaults.objectForKey("observationsForLater")
-            NSUserDefaults.standardUserDefaults().removePersistentDomainForName(NSBundle.mainBundle().bundleIdentifier!)
-            userDefaults.setObject(laterUploads, forKey: "observationsForLater")
-        }
         
         return true
     }
-    func calendarDayDidChange(notification : NSNotification)
+    
+    func checkCurrentTimeIfNotLogOutTheUser(date: NSDate, cal: NSCalendar)
     {
         let userDefaults = NSUserDefaults.standardUserDefaults()
-        let laterUploads = userDefaults.objectForKey("observationsForLater")
-        NSUserDefaults.standardUserDefaults().removePersistentDomainForName(NSBundle.mainBundle().bundleIdentifier!)
-        userDefaults.setObject(laterUploads, forKey: "observationsForLater")
+        if((userDefaults.objectForKey("lastStartTime") != nil) && !(cal.isDateInToday(userDefaults.objectForKey("lastStartTime") as! NSDate)))
+        {
+            let laterUploads = userDefaults.objectForKey("observationsForLater")
+            NSUserDefaults.standardUserDefaults().removePersistentDomainForName(NSBundle.mainBundle().bundleIdentifier!)
+            
+            userDefaults.setObject(laterUploads, forKey: "observationsForLater")
+            
+            try! FIRAuth.auth()!.signOut()
+        }
+        
+        userDefaults.setObject(date, forKey: "lastStartTime")
 
     }
+//    func calendarDayDidChange(notification : NSNotification)
+//    {
+//        let userDefaults = NSUserDefaults.standardUserDefaults()
+//        let laterUploads = userDefaults.objectForKey("observationsForLater")
+//        NSUserDefaults.standardUserDefaults().removePersistentDomainForName(NSBundle.mainBundle().bundleIdentifier!)
+//        userDefaults.setObject(laterUploads, forKey: "observationsForLater")
+//
+//    }
     
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -163,7 +165,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let laterData = NSKeyedArchiver.archivedDataWithRootObject(laterArray)
         userDefaults.setObject(laterData, forKey: "observationsForLater")
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(AppDelegate.calendarDayDidChange(_:)), name:NSCalendarDayChangedNotification, object:nil)
+        //NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(AppDelegate.calendarDayDidChange(_:)), name:NSCalendarDayChangedNotification, object:nil)
     }
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
 
@@ -173,18 +175,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-        NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(AppDelegate.calendarDayDidChange(_:)), name:NSCalendarDayChangedNotification, object:nil)
+        //NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(AppDelegate.calendarDayDidChange(_:)), name:NSCalendarDayChangedNotification, object:nil)
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         //UIApplication.sharedApplication().applicationIconBadgeNumber = 0
-        NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(AppDelegate.calendarDayDidChange(_:)), name:NSCalendarDayChangedNotification, object:nil)
+        //NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(AppDelegate.calendarDayDidChange(_:)), name:NSCalendarDayChangedNotification, object:nil)
+        checkCurrentTimeIfNotLogOutTheUser(date,cal: cal)
     }
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(AppDelegate.calendarDayDidChange(_:)), name:NSCalendarDayChangedNotification, object:nil)
+        //NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(AppDelegate.calendarDayDidChange(_:)), name:NSCalendarDayChangedNotification, object:nil)
     }
     
 }

@@ -138,6 +138,8 @@ class RearViewController: UIViewController,UITableViewDelegate, UITableViewDataS
             NSUserDefaults.standardUserDefaults().removePersistentDomainForName(NSBundle.mainBundle().bundleIdentifier!)
             userDefaults.setObject(laterUploads, forKey: "observationsForLater")
             
+            try! FIRAuth.auth()!.signOut()
+            
             
             if(menuItems.count > 4)
             {
