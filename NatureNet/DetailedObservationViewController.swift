@@ -75,6 +75,7 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
 
     @IBOutlet weak var commentTF: UITextField!
 
+    @IBOutlet weak var commentViewBottomContraint: NSLayoutConstraint!
     var detailed_commentsDictArray : NSMutableArray = []
     var detailed_commentsCount: Int = 0
     var commentsArray = [Comment]()
@@ -93,6 +94,8 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
         self.navigationController!.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
 
         self.view.bringSubviewToFront(commentView)
+        
+        detailedObsView.bringSubviewToFront(commentView)
 
 //        detailObsScrollView.frame = CGRectMake(UIScreen.mainScreen().bounds.origin.x, UIScreen.mainScreen().bounds.origin.y, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height-commentView.frame.size.height)
 //
@@ -294,10 +297,10 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
 //                print(error.description)
 //        })
 
-        if(observerAffiliation != "No Affiliation")
-        {
-            observerAffiliationLabel.text = observerAffiliation
-        }
+        //if(observerAffiliation != "No Affiliation")
+        //{
+        observerAffiliationLabel.text = observerAffiliation
+        //}
 
         observationTextLabel.text = observationText
         //observationTextLabel.sizeToFit()
@@ -319,6 +322,8 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
 
 
         commentTF.delegate = self
+        
+        commentViewBottomContraint.constant = 0.0
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DetailedObservationViewController.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil);
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DetailedObservationViewController.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil);
@@ -368,6 +373,11 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
     {
         textField.resignFirstResponder()
         //setViewToMoveUp(false,tempTF: textField)
+        if (textField.returnKeyType == UIReturnKeyType.Send) {
+            // submit action here
+            //return true;
+            postCommentOnSendButton()
+        }
         return true;
     }
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool // return NO to disallow editing.
@@ -378,15 +388,24 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
     func keyboardWillShow(notification: NSNotification) {
 
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
-            self.commentView.frame.origin.y -= keyboardSize.height
+            //self.commentView.frame.origin.y -= keyboardSize.height
+            commentViewBottomContraint.constant = keyboardSize.size.height
+            
+            UIView.animateWithDuration(0.25, animations: { () -> Void in
+                self.view.layoutIfNeeded()
+            })
         }
 
     }
 
     func keyboardWillHide(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
-            self.commentView.frame.origin.y += keyboardSize.height
-        }
+        //if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
+            //self.commentView.frame.origin.y += keyboardSize.size.height
+            commentViewBottomContraint.constant = 0.0
+        UIView.animateWithDuration(0.25, animations: { () -> Void in
+            self.view.layoutIfNeeded()
+        })
+        //}
     }
 //    func setViewToMoveUp(moveUp: Bool, tempTF: UITextField!)
 //    {
@@ -528,6 +547,7 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
             myRootRef.queryOrderedByChild("parent").queryEqualToValue("\(self.observationId)").observeSingleEventOfType(.Value, withBlock: { snapshot in
 
                 print(myRootRef)
+                print(self.observationId)
                 print(snapshot.value)
                 
                 if !(snapshot.value is NSNull)
@@ -837,27 +857,7 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
                         //let observerAvatarData = NSData(contentsOfURL: observerAvatarUrl!)
                         //cell.commentorAvatarImageView.image = UIImage(data: observerAvatarData!)
                         cell.commentorAvatarImageView.kf_setImageWithURL(observerAvatarUrl!, placeholderImage: UIImage(named: "user.png"))
-
-//                    }
-//                    else
-//                    {
-//                        cell.commentorAvatarImageView.image = UIImage(named:"user.png")
-//                    }
-                    //                            if let observerAvatarUrl  = NSURL(string: observerAvatar as! String),
-                    //                                observerAvatarData = NSData(contentsOfURL: observerAvatarUrl)
-                    //                            {
-                    //                                if(UIApplication.sharedApplication().canOpenURL(observerAvatarUrl) == true)
-                    //                                {
-                    //                                    cell.commentorAvatarImageView.image = UIImage(data: observerAvatarData)
-                    //                                }
-                    //                                else
-                    //                                {
-                    //                                     cell.commentorAvatarImageView.image = UIImage(named:"user.png")
-                    //                                }
-                    //
-                    //                                //observerAvatarsArray.addObject(observerAvatar!)
-                    //                                //self.observerAvatarUrlString = observerAvatar as! String
-                    //                            }
+    
                 }
                 else
                 {
@@ -878,97 +878,6 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
 
         })
 
-
-//                let url = NSURL(string: USERS_URL+"\(self.commentersArray[indexPath.row]).json")
-//                var userData:NSData? = nil
-//                do {
-//                    userData = try NSData(contentsOfURL: url!, options: NSDataReadingOptions())
-//                    print(userData)
-//                }
-//                catch {
-//                    print("Handle \(error) here")
-//                }
-//
-//                if let data = userData {
-//                    // Convert data to JSON here
-//                    do{
-//                        let json: NSDictionary = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions()) as! NSDictionary
-//                        print(json)
-//
-//                        cell.commentorAvatarImageView.layer.cornerRadius = 20.0
-//
-//                        //print(observerData.objectForKey("affiliation"))
-//                        //print(observerData.objectForKey("display_name"))
-//                        //print(observerData)
-//                        if((json.objectForKey("affiliation")) != nil)
-//                        {
-//                            let observerAffiliationString = json.objectForKey("affiliation") as! String
-//                           cell.commentorDateLabel.text = observerAffiliationString
-//                            //observerAffiliationsArray.addObject(observerAffiliationString)
-//                            print(observerAffiliationString)
-//                        }
-//                        else
-//                        {
-//                            cell.commentorDateLabel.text = "No Affiliation"
-//                        }
-//
-//                        if((json.objectForKey("display_name")) != nil)
-//                        {
-//                            let observerDisplayNameString = json.objectForKey("display_name") as! String
-//                            cell.commentorNameLabel.text = observerDisplayNameString
-//                            //observerNamesArray.addObject(observerDisplayNameString)
-//                        }
-//                        else
-//                        {
-//                            cell.commentorNameLabel.text = ""
-//                        }
-//
-//                        //print(observerAffiliation)
-//                        //print(observerDisplayName)
-//                        if((json.objectForKey("avatar")) != nil)
-//                        {
-//                            let observerAvatar = json.objectForKey("avatar")
-//                            let observerAvatarUrl  = NSURL(string: observerAvatar as! String)
-//                            if(UIApplication.sharedApplication().canOpenURL(observerAvatarUrl!) == true)
-//                            {
-//                                let observerAvatarData = NSData(contentsOfURL: observerAvatarUrl!)
-//                                cell.commentorAvatarImageView.image = UIImage(data: observerAvatarData!)
-//                            }
-//                            else
-//                            {
-//                                cell.commentorAvatarImageView.image = UIImage(named:"user.png")
-//                            }
-////                            if let observerAvatarUrl  = NSURL(string: observerAvatar as! String),
-////                                observerAvatarData = NSData(contentsOfURL: observerAvatarUrl)
-////                            {
-////                                if(UIApplication.sharedApplication().canOpenURL(observerAvatarUrl) == true)
-////                                {
-////                                    cell.commentorAvatarImageView.image = UIImage(data: observerAvatarData)
-////                                }
-////                                else
-////                                {
-////                                     cell.commentorAvatarImageView.image = UIImage(named:"user.png")
-////                                }
-////
-////                                //observerAvatarsArray.addObject(observerAvatar!)
-////                                //self.observerAvatarUrlString = observerAvatar as! String
-////                            }
-//                        }
-//                        else
-//                        {
-//                            cell.commentorAvatarImageView.image = UIImage(named:"user.png")
-//
-//                        }
-//
-//
-//
-//                    }catch let error as NSError {
-//                        print("json error: \(error.localizedDescription)")
-//                        let alert = UIAlertController(title: "Alert", message:error.localizedDescription ,preferredStyle: UIAlertControllerStyle.Alert)
-//                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-//                        self.presentViewController(alert, animated: true, completion: nil)
-//                    }
-//        }
 
         return cell
     }
@@ -997,94 +906,101 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
     @IBAction func postComment(sender: UIButton) {
 
 
+        postCommentOnSendButton()
+
+
+    }
+    
+    func postCommentOnSendButton()
+    {
         let userDefaults = NSUserDefaults.standardUserDefaults()
         var userID = String()
         if(userDefaults.objectForKey("userID") != nil)
         {
             userID = (userDefaults.objectForKey("userID") as? String)!
         }
-
+        
         print(userID)
-
+        
         if(commentTF.text != "")
         {
             var email = ""
             var password = ""
-
-
+            
+            
             if(userDefaults.objectForKey("email") as? String != nil || userDefaults.objectForKey("password") as? String != nil)
             {
                 email = decodeString((userDefaults.objectForKey("email") as? String)!)
                 password = decodeString((userDefaults.objectForKey("password") as? String)!)
             }
-
-
-
+            
+            
+            
             print(email)
             print(password)
-
+            
             let refUser = FIRAuth.auth()
             refUser!.signInWithEmail(email, password: password,
-                             completion: { authData, error in
-                                if error != nil {
-
-                                    print("\(error)")
-
-                                    var alert = UIAlertController()
-                                    if(email == "")
-                                    {
-                                        alert = UIAlertController(title: "Alert", message:"Please Login to continue" ,preferredStyle: UIAlertControllerStyle.Alert)
-                                    }
-                                    else
-                                    {
-                                        alert = UIAlertController(title: "Alert", message:error.debugDescription ,preferredStyle: UIAlertControllerStyle.Alert)
-                                    }
-
-
-                                    self.presentViewController(alert, animated: true, completion: nil)
-
-                                }
-                                else
-                                {
-
-                                    let commentsRef = FIRDatabase.database().referenceWithPath("comments/")
-                                    let autoID = commentsRef.childByAutoId()
-
-                                    print(autoID.key)
-
-                                    let commentData = ["id": autoID.key as AnyObject,"context": self.commentContext as AnyObject,"commenter": userID as AnyObject,"comment": self.commentTF.text as! AnyObject,"parent": self.observationId as AnyObject, "created_at": FIRServerValue.timestamp(),"updated_at": FIRServerValue.timestamp()]
-                                    autoID.setValue(commentData)
-                                    
-                                    let ref = FIRDatabase.database()
-                                    var parentRef = FIRDatabase.database().reference()
-
-                                    if(self.isfromDesignIdeasView == true)
-                                    {
-                                        parentRef = ref.referenceWithPath("ideas/\(self.observationId)/comments")
-                                    }
-                                    else
-                                    {
-                                        parentRef = ref.referenceWithPath("observations/\(self.observationId)/comments")
-                                    }
-
-                                    let commentidChild = parentRef.child(autoID.key)
-                                    commentidChild.setValue(true)
-
-                                    let alert = UIAlertController(title: "Alert", message: "Comment Posted Successfully", preferredStyle: UIAlertControllerStyle.Alert)
-                                    //alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-                                    let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default)
-                                    {
-                                        UIAlertAction in
-                                        self.commentTF.text = ""
+                                     completion: { authData, error in
+                                        if error != nil {
+                                            
+                                            print("\(error)")
+                                            
+                                            var alert = UIAlertController()
+                                            if(email == "")
+                                            {
+                                                alert = UIAlertController(title: "Alert", message:"Please Login to continue" ,preferredStyle: UIAlertControllerStyle.Alert)
+                                            }
+                                            else
+                                            {
+                                                alert = UIAlertController(title: "Alert", message:error.debugDescription ,preferredStyle: UIAlertControllerStyle.Alert)
+                                            }
+                                            
+                                            
+                                            self.presentViewController(alert, animated: true, completion: nil)
+                                            
+                                        }
+                                        else
+                                        {
+                                            
+                                            let commentsRef = FIRDatabase.database().referenceWithPath("comments/")
+                                            let autoID = commentsRef.childByAutoId()
+                                            
+                                            print(autoID.key)
+                                            
+                                            let commentData = ["id": autoID.key as AnyObject,"context": self.commentContext as AnyObject,"commenter": userID as AnyObject,"comment": self.commentTF.text as! AnyObject,"parent": self.observationId as AnyObject, "created_at": FIRServerValue.timestamp(),"updated_at": FIRServerValue.timestamp()]
+                                            autoID.setValue(commentData)
+                                            
+                                            let ref = FIRDatabase.database()
+                                            var parentRef = FIRDatabase.database().reference()
+                                            
+                                            if(self.isfromDesignIdeasView == true)
+                                            {
+                                                parentRef = ref.referenceWithPath("ideas/\(self.observationId)/comments")
+                                            }
+                                            else
+                                            {
+                                                parentRef = ref.referenceWithPath("observations/\(self.observationId)/comments")
+                                            }
+                                            
+                                            let commentidChild = parentRef.child(autoID.key)
+                                            commentidChild.setValue(true)
+                                            
+                                            let alert = UIAlertController(title: "Alert", message: "Comment Posted Successfully", preferredStyle: UIAlertControllerStyle.Alert)
+                                            //alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+                                            let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default)
+                                            {
+                                                UIAlertAction in
+                                                self.commentTF.text = ""
+                                                
+                                            }
+                                            alert.addAction(okAction)
+                                            self.presentViewController(alert, animated: true, completion: nil)
+                                        }
+                                        self.getUpdatedComments()
                                         
-                                    }
-                                    alert.addAction(okAction)
-                                    self.presentViewController(alert, animated: true, completion: nil)
-                                }
-                                self.getUpdatedComments()
-
             })
-
+            
         }
         else
         {
@@ -1092,9 +1008,7 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
         }
-
-
-
+        
 
     }
     @IBAction func likeButtonClicked(sender: UIButton) {

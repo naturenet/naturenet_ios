@@ -246,7 +246,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
     {
         
         let observationsRootRef = FIRDatabase.database().referenceWithPath("observations")
-        observationsRootRef.queryOrderedByChild("key").queryLimitedToLast(4).observeSingleEventOfType(.Value, withBlock: { snapshot in
+        observationsRootRef.queryOrderedByChild("updated_at").queryLimitedToLast(10).observeEventType(.Value, withBlock: { snapshot in
             
             //Empty all the arrays
             self.commentsDictArray.removeAllObjects()
@@ -258,6 +258,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
             self.observationTextArray.removeAllObjects()
             self.observationImagesArray.removeAllObjects()
             self.observationIds.removeAllObjects()
+            self.observationUpdatedTimestampsArray.removeAllObjects()
+            var tagAnnotation = 0;
 
             
             print(observationsRootRef)
@@ -329,20 +331,32 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
                     {
                         self.likesCountArray.addObject("0")
                     }
-                    
+                    var obsId = "";
+                    if(observationData.objectForKey("id") != nil)
+                    {
+                        obsId = observationData.objectForKey("id") as! String
+                        print(obsId)
+                        self.observationIds.addObject(obsId)
+                    }
+                    else
+                    {
+                        self.observationIds.addObject("")
+                    }
                     
                     var latAndLongs: NSArray = []
                     var observationImageAndText: NSDictionary = [:]
+                    latAndLongs = (observationData.objectForKey("l") as? NSArray)!
                     
-                    if(observationData.objectForKey("l") != nil || !(observationData.objectForKey("l") is NSNull))
+                    if(((observationData.objectForKey("l") != nil) || (!(observationData.objectForKey("l") is NSNull))) && ((latAndLongs[0].intValue != 0) && (latAndLongs[1].intValue != 0)))
                     {
-                        latAndLongs = (observationData.objectForKey("l") as? NSArray)!
-                        //print(latAndLongs[0])
-                        //print(latAndLongs[1])
+                        
+                        print(latAndLongs[0])
+                        print(latAndLongs[1])
                         print(latAndLongs)
                         let annotationLatAndLong = CLLocation(latitude: latAndLongs[0].doubleValue, longitude: latAndLongs[1].doubleValue)
                         
-                        self.mapViewCoordinate(annotationLatAndLong, tagForAnnotation: i)
+                        self.mapViewCoordinate(annotationLatAndLong, tagForAnnotation: tagAnnotation)
+                        tagAnnotation = tagAnnotation+1
                         
                     }
                     else{
@@ -398,16 +412,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
                         
                     }
 
-                    if(observationData.objectForKey("id") != nil)
-                    {
-                        let obsId = observationData.objectForKey("id") as! String
-                        print(obsId)
-                        self.observationIds.addObject(obsId)
-                    }
-                    else
-                    {
-                        self.observationIds.addObject("")
-                    }
+                   
                     print(self.observationIds)
                     
                     if(observationImageAndText["image"] != nil)
@@ -573,8 +578,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
         let tag: Int? = Int(str!)
     
         
-        if annotationView == nil
-        {
+        //if annotationView == nil
+        //{
             annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "MyPin")
             annotationView!.canShowCallout = false
             annotationView!.contentMode = UIViewContentMode.ScaleAspectFit
@@ -591,11 +596,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
             
             annotationView?.addSubview(annotationImageView)
             
-        }
-        else
-        {
-            annotationView!.annotation = annotation
-        }
+//        }
+//        else
+//        {
+//            annotationView!.annotation = annotation
+//        }
         
         
         return annotationView

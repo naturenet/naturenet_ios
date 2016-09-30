@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="16A294a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="16B2327e" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -39,8 +39,9 @@
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="m29-QL-RFe" secondAttribute="height" multiplier="343:80" id="k8u-KJ-9fR"/>
+                                <constraint firstAttribute="width" constant="343" id="yUz-gl-r7i"/>
                             </constraints>
-                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </string>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         </textView>
@@ -68,7 +69,7 @@
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="Ngd-ye-XnG" secondAttribute="height" multiplier="45:11" constant="52.27272727272728" id="ZRb-g8-2dh"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -82,24 +83,22 @@
                         <constraint firstAttribute="trailing" secondItem="m29-QL-RFe" secondAttribute="trailing" constant="8" id="Ehu-7n-gZN"/>
                         <constraint firstAttribute="trailing" secondItem="5C4-fW-INm" secondAttribute="trailing" constant="8" id="FuV-cw-8n1"/>
                         <constraint firstItem="nPl-Vu-5Kn" firstAttribute="top" secondItem="gTr-hh-jg0" secondAttribute="top" constant="15" id="GeR-OB-pQB"/>
+                        <constraint firstItem="m29-QL-RFe" firstAttribute="leading" secondItem="Npr-Rp-qIn" secondAttribute="leading" id="N2x-dl-pcM"/>
                         <constraint firstItem="Npr-Rp-qIn" firstAttribute="top" secondItem="gTr-hh-jg0" secondAttribute="top" constant="8" id="NEi-wb-8Gg"/>
                         <constraint firstAttribute="bottom" secondItem="m29-QL-RFe" secondAttribute="bottom" id="RIg-nu-ERS"/>
                         <constraint firstItem="m29-QL-RFe" firstAttribute="top" secondItem="Npr-Rp-qIn" secondAttribute="bottom" constant="8" id="TDA-uy-iX3"/>
                         <constraint firstItem="5C4-fW-INm" firstAttribute="leading" secondItem="nPl-Vu-5Kn" secondAttribute="trailing" constant="8" id="VtS-jK-e9F"/>
                         <constraint firstItem="Ngd-ye-XnG" firstAttribute="leading" secondItem="Npr-Rp-qIn" secondAttribute="trailing" constant="8" id="mjZ-TJ-xQ3"/>
                         <constraint firstItem="nPl-Vu-5Kn" firstAttribute="leading" secondItem="Ngd-ye-XnG" secondAttribute="trailing" constant="8" id="tQy-vs-8Lb"/>
+                        <constraint firstItem="m29-QL-RFe" firstAttribute="leading" secondItem="gTr-hh-jg0" secondAttribute="leading" constant="8" id="zxL-XI-bmO"/>
                     </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="BWf-qx-bpw"/>
+                            <exclude reference="Ehu-7n-gZN"/>
+                        </mask>
+                    </variation>
                 </view>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recent Contributions" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ck-SF-K5E">
-                    <rect key="frame" x="17" y="216" width="350" height="21"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="21" id="1lu-AE-Hhd"/>
-                        <constraint firstAttribute="width" secondItem="6Ck-SF-K5E" secondAttribute="height" multiplier="50:3" id="yfG-jq-v5c"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="VFO-Lo-vrX">
                     <rect key="frame" x="0.0" y="245" width="375" height="372"/>
                     <constraints>
@@ -112,21 +111,43 @@
                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     </collectionViewFlowLayout>
                 </collectionView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recent Contributions" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ck-SF-K5E">
+                    <rect key="frame" x="8" y="216" width="171" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="1lu-AE-Hhd"/>
+                        <constraint firstAttribute="width" secondItem="6Ck-SF-K5E" secondAttribute="height" multiplier="50:3" id="yfG-jq-v5c"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="1lu-AE-Hhd"/>
+                            <exclude reference="yfG-jq-v5c"/>
+                        </mask>
+                    </variation>
+                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="6Ck-SF-K5E" firstAttribute="top" secondItem="gTr-hh-jg0" secondAttribute="bottom" constant="8" id="Ofd-of-RfK"/>
+                <constraint firstAttribute="trailing" secondItem="m29-QL-RFe" secondAttribute="trailing" constant="16" id="WiF-6g-PFa"/>
                 <constraint firstAttribute="trailing" secondItem="VFO-Lo-vrX" secondAttribute="trailing" id="XZC-uK-RhX"/>
                 <constraint firstItem="gTr-hh-jg0" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="cwX-IC-bCG"/>
                 <constraint firstItem="gTr-hh-jg0" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="68" id="fmF-MJ-hIp"/>
+                <constraint firstItem="6Ck-SF-K5E" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="hHQ-WV-MmI"/>
                 <constraint firstItem="VFO-Lo-vrX" firstAttribute="top" secondItem="6Ck-SF-K5E" secondAttribute="bottom" constant="8" id="kjj-D3-0aT"/>
                 <constraint firstAttribute="bottom" secondItem="VFO-Lo-vrX" secondAttribute="bottom" constant="50" id="luZ-m9-LAA"/>
                 <constraint firstItem="VFO-Lo-vrX" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="qcR-Pn-Ffr"/>
-                <constraint firstAttribute="trailing" secondItem="6Ck-SF-K5E" secondAttribute="trailing" constant="8" id="rj0-mV-wZH"/>
                 <constraint firstItem="6Ck-SF-K5E" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="17" id="zLb-bo-Pib"/>
                 <constraint firstAttribute="trailing" secondItem="gTr-hh-jg0" secondAttribute="trailing" constant="8" id="zVa-Py-lg0"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="zLb-bo-Pib"/>
+                </mask>
+            </variation>
             <point key="canvasLocation" x="525.5" y="-160.5"/>
         </view>
     </objects>

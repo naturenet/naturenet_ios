@@ -27,14 +27,17 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
     var submitterAffiliation : NSMutableArray = []
     var submitterDisplayName : NSMutableArray = []
     var submitterAvatar : NSMutableArray = []
+    var submitterAffiliationDictionary : NSMutableDictionary = [:]
     
     var submitterAffiliation_ideas : NSMutableArray = []
     var submitterDisplayName_ideas : NSMutableArray = []
     var submitterAvatar_ideas : NSMutableArray = []
+    var submitterAffiliationDictionary_ideas : NSMutableDictionary = [:]
     
     var submitterAffiliation_challenges : NSMutableArray = []
     var submitterDisplayName_challenges : NSMutableArray = []
     var submitterAvatar_challenges : NSMutableArray = []
+    var submitterAffiliationDictionary_challenges : NSMutableDictionary = [:]
     
     
     var contentArray: NSMutableArray = []
@@ -178,6 +181,9 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
         statusArray_challenges.removeAllObjects()
         commentsDictArray_challenges.removeAllObjects()
         
+        submitterAffiliationDictionary_ideas.removeAllObjects()
+        submitterAffiliationDictionary_challenges.removeAllObjects()
+        
         self.designsCount = 0
     }
     
@@ -227,7 +233,7 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
         
         cell.contentLabel.text = contentArray[indexPath.row] as? String
         cell.submitterDisplayName.text = submitterDisplayName[indexPath.row] as? String
-        cell.submitterAffiliation.text = submitterAffiliation[indexPath.row] as? String
+        cell.submitterAffiliation.text = submitterAffiliationDictionary.objectForKey(submitterAffiliation[indexPath.row]) as? String ?? "No Affiliation"
         
         cell.likesLabel.text = likesCountArray[indexPath.row] as? String
         cell.dislikesLabel.text = dislikesCountArray[indexPath.row] as? String
@@ -268,7 +274,7 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
         let detailedObservationVC = DetailedObservationViewController()
         detailedObservationVC.observerImageUrl = submitterAvatar[indexPath.row] as! String
         detailedObservationVC.observerDisplayName = submitterDisplayName[indexPath.row] as! String
-        detailedObservationVC.observerAffiliation = submitterAffiliation[indexPath.row] as! String
+        detailedObservationVC.observerAffiliation =  submitterAffiliationDictionary.objectForKey(submitterAffiliation[indexPath.row]) as? String ?? "No Affiliation"
         //detailedObservationVC.pageTitle = self.navigationItem.title!
         //detailedObservationVC.observationImageUrl = NSBundle.mainBundle().URLForResource("default-no-image", withExtension: "png")!.absoluteString
         detailedObservationVC.observationImageUrl = ""
@@ -624,42 +630,10 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
                     if((submitterInfo.objectForKey("affiliation")) != nil)
                     {
                         let submiterAffiliationString = submitterInfo.objectForKey("affiliation") as! String
-                        let sitesRootRef = FIRDatabase.database().referenceWithPath("sites/"+submiterAffiliationString)
-                        //Firebase(url:FIREBASE_URL + "sites/"+aff!)
-                        sitesRootRef.observeEventType(.Value, withBlock: { snapshot in
-                            
-                            
-                            print(sitesRootRef)
-                            print(snapshot.value)
-                            
-                            if !(snapshot.value is NSNull)
-                            {
-                                
-                                
-                                print(snapshot.value!.objectForKey("name"))
-                                if(snapshot.value!.objectForKey("name") != nil)
-                                {
-                                    //self.observerAffiliationLabel.text = snapshot.value!.objectForKey("name") as? String
-                                    self.submitterAffiliation_challenges.addObject((snapshot.value!.objectForKey("name") as? String)!)
-                                }
-                                
-                                
-                                
-                            }
-                            self.recentContributionsLabel.hidden = false
-                            self.updateTable(self.CHALLENGE)
-                            }, withCancelBlock: { error in
-                                print(error.description)
-                                let alert = UIAlertController(title: "Alert", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
-                                let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
-                                alert.addAction(action)
-                                self.presentViewController(alert, animated: true, completion: nil)
-
-                        })
                         
-
+                        self.getActivityNames(submiterAffiliationString, ideaOrChallenge: false)
                         
-                        //self.submitterAffiliation_challenges.addObject(submiterAffiliationString)
+                        self.submitterAffiliation_challenges.addObject(submiterAffiliationString)
                         
                     }
                     else
@@ -708,6 +682,53 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
         
     }
     
+    func getActivityNames(userAffiliation:String, ideaOrChallenge:Bool)
+    {
+        let sitesRootRef = FIRDatabase.database().referenceWithPath("sites/"+userAffiliation)
+        //Firebase(url:FIREBASE_URL + "sites/"+aff!)
+        sitesRootRef.observeEventType(.Value, withBlock: { snapshot in
+            
+            
+            print(sitesRootRef)
+            print(snapshot.value)
+            
+            if !(snapshot.value is NSNull)
+            {
+                
+                
+                print(snapshot.value!.objectForKey("name"))
+                if(snapshot.value!.objectForKey("name") != nil)
+                {
+                    //self.observerAffiliationLabel.text = snapshot.value!.objectForKey("name") as? String
+                    if(ideaOrChallenge == true)
+                    {
+                    self.submitterAffiliationDictionary_ideas.setValue(snapshot.value!.objectForKey("name") as! String, forKey: userAffiliation)
+                        self.updateTable(self.IDEA)
+                    }
+                    else{
+                        
+                        self.submitterAffiliationDictionary_challenges.setValue(snapshot.value!.objectForKey("name") as! String, forKey: userAffiliation)
+                        self.updateTable(self.CHALLENGE)
+                    }
+                    
+                }
+                
+                
+                
+            }
+            self.recentContributionsLabel.hidden = false
+            
+            }, withCancelBlock: { error in
+                print(error.description)
+                let alert = UIAlertController(title: "Alert", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+                let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
+                alert.addAction(action)
+                self.presentViewController(alert, animated: true, completion: nil)
+                
+        })
+
+    }
+    
     func parseIdeaUser(id: String) -> Void {
         //let greeting = "Hello, " + id + "!"
         //return greeting
@@ -724,43 +745,9 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
                     {
                         let submiterAffiliationString = submitterInfo.objectForKey("affiliation") as! String
                         
-                        let sitesRootRef = FIRDatabase.database().referenceWithPath("sites/"+submiterAffiliationString)
-                        //Firebase(url:FIREBASE_URL + "sites/"+aff!)
-                        sitesRootRef.observeEventType(.Value, withBlock: { snapshot in
-                            
-                            
-                            print(sitesRootRef)
-                            print(snapshot.value)
-                            
-                            if !(snapshot.value is NSNull)
-                            {
-                                
-                                
-                                print(snapshot.value!.objectForKey("name"))
-                                if(snapshot.value!.objectForKey("name") != nil)
-                                {
-                                    //self.observerAffiliationLabel.text = snapshot.value!.objectForKey("name") as? String
-                                    self.submitterAffiliation_ideas.addObject((snapshot.value!.objectForKey("name") as? String)!)
-                                }
-                                
-                                
-                                
-                                
-                            }
-                            self.recentContributionsLabel.hidden = false
-                            self.updateTable(self.IDEA)
-                            
-                            }, withCancelBlock: { error in
-                                print(error.description)
-                                let alert = UIAlertController(title: "Alert", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
-                                let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
-                                alert.addAction(action)
-                                self.presentViewController(alert, animated: true, completion: nil)
-
-                        })
-
+                        self.getActivityNames(submiterAffiliationString, ideaOrChallenge: true)
                         
-                        //self.submitterAffiliation_ideas.addObject(submiterAffiliationString)
+                        self.submitterAffiliation_ideas.addObject(submiterAffiliationString)
                         
                     }
                     else
@@ -817,6 +804,7 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
             contentArray = contentArray_challenges
             submitterAvatar = submitterAvatar_challenges
             submitterAffiliation = submitterAffiliation_challenges
+            submitterAffiliationDictionary = submitterAffiliationDictionary_challenges
             submitterDisplayName = submitterDisplayName_challenges
             observationUpdatedTimestampsArray = observationUpdatedTimestampsArray_challenges
             designIdsArray = designIdsArray_challenges
@@ -830,6 +818,8 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
             contentArray = contentArray_ideas
             submitterAvatar = submitterAvatar_ideas
             submitterAffiliation = submitterAffiliation_ideas
+            submitterAffiliationDictionary = submitterAffiliationDictionary_ideas
+            print(submitterAffiliationDictionary.count)
             submitterDisplayName = submitterDisplayName_ideas
             
             observationUpdatedTimestampsArray = observationUpdatedTimestampsArray_ideas

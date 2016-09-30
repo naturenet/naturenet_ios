@@ -17,7 +17,9 @@ class CommunitiesViewController: UIViewController ,UITableViewDelegate, UITableV
     
     var userDisplayNamesArray: NSMutableArray = []
     var userAffiliationsArray: NSMutableArray = []
+    var userAffiliationKeysArray: NSMutableArray = []
     var userAvatarURLSArray: NSMutableArray = []
+    var userAffiliationDictionary:NSMutableDictionary = [:]
     
     let newObsAndDIView_communities = NewObsAndDIViewController()
     let cgVC_communities = CameraAndGalleryViewController()
@@ -52,6 +54,8 @@ class CommunitiesViewController: UIViewController ,UITableViewDelegate, UITableV
         peopleTable.contentInset = UIEdgeInsetsMake(-1.0, 0.0, 0.0, 0.0)
         
         peopleTable.registerNib(UINib(nibName: "CommunitiesTableViewCell", bundle: nil), forCellReuseIdentifier: "communityCell")
+        
+        
     
         let communitiesRootRef = FIRDatabase.database().referenceWithPath("users") //Firebase(url:FIREBASE_URL+"users")
         communitiesRootRef.observeEventType(.Value, withBlock: { snapshot in
@@ -61,10 +65,25 @@ class CommunitiesViewController: UIViewController ,UITableViewDelegate, UITableV
             
             if !(snapshot.value is NSNull)
             {
-                for i in 0 ..< snapshot.value!.count
+                let snap = snapshot.value!.allValues as NSArray
+                print(snap)
+                
+                if(snapshot.value!.objectForKey("latest_contribution") != nil)
+                {
+                    
+                }
+                else
+                {
+                    
+                }
+            
+                let sortedSnapshot = snap.sort({ $0.objectForKey("latest_contribution") as? Int ?? 0 > $1.objectForKey("latest_contribution") as? Int ?? 0})
+                print(snap)
+                
+                for i in 0 ..< snap.count
                 {
                     //print(json.allValues[i])
-                    let userJsonData = snapshot.value!.allValues[i] as! NSDictionary
+                    let userJsonData = sortedSnapshot[i] as! NSDictionary
                     print(userJsonData)
                     self.usersCount = snapshot.value!.count
                     self.peopleCountLabel.text = "People" + "(" + "\(self.usersCount)" + ")"
@@ -80,45 +99,15 @@ class CommunitiesViewController: UIViewController ,UITableViewDelegate, UITableV
                     }
                     if(userJsonData.objectForKey("affiliation") != nil)
                     {
+                        
                         let aff = userJsonData.objectForKey("affiliation") as? String
-                        
-                        
-                        let sitesRootRef = FIRDatabase.database().referenceWithPath("sites/"+aff!)
-                        //Firebase(url:FIREBASE_URL + "sites/"+aff!)
-                        sitesRootRef.observeEventType(.Value, withBlock: { snapshot in
-                            
-                            print(aff)
-                            print(sitesRootRef)
-                            print(snapshot.value)
-                            
-                            if !(snapshot.value is NSNull)
-                            {
-                                
-                                
-                                    print(snapshot.value!.objectForKey("name"))
-                                    if(snapshot.value!.objectForKey("name") != nil)
-                                    {
-                                        self.userAffiliationsArray.addObject(snapshot.value!.objectForKey("name")!)
-                                    }
-                                    
-                                
-                                
-                            }
-                            self.peopleTable.reloadData()
-                            }, withCancelBlock: { error in
-                                print(error.description)
-                                let alert = UIAlertController(title: "Alert", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
-                                let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
-                                alert.addAction(action)
-                                self.presentViewController(alert, animated: true, completion: nil)
-
-                        })
-
+                        self.userAffiliationKeysArray.addObject(aff!);
+                        self.getActivityNames(aff!)
                         
                     }
                     else
                     {
-                        self.userAffiliationsArray.addObject("NO Affiliation")
+                        self.userAffiliationKeysArray.addObject("NO Affiliation")
                     }
                     if(userJsonData.objectForKey("avatar") != nil)
                     {
@@ -143,10 +132,8 @@ class CommunitiesViewController: UIViewController ,UITableViewDelegate, UITableV
             alert.addAction(action)
             self.presentViewController(alert, animated: true, completion: nil)
         })
-    
-
-    
-//        let usersUrl = NSURL(string: FIREBASE_URL+"users.json")
+        
+        //        let usersUrl = NSURL(string: FIREBASE_URL+"users.json")
 //        
 //        
 //        var userData:NSData? = nil
@@ -251,6 +238,45 @@ class CommunitiesViewController: UIViewController ,UITableViewDelegate, UITableV
         newObsAndDIView_communities.designIdeaButton.addTarget(self, action: #selector(CommunitiesViewController.openNewDesignView_communities), forControlEvents: .TouchUpInside)
         
     }
+    func getActivityNames(userAffiliationKey: String)
+    {
+        
+        let sitesRootRef = FIRDatabase.database().referenceWithPath("sites/"+userAffiliationKey)
+        //Firebase(url:FIREBASE_URL + "sites/"+aff!)
+        sitesRootRef.observeEventType(.Value, withBlock: { snapshot in
+            
+            print(userAffiliationKey)
+            print(sitesRootRef)
+            print(snapshot.value)
+            
+            if !(snapshot.value is NSNull)
+            {
+                
+                
+                print(snapshot.value!.objectForKey("name"))
+                if(snapshot.value!.objectForKey("name") != nil)
+                {
+                    //self.userAffiliationsArray.addObject(snapshot.value!.objectForKey("name")!)
+                    let str = snapshot.value!.objectForKey("name") as! String
+                    print(str)
+                    self.userAffiliationDictionary.setValue(str, forKey: userAffiliationKey)
+                    
+                }
+                
+                
+                
+            }
+            self.peopleTable.reloadData()
+            }, withCancelBlock: { error in
+                print(error.description)
+                let alert = UIAlertController(title: "Alert", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+                let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
+                alert.addAction(action)
+                self.presentViewController(alert, animated: true, completion: nil)
+                
+        })
+
+    }
     func openNewObsView_communities()
     {
         //print("gverver")
@@ -314,7 +340,7 @@ class CommunitiesViewController: UIViewController ,UITableViewDelegate, UITableV
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return userAffiliationsArray.count
+        return userAffiliationKeysArray.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -360,8 +386,7 @@ class CommunitiesViewController: UIViewController ,UITableViewDelegate, UITableV
         //cell.communitiesPersonAffiliationLabel?.textAlignment = NSTextAlignment.Center
         
         cell.communitiesPersonNameLabel?.text = userDisplayNamesArray[indexPath.row] as? String
-        cell.communitiesPersonAffiliationLabel?.text = userAffiliationsArray[indexPath.row] as? String
-        
+        cell.communitiesPersonAffiliationLabel?.text = userAffiliationDictionary.objectForKey(userAffiliationKeysArray[indexPath.row]) as? String ?? "No Affiliation"
         //cell.imageView!.image = UIImage(named: projIcons[indexPath.row])
         //cell.imageView!.image = imageWithImage(UIImage(named: projIcons[indexPath.row])!, scaledToSize: CGSize(width: 30, height: 30))
         
