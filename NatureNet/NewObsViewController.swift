@@ -95,33 +95,27 @@ class NewObsViewController: UIViewController,UITableViewDelegate,UITableViewData
             }
             else
             {
+                getSiteLocationAndSetToLocValue()
+                
                 if CLLocationManager.locationServicesEnabled() {
                     locationManager.delegate = self
                     locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
                     locationManager.startUpdatingLocation()
-                }
-                else
-                {
-                    getSiteLocationAndSetToLocValue()
+                
                 }
 
             }
         }
         else
         {
+            getSiteLocationAndSetToLocValue()
+            
             if CLLocationManager.locationServicesEnabled() {
                 locationManager.delegate = self
                 locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
                 locationManager.startUpdatingLocation()
             }
-            else
-            {
-                getSiteLocationAndSetToLocValue()
-            }
         }
-        
-        
-
         
         if(userDefaults.objectForKey("ProjectKey") != nil)
         {

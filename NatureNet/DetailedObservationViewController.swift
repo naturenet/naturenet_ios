@@ -325,6 +325,9 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
         
         commentViewBottomContraint.constant = 0.0
         
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(DetailedObservationViewController.viewTapped)))
+        self.view.userInteractionEnabled = true
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DetailedObservationViewController.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil);
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DetailedObservationViewController.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil);
 
@@ -380,6 +383,10 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
         }
         return true;
     }
+    func viewTapped()
+    {
+        commentTF.resignFirstResponder()
+    }
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool // return NO to disallow editing.
     {
         //setViewToMoveUp(true,tempTF: textField)
@@ -407,44 +414,6 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
         })
         //}
     }
-//    func setViewToMoveUp(moveUp: Bool, tempTF: UITextField!)
-//    {
-//
-//
-//            UIView.animateWithDuration(0.3, animations: {
-//
-//                var tfRect: CGRect!
-//                tfRect=tempTF.frame
-//
-//                if(moveUp)
-//                {
-//
-//                }
-//                else
-//                {
-//
-//                }
-//
-//
-//                }, completion: { finished in
-//
-//            })
-//
-//
-//    }
-//    override func viewWillAppear(animated: Bool) {
-//
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignInSignUpViewController.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil);
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignInSignUpViewController.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil);
-//
-//    }
-//    override func viewWillDisappear(animated: Bool) {
-//
-//        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
-//        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
-//
-//
-//    }
 
     func getLikesToObservations()
     {
@@ -537,67 +506,59 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
     func getCommentsDetails(obsCommentsArray: NSArray)
     {
         print(obsCommentsArray)
-        
-            //            let comments = commentsDictfromExploreView.allValues[j] as! NSDictionary
-            //            print(comments)
-            //            commentsArray.addObject(comments.objectForKey("comment")!)
-            //            commentersArray.addObject(comments.objectForKey("commenter")!)
-
-            let myRootRef = FIRDatabase.database().referenceWithPath("comments/") //Firebase(url:COMMENTS_URL+"\(obsCommentsArray[j])")
-            myRootRef.queryOrderedByChild("parent").queryEqualToValue("\(self.observationId)").observeSingleEventOfType(.Value, withBlock: { snapshot in
-
-                print(myRootRef)
-                print(self.observationId)
-                print(snapshot.value)
-                
-                if !(snapshot.value is NSNull)
+        let myRootRef = FIRDatabase.database().referenceWithPath("comments/") //Firebase(url:COMMENTS_URL+"\(obsCommentsArray[j])")
+        myRootRef.queryOrderedByChild("parent").queryEqualToValue("\(self.observationId)").observeSingleEventOfType(.Value, withBlock: { snapshot in
+            
+            print(myRootRef)
+            print(self.observationId)
+            print(snapshot.value)
+            
+            if !(snapshot.value is NSNull)
+            {
+                for j in 0 ..< snapshot.value!.allValues.count
                 {
-                    for j in 0 ..< snapshot.value!.allValues.count
+                    var text = "No Comment Text"
+                    
+                    let snap = snapshot.value!.allValues as NSArray
+                    let commentDictionary = snap[j] as! NSDictionary
+                    
+                    if(commentDictionary["comment"] != nil)
                     {
-                        var text = "No Comment Text"
-                        
-                        let snap = snapshot.value!.allValues as NSArray
-                        let commentDictionary = snap[j] as! NSDictionary
-                        
-                        if(commentDictionary["comment"] != nil)
-                        {
-                            text = commentDictionary["comment"] as! String
-                            //self.commentsArray.addObject(snapshot.value!["comment"] as! String)
-                        }
-                        
-                        //if(snapshot.value["commenter"] != nil)
-                        //{
-                        
-                        let commenter = commentDictionary["commenter"] as! String
-                        //                    }
-                        //                    else
-                        //                    {
-                        //                        //self.commentersArray.addObject("")
-                        //                    }
-                        
-                        let timestamp = commentDictionary["updated_at"] as! Int
-                        let comment = Comment(commenter: commenter, commentText: text, timestamp: timestamp)
-                        self.commentsArray.append(comment)
-
+                        text = commentDictionary["comment"] as! String
+                        //self.commentsArray.addObject(snapshot.value!["comment"] as! String)
                     }
+                    
+                    //if(snapshot.value["commenter"] != nil)
+                    //{
+                    
+                    let commenter = commentDictionary["commenter"] as! String
+                    //                    }
+                    //                    else
+                    //                    {
+                    //                        //self.commentersArray.addObject("")
+                    //                    }
+                    
+                    let timestamp = commentDictionary["updated_at"] as! Int
+                    let comment = Comment(commenter: commenter, commentText: text, timestamp: timestamp)
+                    self.commentsArray.append(comment)
+                    
                 }
-
-                //sort
-                self.commentsArray.sortInPlace({$0.timestamp < $1.timestamp})
-                self.commentsTableView.reloadData()
-
-                }, withCancelBlock: { error in
-                    print(error.description)
-                    let alert = UIAlertController(title: "Alert", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
-                    let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
-                    alert.addAction(action)
-                    self.presentViewController(alert, animated: true, completion: nil)
-
-            })
-
-        }
-
-    
+            }
+            
+            //sort
+            self.commentsArray.sortInPlace({$0.timestamp < $1.timestamp})
+            self.commentsTableView.reloadData()
+            
+            }, withCancelBlock: { error in
+                print(error.description)
+                let alert = UIAlertController(title: "Alert", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+                let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
+                alert.addAction(action)
+                self.presentViewController(alert, animated: true, completion: nil)
+                
+        })
+        
+    }
 
     func getUpdatedComments()
     {
@@ -612,8 +573,7 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
         {
             commentsRootRef = ref.referenceWithPath("observations/" + String(observationId))
         }
-        //commentsRootRef.keepSynced(true)
-        //let observationRootRef = FIRDatabase.database().referenceWithPath("observations/" + String(observationId)) //Firebase(url:ALL_OBSERVATIONS_URL + observationId)
+        
         commentsRootRef.observeEventType(.Value, withBlock: { snapshot in
 
             print(commentsRootRef)
@@ -626,7 +586,6 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
             {
 
                     //let observationData = snapshot.value.allValues[i] as! NSDictionary
-
 
                     if(snapshot.value!.objectForKey("comments") != nil)
                     {
