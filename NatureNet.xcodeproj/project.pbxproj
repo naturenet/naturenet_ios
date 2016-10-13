@@ -101,6 +101,7 @@
 		9F9BB3DC1C9B214C0076E68E /* NatureNetUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F9BB3DB1C9B214C0076E68E /* NatureNetUITests.swift */; };
 		9F9DBC6D1CA2F68A0047DE4B /* SignInSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F9DBC6B1CA2F68A0047DE4B /* SignInSignUpViewController.swift */; };
 		9F9DBC6E1CA2F68A0047DE4B /* SignInSignUpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F9DBC6C1CA2F68A0047DE4B /* SignInSignUpViewController.xib */; };
+		9FA9001D1DAFCEAD00A57721 /* LikeOrDislikeAnObservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FA9001C1DAFCEAD00A57721 /* LikeOrDislikeAnObservation.swift */; };
 		9FC2D1A01CEB7749000B398B /* DesignIdeasAndChallengesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FC2D19E1CEB7749000B398B /* DesignIdeasAndChallengesTableViewCell.swift */; };
 		9FC2D1A11CEB7749000B398B /* DesignIdeasAndChallengesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FC2D19F1CEB7749000B398B /* DesignIdeasAndChallengesTableViewCell.xib */; };
 		EB0104401CA1E338A787C85F /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87C29FD98C2859F7E2F45E2A /* Pods.framework */; };
@@ -227,6 +228,7 @@
 		9F9BB3DD1C9B214C0076E68E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9F9DBC6B1CA2F68A0047DE4B /* SignInSignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInSignUpViewController.swift; sourceTree = "<group>"; };
 		9F9DBC6C1CA2F68A0047DE4B /* SignInSignUpViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignInSignUpViewController.xib; sourceTree = "<group>"; };
+		9FA9001C1DAFCEAD00A57721 /* LikeOrDislikeAnObservation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikeOrDislikeAnObservation.swift; sourceTree = "<group>"; };
 		9FC2D19E1CEB7749000B398B /* DesignIdeasAndChallengesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DesignIdeasAndChallengesTableViewCell.swift; sourceTree = "<group>"; };
 		9FC2D19F1CEB7749000B398B /* DesignIdeasAndChallengesTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DesignIdeasAndChallengesTableViewCell.xib; sourceTree = "<group>"; };
 		D913B7A34553534E9C4079BE /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -264,6 +266,7 @@
 			children = (
 				1816D9981D24317500F6F194 /* ObservationForLater.swift */,
 				18A725831D393734001F1148 /* Comment.swift */,
+				9FA9001C1DAFCEAD00A57721 /* LikeOrDislikeAnObservation.swift */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -726,6 +729,7 @@
 			files = (
 				9F14A7791C9B421F00CAB0F6 /* RearViewController.swift in Sources */,
 				1816D9991D24317500F6F194 /* ObservationForLater.swift in Sources */,
+				9FA9001D1DAFCEAD00A57721 /* LikeOrDislikeAnObservation.swift in Sources */,
 				9F14A7931C9E65B800CAB0F6 /* DetailedObservationViewController.swift in Sources */,
 				9F45235F1CC6799500D5D92C /* NewDesignIdeasAndChallengesViewController.swift in Sources */,
 				9F9BB3BE1C9B214C0076E68E /* ViewController.swift in Sources */,

@@ -18,6 +18,7 @@ class NewObsViewController: UIViewController,UITableViewDelegate,UITableViewData
     @IBOutlet weak var observationDetailsTableView: UITableView!
     @IBOutlet weak var observationImageView: UIImageView!
     
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
     @IBOutlet weak var whereitisTextView: UITextView!
     var obsImage : UIImage = UIImage(named: "default-no-image.png")!
     
@@ -356,6 +357,7 @@ class NewObsViewController: UIViewController,UITableViewDelegate,UITableViewData
     {
         print("post")
         self.rightBarButtonItem.enabled = false
+        spinner.startAnimating()
         
 //        var observations = Firebase(url: "https://naturenet-staging.firebaseio.com/observations")
 //        let obs = ["id": uid as! AnyObject,"display_name": self.joinName.text as! AnyObject, "affiliation": self.joinAffliation.text as! AnyObject]
@@ -552,6 +554,7 @@ class NewObsViewController: UIViewController,UITableViewDelegate,UITableViewData
         self.presentViewController(alert, animated: true, completion: nil)
         
         self.rightBarButtonItem.enabled = true
+        spinner.stopAnimating()
         
         /*    }
          else

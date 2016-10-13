@@ -914,7 +914,8 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
                                             {
                                                 alert = UIAlertController(title: "Alert", message:error.debugDescription ,preferredStyle: UIAlertControllerStyle.Alert)
                                             }
-                                            
+                                            let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
+                                            alert.addAction(action)
                                             
                                             self.presentViewController(alert, animated: true, completion: nil)
                                             
@@ -1125,6 +1126,8 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
                                 //                                alert.addAction(showMenuAction)
                                 //
                                 //
+                                let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
+                                alert.addAction(action)
                                 self.presentViewController(alert, animated: true, completion: nil)
 
                             }
@@ -1213,43 +1216,19 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
                                     alert = UIAlertController(title: "Alert", message:error.debugDescription ,preferredStyle: UIAlertControllerStyle.Alert)
                                 }
 
-                                //alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-//                                let showMenuAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) {
-//                                    UIAlertAction in
-//                                    //print("OK Pressed")
-//                                    //self.dismissVC()
-//
-//                                    let signInSignUpVC=SignInSignUpViewController()
-//                                    let signInSignUpNavVC = UINavigationController()
-//                                    signInSignUpVC.pageTitle="Sign In"
-//                                    signInSignUpNavVC.viewControllers = [signInSignUpVC]
-//                                    self.presentViewController(signInSignUpNavVC, animated: true, completion: nil)
-//                                }
-//
-//                                // Add the actions
-//                                alert.addAction(showMenuAction)
-//
-//
+                                let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
+                                alert.addAction(action)
                                 self.presentViewController(alert, animated: true, completion: nil)
 
                             }
                             else
                             {
-                                //let userDefaults = NSUserDefaults.standardUserDefaults()
-                                //userDefaults.setValue("false", forKey: "isObservationLiked")
                                 if(userID != "" || self.observationId != "")
                                 {
-                                    let ref = FIRDatabase.database().referenceWithPath("observations/\(self.observationId)/likes") //Firebase(url: POST_OBSERVATION_URL+"\(self.observationId)/likes")
-                                    //print(ref.childByAutoId())
-                                    //let autoID = ref.childByAutoId()
-                                    //let obsRef = ref.childByAutoId().childByAppendingPath(ref.AutoId())
+                                    let ref = FIRDatabase.database().referenceWithPath("observations/\(self.observationId)/likes") //Firebase(url:
                                     let userChild = ref.childByAppendingPath(userID)
                                     userChild.setValue(true)
                                     print(self.observationId)
-
-
-
-                                    //userDefaults.setValue("true", forKey: "isObservationLiked")
 
                                     let alert = UIAlertController(title: "Alert", message: "Liked Successfully", preferredStyle: UIAlertControllerStyle.Alert)
                                     alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
@@ -1268,7 +1247,9 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
                             }})
 
 
-            }
+    }
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

@@ -65,7 +65,7 @@ class ProjectsViewController: UIViewController,UITableViewDelegate, UITableViewD
         self.projectsTableView.tableFooterView = UIView(frame: CGRectZero)
         self.projectsTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
 
-        self.view.backgroundColor = UIColor(red: 242.0/255.0, green: 242.0/255.0, blue: 242.0/255.0, alpha: 1.0)
+        //self.view.backgroundColor = UIColor(red: 242.0/255.0, green: 242.0/255.0, blue: 242.0/255.0, alpha: 1.0)
 
         //self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ProjectsViewController.ViewTapped)))
         if(isfromObservationVC == false)

@@ -256,7 +256,7 @@ class SignInSignUpViewController: UIViewController, UITextFieldDelegate, UIScrol
             self.openCamera()
             
         }
-        let gallaryAction = UIAlertAction(title: "Gallary", style: UIAlertActionStyle.Default)
+        let gallaryAction = UIAlertAction(title: "Gallery", style: UIAlertActionStyle.Default)
         {
             UIAlertAction in
             self.openGallary()
