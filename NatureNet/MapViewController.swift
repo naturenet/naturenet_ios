@@ -661,10 +661,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
         likesCountLabel.text = "\(likesCountArray[view.tag])"
         commentsCountLabel.text = "\(commentsCountArray[view.tag])"
         
+        //observationId = ""
         observationId = observationIds[view.tag] as! String
-        self.lButton.selected = false
-        self.lButton.userInteractionEnabled = true
-        getLikesToObservations()
+//        self.lButton.selected = false
+//        self.lButton.userInteractionEnabled = true
+//        getLikesToObservations()
         
         
         ProjectName = observationProjectNames[view.tag] as! String
@@ -854,217 +855,217 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
     @IBAction func likesButtonClicked(sender: UIButton) {
         
         //sender.selected = true
-        //mapAnnotationClickSubViewtapped()
+        mapAnnotationClickSubViewtapped()
         
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        if((userDefaults.stringForKey("isSignedIn")) == "true")
-        {
-            if(isObservationLiked == true)
-            {
-                let alert = UIAlertController(title: "Alert", message: "You Already liked this post", preferredStyle: UIAlertControllerStyle.Alert)
-                let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
-                alert.addAction(action)
-                self.presentViewController(alert, animated: true, completion: nil)
-            }
-            else
-            {
-                postLiketoObservation()
-            }
-            
-        }
-        else{
-            
-            let alert = UIAlertController(title: "Alert", message: "Please Sign In to like this post", preferredStyle: UIAlertControllerStyle.Alert)
-            let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
-            alert.addAction(action)
-            self.presentViewController(alert, animated: true, completion: nil)
-            
-        }
-        
-    }
-    
-    func decodeString(stringToBeDecoded: String) -> String
-    {
-        //Encoding and Decoding String
-        
-        let base64Decoded = NSData(base64EncodedString: stringToBeDecoded, options:   NSDataBase64DecodingOptions(rawValue: 0))
-            .map({ NSString(data: $0, encoding: NSUTF8StringEncoding) })
-        
-        // Convert back to a string
-        print("Decoded:  \(base64Decoded!)")
-        
-        
-        return base64Decoded as! String
+//        let userDefaults = NSUserDefaults.standardUserDefaults()
+//        if((userDefaults.stringForKey("isSignedIn")) == "true")
+//        {
+//            if(isObservationLiked == true)
+//            {
+//                let alert = UIAlertController(title: "Alert", message: "You Already liked this post", preferredStyle: UIAlertControllerStyle.Alert)
+//                let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
+//                alert.addAction(action)
+//                self.presentViewController(alert, animated: true, completion: nil)
+//            }
+//            else
+//            {
+//                postLiketoObservation()
+//            }
+//            
+//        }
+//        else{
+//            
+//            let alert = UIAlertController(title: "Alert", message: "Please Sign In to like this post", preferredStyle: UIAlertControllerStyle.Alert)
+//            let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
+//            alert.addAction(action)
+//            self.presentViewController(alert, animated: true, completion: nil)
+//            
+//        }
         
     }
     
-    func postLiketoObservation()
-    {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        var userID = String()
-        if(userDefaults.objectForKey("userID") != nil)
-        {
-            userID = (userDefaults.objectForKey("userID") as? String)!
-        }
-        
-        print(userID)
-        
-        var email = ""
-        var password = ""
-        
-        
-        if(userDefaults.objectForKey("email") as? String != nil || userDefaults.objectForKey("password") as? String != nil)
-        {
-            email = decodeString((userDefaults.objectForKey("email") as? String)!)
-            password = decodeString((userDefaults.objectForKey("password") as? String)!)
-        }
-        
-        
-        let refUser = FIRAuth.auth()
-        refUser!.signInWithEmail(email, password: password,
-                                 completion: { authData, error in
-                                    if error != nil {
-                                        
-                                        print("\(error)")
-                                        
-                                        var alert = UIAlertController()
-                                        if(email == "")
-                                        {
-                                            alert = UIAlertController(title: "Alert", message:"Please Login to continue" ,preferredStyle: UIAlertControllerStyle.Alert)
-                                        }
-                                        else
-                                        {
-                                            alert = UIAlertController(title: "Alert", message:error.debugDescription ,preferredStyle: UIAlertControllerStyle.Alert)
-                                        }
-                                        
-                                        
-                                        let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
-                                        alert.addAction(action)
-                                        //
-                                        self.presentViewController(alert, animated: true, completion: nil)
-                                        
-                                    }
-                                    else
-                                    {
-                                        
-                                        if(userID != "" || self.observationId != "")
-                                        {
-                                            let ref = FIRDatabase.database().referenceWithPath("observations/\(self.observationId)/likes") //Firebase(url:
-                                            let userChild = ref.childByAppendingPath(userID)
-                                            userChild.setValue(true)
-                                            print(self.observationId)
-                                            
-                                            //let str :String? = self.likesCountLabel.text
-                                            //let likesCount: Int? = Int(str!)
-                                            //self.likesCountLabel.text = "\(likesCount!+1)"
-                                            
-                                            
-                                            let alert = UIAlertController(title: "Alert", message: "Liked Successfully", preferredStyle: UIAlertControllerStyle.Alert)
-                                            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-                                            self.presentViewController(alert, animated: true, completion: nil)
-                                            
-                                            self.getLikesToObservations()
-                                        }
-                                        else
-                                        {
-                                            let alert = UIAlertController(title: "Alert", message: "Please Sign In to like the Observation", preferredStyle: UIAlertControllerStyle.Alert)
-                                            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-                                            self.presentViewController(alert, animated: true, completion: nil)
-                                        }
-                                        
-                                        
-                                    }})
-        
-        
-    }
-    
-    func getLikesToObservations()
-    {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        var userID = String()
-        if(userDefaults.objectForKey("userID") != nil)
-        {
-            userID = (userDefaults.objectForKey("userID") as? String)!
-        }
-        if(userID != "" || self.observationId != "")
-        {
-            let observationRootRef = FIRDatabase.database().referenceWithPath("observations/" + String(self.observationId)) //Firebase(url:POST_IDEAS_URL + observationId)
-            observationRootRef.observeEventType(.Value, withBlock: { snapshot in
-                
-                print(observationRootRef)
-                print(snapshot.value)
-                
-                if !(snapshot.value is NSNull)
-                {
-                    
-                    if(snapshot.value!.objectForKey("likes") != nil)
-                    {
-                        let likesDictionary = snapshot.value!.objectForKey("likes") as! NSDictionary
-                        print(likesDictionary.allValues)
-                        
-                        let likesArray = likesDictionary.allValues as NSArray
-                        print(likesArray)
-                        
-                        let userKeys = likesDictionary.allKeys as NSArray
-                        print(userKeys)
-                        
-                        //let userDefaults = NSUserDefaults.standardUserDefaults()
-                        //var userID = String()
-                        
-                        if((userDefaults.stringForKey("isSignedIn")) == "true")
-                        {
-                            if(userKeys.containsObject(userID))
-                            {
-                                if(likesDictionary.objectForKey(userID) as! NSObject == 1)
-                                {
-                                    self.isObservationLiked = true
-                                    
-                                    self.lButton.selected = true
-                                    self.lButton.userInteractionEnabled = false
-                                    
-                                }
-                                else
-                                {
-                                    self.isObservationLiked = false
-                                    
-                                    self.lButton.selected = false
-                                    self.lButton.userInteractionEnabled = true
-                                }
-                            }
-                            else
-                            {
-                                self.isObservationLiked = false
-                                
-                                self.lButton.selected = false
-                                self.lButton.userInteractionEnabled = true
-                                
-                            }
-                            
-                        }
-                        else{
-                            
-                            self.isObservationLiked = false
-                            
-                            self.lButton.selected = false
-                            self.lButton.userInteractionEnabled = false
-                        }
-                        
-                        
-                    }
-                }
-                
-                }, withCancelBlock: { error in
-                    print(error.description)
-                    let alert = UIAlertController(title: "Alert", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
-                    let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
-                    alert.addAction(action)
-                    self.presentViewController(alert, animated: true, completion: nil)
-                    
-            })
-        }
-        
-        
-    }
+//    func decodeString(stringToBeDecoded: String) -> String
+//    {
+//        //Encoding and Decoding String
+//        
+//        let base64Decoded = NSData(base64EncodedString: stringToBeDecoded, options:   NSDataBase64DecodingOptions(rawValue: 0))
+//            .map({ NSString(data: $0, encoding: NSUTF8StringEncoding) })
+//        
+//        // Convert back to a string
+//        print("Decoded:  \(base64Decoded!)")
+//        
+//        
+//        return base64Decoded as! String
+//        
+//    }
+//    
+//    func postLiketoObservation()
+//    {
+//        let userDefaults = NSUserDefaults.standardUserDefaults()
+//        var userID = String()
+//        if(userDefaults.objectForKey("userID") != nil)
+//        {
+//            userID = (userDefaults.objectForKey("userID") as? String)!
+//        }
+//        
+//        print(userID)
+//        
+//        var email = ""
+//        var password = ""
+//        
+//        
+//        if(userDefaults.objectForKey("email") as? String != nil || userDefaults.objectForKey("password") as? String != nil)
+//        {
+//            email = decodeString((userDefaults.objectForKey("email") as? String)!)
+//            password = decodeString((userDefaults.objectForKey("password") as? String)!)
+//        }
+//        
+//        
+//        let refUser = FIRAuth.auth()
+//        refUser!.signInWithEmail(email, password: password,
+//                                 completion: { authData, error in
+//                                    if error != nil {
+//                                        
+//                                        print("\(error)")
+//                                        
+//                                        var alert = UIAlertController()
+//                                        if(email == "")
+//                                        {
+//                                            alert = UIAlertController(title: "Alert", message:"Please Login to continue" ,preferredStyle: UIAlertControllerStyle.Alert)
+//                                        }
+//                                        else
+//                                        {
+//                                            alert = UIAlertController(title: "Alert", message:error.debugDescription ,preferredStyle: UIAlertControllerStyle.Alert)
+//                                        }
+//                                        
+//                                        
+//                                        let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
+//                                        alert.addAction(action)
+//                                        //
+//                                        self.presentViewController(alert, animated: true, completion: nil)
+//                                        
+//                                    }
+//                                    else
+//                                    {
+//                                        
+//                                        if(userID != "" || self.observationId != "")
+//                                        {
+//                                            let ref = FIRDatabase.database().referenceWithPath("observations/\(self.observationId)/likes") //Firebase(url:
+//                                            let userChild = ref.childByAppendingPath(userID)
+//                                            userChild.setValue(true)
+//                                            print(self.observationId)
+//                                            
+//                                            //let str :String? = self.likesCountLabel.text
+//                                            //let likesCount: Int? = Int(str!)
+//                                            //self.likesCountLabel.text = "\(likesCount!+1)"
+//                                            
+//                                            
+//                                            let alert = UIAlertController(title: "Alert", message: "Liked Successfully", preferredStyle: UIAlertControllerStyle.Alert)
+//                                            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+//                                            self.presentViewController(alert, animated: true, completion: nil)
+//                                            
+//                                            self.getLikesToObservations()
+//                                        }
+//                                        else
+//                                        {
+//                                            let alert = UIAlertController(title: "Alert", message: "Please Sign In to like the Observation", preferredStyle: UIAlertControllerStyle.Alert)
+//                                            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+//                                            self.presentViewController(alert, animated: true, completion: nil)
+//                                        }
+//                                        
+//                                        
+//                                    }})
+//        
+//        
+//    }
+//    
+//    func getLikesToObservations()
+//    {
+//        let userDefaults = NSUserDefaults.standardUserDefaults()
+//        var userID = String()
+//        if(userDefaults.objectForKey("userID") != nil)
+//        {
+//            userID = (userDefaults.objectForKey("userID") as? String)!
+//        }
+//        if(userID != "" || self.observationId != "")
+//        {
+//            let observationRootRef = FIRDatabase.database().referenceWithPath("observations/" + String(self.observationId)) //Firebase(url:POST_IDEAS_URL + observationId)
+//            observationRootRef.observeEventType(.Value, withBlock: { snapshot in
+//                
+//                print(observationRootRef)
+//                print(snapshot.value)
+//                
+//                if !(snapshot.value is NSNull)
+//                {
+//                    
+//                    if(snapshot.value!.objectForKey("likes") != nil)
+//                    {
+//                        let likesDictionary = snapshot.value!.objectForKey("likes") as! NSDictionary
+//                        print(likesDictionary.allValues)
+//                        
+//                        let likesArray = likesDictionary.allValues as NSArray
+//                        print(likesArray)
+//                        
+//                        let userKeys = likesDictionary.allKeys as NSArray
+//                        print(userKeys)
+//                        
+//                        //let userDefaults = NSUserDefaults.standardUserDefaults()
+//                        //var userID = String()
+//                        
+//                        if((userDefaults.stringForKey("isSignedIn")) == "true")
+//                        {
+//                            if(userKeys.containsObject(userID))
+//                            {
+//                                if(likesDictionary.objectForKey(userID) as! NSObject == 1)
+//                                {
+//                                    self.isObservationLiked = true
+//                                    
+//                                    self.lButton.selected = true
+//                                    self.lButton.userInteractionEnabled = false
+//                                    
+//                                }
+//                                else
+//                                {
+//                                    self.isObservationLiked = false
+//                                    
+//                                    self.lButton.selected = false
+//                                    self.lButton.userInteractionEnabled = true
+//                                }
+//                            }
+//                            else
+//                            {
+//                                self.isObservationLiked = false
+//                                
+//                                self.lButton.selected = false
+//                                self.lButton.userInteractionEnabled = true
+//                                
+//                            }
+//                            
+//                        }
+//                        else{
+//                            
+//                            self.isObservationLiked = false
+//                            
+//                            self.lButton.selected = false
+//                            self.lButton.userInteractionEnabled = false
+//                        }
+//                        
+//                        
+//                    }
+//                }
+//                
+//                }, withCancelBlock: { error in
+//                    print(error.description)
+//                    let alert = UIAlertController(title: "Alert", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+//                    let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
+//                    alert.addAction(action)
+//                    self.presentViewController(alert, animated: true, completion: nil)
+//                    
+//            })
+//        }
+//        
+//        
+//    }
 
     @IBAction func commentsButtonClicked(sender: UIButton) {
         

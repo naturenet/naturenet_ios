@@ -69,13 +69,13 @@ class ProjectDetailViewController: UIViewController,UICollectionViewDelegateFlow
             projectIconImageView?.kf_setImageWithURL(projectIconUrl, placeholderImage: UIImage(named: "project.png"))
         }
         
-        if(projectStatus == "Completed")
-        {
-            projectStatusImageView.hidden = false
-        }
-        else{
-            projectStatusImageView.hidden = true
-        }
+//        if(projectStatus == "Completed")
+//        {
+//            projectStatusImageView.hidden = false
+//        }
+//        else{
+//            projectStatusImageView.hidden = true
+//        }
         
         projectTitleLabel.text = projectTitle
         projectStatusLabel.text = projectStatus
