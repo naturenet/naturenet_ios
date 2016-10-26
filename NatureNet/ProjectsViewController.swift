@@ -44,7 +44,7 @@ class ProjectsViewController: UIViewController,UITableViewDelegate, UITableViewD
 
         }
 
-        self.navigationItem.title="PROJECTS"
+        self.navigationItem.title="Projects"
 
         self.navigationController!.navigationBar.barTintColor = UIColor(red: 48.0/255.0, green: 204.0/255.0, blue: 114.0/255.0, alpha: 1.0)
         self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
@@ -263,8 +263,9 @@ class ProjectsViewController: UIViewController,UITableViewDelegate, UITableViewD
                 for j in 0 ..< snapshot.value!.count
                 {
                     
-                    
-                    let activity = snapshot.value!.allKeys[j] as! String
+                    let valuesArray = snapshot.value!.allKeys as NSArray
+                    var reversedValuesArray = valuesArray.reverse()
+                    let activity = reversedValuesArray[j] as! String
                     let activityDictionary = snapshot.value!.objectForKey(activity) as! NSDictionary
                     //print(activityDictionary.objectForKey("name"))
                     if(activityDictionary.objectForKey("name") != nil)

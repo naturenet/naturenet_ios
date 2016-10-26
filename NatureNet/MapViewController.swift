@@ -106,11 +106,14 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
         exploreView.backgroundColor=UIColor(red: 48.0/255.0, green: 204.0/255.0, blue: 114.0/255.0, alpha: 1.0)
         exploreView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(MapViewController.tappedView)))
         exploreView.userInteractionEnabled = true
+        exploreView.hidden = true
         
         activityIndicator.hidden = true
+        
 
         //Map View
-        mapView.frame = CGRectMake(0 , 0, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height-self.exploreView.frame.height)
+        //mapView.frame = CGRectMake(0 , 0, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height-self.exploreView.frame.height)
+        mapView.frame = CGRectMake(0 , 0, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height)
         mapView.delegate = self
         mapView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(MapViewController.mapViewTapped)))
         mapView.userInteractionEnabled = true
@@ -180,7 +183,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
         self.getObservations()
         
         //Cam and design Idea buttons view
-        newObsAndDIView.view.frame = CGRectMake(0 ,UIScreen.mainScreen().bounds.size.height-newObsAndDIView.view.frame.size.height-exploreView.frame.size.height-8, UIScreen.mainScreen().bounds.size.width, newObsAndDIView.view.frame.size.height)
+        //newObsAndDIView.view.frame = CGRectMake(0 ,UIScreen.mainScreen().bounds.size.height-newObsAndDIView.view.frame.size.height-exploreView.frame.size.height-8, UIScreen.mainScreen().bounds.size.width, newObsAndDIView.view.frame.size.height)
+        newObsAndDIView.view.frame = CGRectMake(0 ,UIScreen.mainScreen().bounds.size.height-newObsAndDIView.view.frame.size.height-8, UIScreen.mainScreen().bounds.size.width, newObsAndDIView.view.frame.size.height)
+        newObsAndDIView.view.backgroundColor = UIColor.clearColor()
         newObsAndDIView.view.translatesAutoresizingMaskIntoConstraints = true
         newObsAndDIView.view.autoresizingMask = [UIViewAutoresizing.FlexibleLeftMargin, UIViewAutoresizing.FlexibleRightMargin, UIViewAutoresizing.None, UIViewAutoresizing.FlexibleBottomMargin]
         self.view.addSubview(newObsAndDIView.view)
@@ -533,19 +538,30 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
     
     func mapViewTapped()
     {
-        if let mapTypeViewWithTag = self.view.viewWithTag(9) {
-            mapTypeViewWithTag.removeFromSuperview()
-            count += 1
-        }
-        if let exploreViewWithTag = self.view.viewWithTag(8) {
-            exploreViewWithTag.removeFromSuperview()
+//        if let mapTypeViewWithTag = self.view.viewWithTag(9) {
+//            mapTypeViewWithTag.removeFromSuperview()
+//            count += 1
+//        }
+//        if let exploreViewWithTag = self.view.viewWithTag(8) {
+//            exploreViewWithTag.removeFromSuperview()
+//            
+//        }
+        
+        UIView.animateWithDuration(0.3, animations: {
             
-        }
-        newObsAndDIView.view.frame = CGRectMake(0 ,UIScreen.mainScreen().bounds.size.height-newObsAndDIView.view.frame.size.height-8 - 60, newObsAndDIView.view.frame.size.width, newObsAndDIView.view.frame.size.height)
-        cgVC.view.removeFromSuperview()
-        cgVC.removeFromParentViewController()
-        diAndCVC.view.removeFromSuperview()
-        diAndCVC.removeFromParentViewController()
+            self.mapAnnotationClickView.removeFromSuperview()
+            self.newObsAndDIView.view.frame = CGRectMake(0 ,UIScreen.mainScreen().bounds.size.height-self.newObsAndDIView.view.frame.size.height-8, self.newObsAndDIView.view.frame.size.width, self.newObsAndDIView.view.frame.size.height)
+            self.newObsAndDIView.view.backgroundColor = UIColor.clearColor()
+            self.cgVC.view.removeFromSuperview()
+            self.cgVC.removeFromParentViewController()
+            self.diAndCVC.view.removeFromSuperview()
+            self.diAndCVC.removeFromParentViewController()
+
+            
+            
+            })
+        
+        
         
     }
     

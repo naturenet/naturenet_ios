@@ -110,8 +110,10 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
         
         designIdeasButton.selected = true
         
+        self.navigationItem.title="Design Ideas"
+        
         designImageView.image = UIImage(named: "add design ideas.png")
-        designLabel.text = "DESIGN IDEAS"
+        //designLabel.text = "Design Ideas"
         designDescrptionLabel.text = "Your design ideas can be a new way of using NatureNet in your community, and new mobile technology for learning about sustainability or changes in the environment, or a new feature for the app."
         
         designTableView.delegate = self
@@ -191,10 +193,10 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
         
         designIdeasButton.selected = true
         designChallengesButton.selected = false
-        self.navigationItem.title="DESIGN IDEAS"
+        self.navigationItem.title="Design Ideas"
         
         designImageView.image = UIImage(named: "add design ideas.png")
-        designLabel.text = "DESIGN IDEAS"
+        //designLabel.text = "DESIGN IDEAS"
         designDescrptionLabel.text = "Your design ideas can be a new way of using NatureNet in your community, and new mobile technology for learning about sustainability or changes in the environment, or a new feature for the app."
         
         
@@ -207,10 +209,10 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
         
         designChallengesButton.selected = true
         designIdeasButton.selected = false
-        self.navigationItem.title="DESIGN CHALLENGES"
+        self.navigationItem.title="Design Challenges"
         
         designImageView.image = UIImage(named: "add design challenges.png")
-        designLabel.text = "DESIGN CHALLENGES"
+        //designLabel.text = "DESIGN CHALLENGES"
         designDescrptionLabel.text = "A design challenge is a question – for example: How can the NatureNet app collect temperature data?"
         
         removeAllObjectsFromArrays()
@@ -275,7 +277,7 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
         detailedObservationVC.observerImageUrl = submitterAvatar[indexPath.row] as! String
         detailedObservationVC.observerDisplayName = submitterDisplayName[indexPath.row] as! String
         detailedObservationVC.observerAffiliation =  submitterAffiliationDictionary.objectForKey(submitterAffiliation[indexPath.row]) as? String ?? "No Affiliation"
-        //detailedObservationVC.pageTitle = self.navigationItem.title!
+        detailedObservationVC.pageTitle = self.navigationItem.title!
         //detailedObservationVC.observationImageUrl = NSBundle.mainBundle().URLForResource("default-no-image", withExtension: "png")!.absoluteString
         detailedObservationVC.observationImageUrl = ""
         detailedObservationVC.isfromDesignIdeasView = true

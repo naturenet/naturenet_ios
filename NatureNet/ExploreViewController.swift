@@ -41,7 +41,7 @@ class ExploreViewController: UIViewController,UICollectionViewDelegateFlowLayout
         let barButtonItem = UIBarButtonItem(image: UIImage(named: "double_down.png"), style: .Plain, target: self, action: #selector(ExploreViewController.dismissVC))
         navigationItem.leftBarButtonItem = barButtonItem
         
-        self.navigationItem.title="EXPLORE"
+        self.navigationItem.title="Explore"
         
         self.navigationController!.navigationBar.barTintColor = UIColor(red: 48.0/255.0, green: 204.0/255.0, blue: 114.0/255.0, alpha: 1.0)
         self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()

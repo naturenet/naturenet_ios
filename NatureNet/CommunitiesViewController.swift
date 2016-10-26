@@ -39,7 +39,7 @@ class CommunitiesViewController: UIViewController ,UITableViewDelegate, UITableV
             
         }
         
-        self.navigationItem.title="COMMUNITIES"
+        self.navigationItem.title="Communities"
         
         self.navigationController!.navigationBar.barTintColor = UIColor(red: 48.0/255.0, green: 204.0/255.0, blue: 114.0/255.0, alpha: 1.0)
         self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()

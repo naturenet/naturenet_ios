@@ -765,6 +765,7 @@ class ProjectDetailViewController: UIViewController,UICollectionViewDelegateFlow
         detailedObsVC.observerImageUrl = observersAvatarUrls_proj[indexPath.row] as! String
         print(observersAvatarUrls_proj[indexPath.row])
         detailedObsVC.observationText = observationsTextArray[indexPath.row] as! String
+        detailedObsVC.pageTitle = projectTitle
         
         let observerImageUrlString = observationsImagesArray[indexPath.row] as! String
         let newimageURLString = observerImageUrlString.stringByReplacingOccurrencesOfString("upload/t_ios-thumbnail", withString: "upload/t_ios-large", options: NSStringCompareOptions.LiteralSearch, range: nil)
