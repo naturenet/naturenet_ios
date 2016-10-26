@@ -82,6 +82,9 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
 
     @IBOutlet weak var commentsTableView: UITableView!
     @IBOutlet weak var commentView: UIView!
+    
+    var userAffiliationDictionary:NSMutableDictionary = [:]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -747,6 +750,45 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
 
     }
 
+    func getActivityNames(userAffiliationKey: String)
+    {
+        
+        let sitesRootRef = FIRDatabase.database().referenceWithPath("sites/"+userAffiliationKey)
+        //Firebase(url:FIREBASE_URL + "sites/"+aff!)
+        sitesRootRef.observeEventType(.Value, withBlock: { snapshot in
+            
+            print(userAffiliationKey)
+            print(sitesRootRef)
+            print(snapshot.value)
+            
+            if !(snapshot.value is NSNull)
+            {
+                
+                
+                print(snapshot.value!.objectForKey("name"))
+                if(snapshot.value!.objectForKey("name") != nil)
+                {
+                    //self.userAffiliationsArray.addObject(snapshot.value!.objectForKey("name")!)
+                    let str = snapshot.value!.objectForKey("name") as! String
+                    print(str)
+                    self.userAffiliationDictionary.setValue(str, forKey: userAffiliationKey)
+                    
+                }
+                
+                
+                
+            }
+            self.commentsTableView.reloadData()
+            }, withCancelBlock: { error in
+                print(error.description)
+                let alert = UIAlertController(title: "Alert", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+                let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
+                alert.addAction(action)
+                self.presentViewController(alert, animated: true, completion: nil)
+                
+        })
+        
+    }
 
 
 
@@ -785,9 +827,11 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
                 if((snapshot.value!.objectForKey("affiliation")) != nil)
                 {
                     let observerAffiliationString = snapshot.value!.objectForKey("affiliation") as! String
-                    cell.commentorDateLabel.text = observerAffiliationString
+                    
+                    self.getActivityNames(observerAffiliationString)
+                    cell.commentorDateLabel.text = self.userAffiliationDictionary.objectForKey(observerAffiliationString) as? String ?? "No Affiliation"
                     //observerAffiliationsArray.addObject(observerAffiliationString)
-                    print(observerAffiliationString)
+                    
                 }
                 else
                 {
