@@ -76,7 +76,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
     
     @IBOutlet weak var lButton: UIButton!
     
+    @IBOutlet weak var standardMapImageView: UIImageView!
     
+    @IBOutlet weak var satelliteMapImageView: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -94,6 +96,12 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
         
         let rightbarButtonItem = UIBarButtonItem(image: UIImage(named: "more.png"), style: .Plain, target: self, action: #selector(MapViewController.mapTypes))
         navigationItem.rightBarButtonItem = rightbarButtonItem
+        
+        standardMapImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(MapViewController.showStandardMap)))
+        standardMapImageView.userInteractionEnabled = true
+        
+        satelliteMapImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(MapViewController.showSatelliteMap)))
+        satelliteMapImageView.userInteractionEnabled = true
         
         
         self.navigationItem.title="NatureNet"
@@ -191,6 +199,17 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
         self.view.addSubview(newObsAndDIView.view)
         newObsAndDIView.camButton.addTarget(self, action: #selector(MapViewController.openNewObsView), forControlEvents: .TouchUpInside)
         newObsAndDIView.designIdeaButton.addTarget(self, action: #selector(MapViewController.openNewDesignView), forControlEvents: .TouchUpInside)
+        
+    }
+    
+    func showStandardMap()
+    {
+        mapView.mapType  = .Standard
+    }
+    
+    func showSatelliteMap()
+    {
+        mapView.mapType  = .Satellite
         
     }
     
