@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="16A270f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="16B2553a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NewDesignIdeasAndChallengesViewController" customModule="NatureNet" customModuleProvider="target">
             <connections>
+                <outlet property="activityIndicator_design" destination="yBK-Dq-X71" id="fuI-Jv-vcb"/>
                 <outlet property="ideaOrChallengeImageView" destination="ZwI-yD-2mI" id="iH7-Cv-AUt"/>
                 <outlet property="photoAndGalleryView" destination="Z3a-jm-8TX" id="HBs-Kr-5C5"/>
                 <outlet property="textView" destination="vp3-Vp-HqR" id="Xjy-l2-lym"/>
@@ -24,6 +25,20 @@
                         <constraint firstAttribute="height" constant="320" id="lGZ-Yg-dls"/>
                     </constraints>
                 </imageView>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="vp3-Vp-HqR">
+                    <rect key="frame" x="0.0" y="64" width="375" height="188"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="188" id="oCA-dS-0mB"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
+                </textView>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="yBK-Dq-X71">
+                    <rect key="frame" x="169" y="113" width="37" height="37"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="color" red="0.12038145209999999" green="0.80226182940000001" blue="0.42462405559999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                </activityIndicatorView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z3a-jm-8TX">
                     <rect key="frame" x="0.0" y="603" width="375" height="64"/>
                     <subviews>
@@ -54,18 +69,10 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="vp3-Vp-HqR">
-                    <rect key="frame" x="0.0" y="64" width="375" height="188"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="188" id="oCA-dS-0mB"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
-                </textView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="yBK-Dq-X71" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="169" id="420-uc-qBV"/>
                 <constraint firstItem="ZwI-yD-2mI" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="FGT-Xw-Xmy"/>
                 <constraint firstAttribute="bottom" secondItem="Z3a-jm-8TX" secondAttribute="bottom" id="Lsr-bS-kK3"/>
                 <constraint firstItem="ZwI-yD-2mI" firstAttribute="top" secondItem="vp3-Vp-HqR" secondAttribute="bottom" constant="8" id="WpQ-VQ-MfN"/>
@@ -74,6 +81,7 @@
                 <constraint firstAttribute="trailing" secondItem="vp3-Vp-HqR" secondAttribute="trailing" id="glb-OL-Qe8"/>
                 <constraint firstAttribute="trailing" secondItem="ZwI-yD-2mI" secondAttribute="trailing" constant="8" id="gx6-pm-6aF"/>
                 <constraint firstItem="vp3-Vp-HqR" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="i68-3b-JEe"/>
+                <constraint firstItem="yBK-Dq-X71" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="113" id="qF4-Jz-7wc"/>
                 <constraint firstItem="ZwI-yD-2mI" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="tE1-Xw-f1C"/>
                 <constraint firstItem="Z3a-jm-8TX" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="vIH-l5-qxk"/>
                 <constraint firstItem="vp3-Vp-HqR" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="64" id="wl0-LR-9q9"/>

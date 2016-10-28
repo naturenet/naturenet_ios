@@ -12,8 +12,8 @@ import Firebase
 
 class RearViewController: UIViewController,UITableViewDelegate, UITableViewDataSource {
     
-    var menuItems: [String] = ["Explore","Projects","Design Ideas","Communities"]
-    var menuItemsImages: [String] = ["observations navy.png","project.png","design ideas.png","community.png"]
+    var menuItems: [String] = ["Explore","Gallery", "Projects","Design Ideas","Communities"]
+    var menuItemsImages: [String] = ["observations navy.png","gallery.png", "project.png","design ideas.png","community.png"]
     
     @IBOutlet weak var joinButton: UIButton!
     @IBOutlet weak var signInButton: UIButton!
@@ -109,26 +109,34 @@ class RearViewController: UIViewController,UITableViewDelegate, UITableViewDataS
         }
         else if ((indexPath.section == 0) && (indexPath.row == 1)) {
             
+            let eVC = ExploreViewController() //change this to your class name
+            
+            newFrontViewController = UINavigationController(rootViewController: eVC)
+            revealViewController().pushFrontViewController(newFrontViewController, animated: true)
+            
+        }
+        else if ((indexPath.section == 0) && (indexPath.row == 2)) {
+            
             let pVC = ProjectsViewController()
             newFrontViewController = UINavigationController(rootViewController: pVC)
             revealViewController().pushFrontViewController(newFrontViewController, animated: true)
             
         }
-        else if ((indexPath.section == 0) && (indexPath.row == 2)) {
+        else if ((indexPath.section == 0) && (indexPath.row == 3)) {
             
             let diVC = DesignIdeasViewController()
             newFrontViewController = UINavigationController(rootViewController: diVC)
             revealViewController().pushFrontViewController(newFrontViewController, animated: true)
             
         }
-        else if ((indexPath.section == 0) && (indexPath.row == 3)) {
+        else if ((indexPath.section == 0) && (indexPath.row == 4)) {
             
             let cVC = CommunitiesViewController()
             newFrontViewController = UINavigationController(rootViewController: cVC)
             revealViewController().pushFrontViewController(newFrontViewController, animated: true)
             
         }
-        else if ((indexPath.section == 0) && (indexPath.row == 4)) {
+        else if ((indexPath.section == 0) && (indexPath.row == 5)) {
             
             //NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
             //[[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
@@ -141,10 +149,10 @@ class RearViewController: UIViewController,UITableViewDelegate, UITableViewDataS
             try! FIRAuth.auth()!.signOut()
             
             
-            if(menuItems.count > 4)
+            if(menuItems.count > 5)
             {
-                menuItems.removeAtIndex(4)
-                menuItemsImages.removeAtIndex(4)
+                menuItems.removeAtIndex(5)
+                menuItemsImages.removeAtIndex(5)
                 profileImageView.image = UIImage(named:"user.png")
             }
             menuTableView.reloadData()
@@ -193,8 +201,8 @@ class RearViewController: UIViewController,UITableViewDelegate, UITableViewDataS
             if(allowOnce == true)
             {
                 allowOnce = false
-                menuItems.insert("Logout", atIndex: 4)
-                menuItemsImages.insert("shutdown.png", atIndex: 4)
+                menuItems.insert("Logout", atIndex: 5)
+                menuItemsImages.insert("shutdown.png", atIndex: 5)
                 
                 menuTableView.reloadData()
             }
@@ -270,10 +278,10 @@ class RearViewController: UIViewController,UITableViewDelegate, UITableViewDataS
         }
         else
         {
-            if(menuItems.count > 4)
+            if(menuItems.count > 5)
             {
-                menuItems.removeAtIndex(4)
-                menuItemsImages.removeAtIndex(4)
+                menuItems.removeAtIndex(5)
+                menuItemsImages.removeAtIndex(5)
             }
             
             

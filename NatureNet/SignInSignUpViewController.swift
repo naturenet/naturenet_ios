@@ -36,12 +36,9 @@ class SignInSignUpViewController: UIViewController, UITextFieldDelegate, UIScrol
     var picker:UIImagePickerController?=UIImagePickerController()
     var popover:UIPopoverController?=nil
     
-   
-    
     var tapGesture:UITapGestureRecognizer!
     
     var joinScrollView: UIScrollView!
-    
     
     @IBOutlet var consentForm: UIView!
     var isFromHomeVC: Bool = false
@@ -63,6 +60,10 @@ class SignInSignUpViewController: UIViewController, UITextFieldDelegate, UIScrol
     
     @IBOutlet weak var signInButton: UIButton!
     @IBOutlet weak var joinButton: UIButton!
+    
+    @IBOutlet weak var activityIndication_signIn: UIActivityIndicatorView!
+    @IBOutlet weak var activityIndicator_join: UIActivityIndicatorView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -87,6 +88,9 @@ class SignInSignUpViewController: UIViewController, UITextFieldDelegate, UIScrol
         
         username.delegate = self
         password.delegate = self
+        
+        self.view.bringSubviewToFront(activityIndicator_join)
+        self.view.bringSubviewToFront(activityIndication_signIn)
                 
         if(pageTitle == "Sign In")
         {
@@ -104,11 +108,7 @@ class SignInSignUpViewController: UIViewController, UITextFieldDelegate, UIScrol
         affiliationPickerView.hidden = true
         viewForHidingPickerView.hidden = true
         
-
     }
-    
-    
-    
     
     func addJoinScrollView()
     {
@@ -240,8 +240,6 @@ class SignInSignUpViewController: UIViewController, UITextFieldDelegate, UIScrol
         
 //        let iconGesture = UITapGestureRecognizer(target: self, action: #selector(self.showCamAndGalleryView))
 //        profileIconImageView.addGestureRecognizer(iconGesture)
-        
-        
         
     }
     
@@ -536,6 +534,7 @@ class SignInSignUpViewController: UIViewController, UITextFieldDelegate, UIScrol
     @IBAction func signInButtonClicked(sender: UIButton) {
         
         signInButton.enabled = false
+        activityIndication_signIn.startAnimating()
         
         if(username.text != "" || password.text != "")
         {
@@ -552,6 +551,7 @@ class SignInSignUpViewController: UIViewController, UITextFieldDelegate, UIScrol
                                 self.presentViewController(alert, animated: true, completion: nil)
                                 
                                 self.signInButton.enabled = true
+                                self.activityIndication_signIn.stopAnimating()
                                 
                             } else {
                                 // We are now logged in
@@ -684,6 +684,7 @@ class SignInSignUpViewController: UIViewController, UITextFieldDelegate, UIScrol
 //                                        }
 //                                }
                                 self.signInButton.enabled = true
+                                self.activityIndication_signIn.stopAnimating()
                                 
                             }
             })
@@ -695,6 +696,7 @@ class SignInSignUpViewController: UIViewController, UITextFieldDelegate, UIScrol
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
             signInButton.enabled = true
+            self.activityIndication_signIn.stopAnimating()
         }
         
     }
@@ -738,6 +740,7 @@ class SignInSignUpViewController: UIViewController, UITextFieldDelegate, UIScrol
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
             joinButton.enabled = true
+            activityIndicator_join.stopAnimating()
         }
         
         
@@ -776,6 +779,7 @@ class SignInSignUpViewController: UIViewController, UITextFieldDelegate, UIScrol
                                             self.presentViewController(alert, animated: true, completion: nil)
                                             //print(error.description)
                                             self.joinButton.enabled = true
+                                            self.activityIndicator_join.stopAnimating()
                                             
                                         } else {
                                             
@@ -875,6 +879,7 @@ class SignInSignUpViewController: UIViewController, UITextFieldDelegate, UIScrol
     @IBAction func joinButtonClicked(sender: UIButton) {
         
         joinButton.enabled = false
+        activityIndicator_join.startAnimating()
         
         if(joinUsername.text != "" || joinPassword.text != "" || joinName.text != "" || joinEmail.text != "" || joinAffliation.text != "" )
         {
@@ -900,6 +905,7 @@ class SignInSignUpViewController: UIViewController, UITextFieldDelegate, UIScrol
             self.presentViewController(alert, animated: true, completion: nil)
             print("Please Enter All the Details")
             joinButton.enabled = true
+            activityIndicator_join.stopAnimating()
 
         }
         

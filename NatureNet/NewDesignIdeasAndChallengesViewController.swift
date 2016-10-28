@@ -16,10 +16,13 @@ class NewDesignIdeasAndChallengesViewController: UIViewController ,UIImagePicker
     var design: String = ""
     
     var isDesignIdea: Bool = false
+    @IBOutlet weak var activityIndicator_design: UIActivityIndicatorView!
 
     @IBOutlet weak var photoAndGalleryView: UIView!
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var ideaOrChallengeImageView: UIImageView!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -53,6 +56,8 @@ class NewDesignIdeasAndChallengesViewController: UIViewController ,UIImagePicker
         
         textView.text = "Please Enter Description here"
         textView.textColor = UIColor.lightGrayColor()
+        
+        self.view.bringSubviewToFront(activityIndicator_design)
         
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(NewDesignIdeasAndChallengesViewController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(NewDesignIdeasAndChallengesViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
@@ -135,86 +140,93 @@ class NewDesignIdeasAndChallengesViewController: UIViewController ,UIImagePicker
     }
     func postDesign()
     {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        var userID: String = ""
-        if(userDefaults.objectForKey("userID") != nil)
+        
+        if(textView.text != "")
         {
-            userID = (userDefaults.objectForKey("userID") as? String)!
+            activityIndicator_design.startAnimating()
+            let userDefaults = NSUserDefaults.standardUserDefaults()
+            var userID: String = ""
+            if(userDefaults.objectForKey("userID") != nil)
+            {
+                userID = (userDefaults.objectForKey("userID") as? String)!
+            }
+            var email = ""
+            var password = ""
+            
+            
+            if(userDefaults.objectForKey("email") as? String != nil || userDefaults.objectForKey("password") as? String != nil)
+            {
+                email = decodeString((userDefaults.objectForKey("email") as? String)!)
+                password = decodeString((userDefaults.objectForKey("password") as? String)!)
+            }
+            
+            
+            print(userID)
+            let refUser = FIRAuth.auth()!
+            refUser.signInWithEmail(email, password: password,
+                                    completion: { authData, error in
+                                        if error != nil {
+                                            
+                                            print("\(error)")
+                                            var alert = UIAlertController()
+                                            if(email == "")
+                                            {
+                                                alert = UIAlertController(title: "Alert", message:"Please Login to continue" ,preferredStyle: UIAlertControllerStyle.Alert)
+                                            }
+                                            else
+                                            {
+                                                alert = UIAlertController(title: "Alert", message:error.debugDescription ,preferredStyle: UIAlertControllerStyle.Alert)
+                                            }
+                                            
+                                            //alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+                                            let showMenuAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) {
+                                                UIAlertAction in
+                                                //print("OK Pressed")
+                                                //self.dismissVC()
+                                                
+                                                let signInSignUpVC=SignInSignUpViewController()
+                                                let signInSignUpNavVC = UINavigationController()
+                                                signInSignUpVC.pageTitle="Sign In"
+                                                signInSignUpNavVC.viewControllers = [signInSignUpVC]
+                                                self.presentViewController(signInSignUpNavVC, animated: true, completion: nil)
+                                            }
+                                            
+                                            // Add the actions
+                                            alert.addAction(showMenuAction)
+                                            
+                                            
+                                            self.presentViewController(alert, animated: true, completion: nil)
+                                            self.activityIndicator_design.stopAnimating()
+                                            
+                                        }
+                                        else
+                                        {
+                                            let ref = FIRDatabase.database().referenceWithPath("ideas")//(url: POST_IDEAS_URL)
+                                            //print(ref.childByAutoId())
+                                            let autoID = ref.childByAutoId()
+                                            //let id = autoID as String
+                                            print(autoID.key)
+                                            let designData = ["id": autoID.key as AnyObject,"content": self.textView.text as AnyObject,"group": self.design as AnyObject, "status": "Doing" ,"submitter": userID as AnyObject,"created_at": FIRServerValue.timestamp(),"updated_at": FIRServerValue.timestamp()]
+                                            autoID.setValue(designData)
+                                            
+                                            let alert = UIAlertController(title: "Alert", message: "Design Posted Successfully", preferredStyle: UIAlertControllerStyle.Alert)
+                                            let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
+                                            alert.addAction(action)
+                                            self.presentViewController(alert, animated: true, completion: nil)
+                                            self.activityIndicator_design.stopAnimating()
+                                            
+                                        }
+                                        
+            })
         }
-        var email = ""
-        var password = ""
-        
-        
-        if(userDefaults.objectForKey("email") as? String != nil || userDefaults.objectForKey("password") as? String != nil)
+        else
         {
-            email = decodeString((userDefaults.objectForKey("email") as? String)!)
-            password = decodeString((userDefaults.objectForKey("password") as? String)!)
+            let alert = UIAlertController(title: "Alert", message: "Please Enter Text to continue", preferredStyle: UIAlertControllerStyle.Alert)
+            let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
+            alert.addAction(action)
+            self.presentViewController(alert, animated: true, completion: nil)
         }
-
         
-        print(userID)
-        let refUser = FIRAuth.auth()!
-        refUser.signInWithEmail(email, password: password,
-                         completion: { authData, error in
-                            if error != nil {
-                                
-                                print("\(error)")
-                                var alert = UIAlertController()
-                                if(email == "")
-                                {
-                                    alert = UIAlertController(title: "Alert", message:"Please Login to continue" ,preferredStyle: UIAlertControllerStyle.Alert)
-                                }
-                                else
-                                {
-                                    alert = UIAlertController(title: "Alert", message:error.debugDescription ,preferredStyle: UIAlertControllerStyle.Alert)
-                                }
-
-                                //alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-                                let showMenuAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) {
-                                    UIAlertAction in
-                                    //print("OK Pressed")
-                                    //self.dismissVC()
-                                    
-                                    let signInSignUpVC=SignInSignUpViewController()
-                                    let signInSignUpNavVC = UINavigationController()
-                                    signInSignUpVC.pageTitle="Sign In"
-                                    signInSignUpNavVC.viewControllers = [signInSignUpVC]
-                                    self.presentViewController(signInSignUpNavVC, animated: true, completion: nil)
-                                }
-                                
-                                // Add the actions
-                                alert.addAction(showMenuAction)
-                                
-                                
-                                self.presentViewController(alert, animated: true, completion: nil)
-                                
-                            }
-                            else
-                            {
-                                let ref = FIRDatabase.database().referenceWithPath("ideas")//(url: POST_IDEAS_URL)
-                                //print(ref.childByAutoId())
-                                let autoID = ref.childByAutoId()
-                                //let id = autoID as String
-                                print(autoID.key)
-                                let designData = ["id": autoID.key as AnyObject,"content": self.textView.text as AnyObject,"group": self.design as AnyObject, "status": "Doing" ,"submitter": userID as AnyObject,"created_at": FIRServerValue.timestamp(),"updated_at": FIRServerValue.timestamp()]
-                                autoID.setValue(designData)
-                                
-                                let alert = UIAlertController(title: "Alert", message: "Design Posted Successfully", preferredStyle: UIAlertControllerStyle.Alert)
-                                let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
-                                alert.addAction(action)
-                                self.presentViewController(alert, animated: true, completion: nil)
-
-                            }
-                            
-                            })
-        
-        //let usersPrivateReftoid = usersRef.childByAppendingPath("private")
-        //let usersPrivate = ["email": self.joinEmail.text as! AnyObject]
-        //usersRef.setValue(usersPub)
-        //OBSERVATION_IMAGE_UPLOAD_URL = ""
-        
-    
-
     }
 
     @IBAction func openCamera(sender: UIButton) {

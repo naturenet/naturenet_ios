@@ -85,6 +85,7 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
     
     var userAffiliationDictionary:NSMutableDictionary = [:]
     
+    @IBOutlet weak var activityIndicator_comment: UIActivityIndicatorView!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -216,10 +217,19 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
             likedislikeView.hidden = true
 
         }
+        
+        activityIndicator_comment.startAnimating()
 
         let observerAvatarUrl  = NSURL(string: observerImageUrl )
 
-        observerAvatarImageView?.kf_setImageWithURL(observerAvatarUrl!, placeholderImage: UIImage(named: "user.png"))
+//        observerAvatarImageView?.kf_setImageWithURL(observerAvatarUrl!, placeholderImage: UIImage(named: "user.png"))
+        observerAvatarImageView?.kf_setImageWithURL(observerAvatarUrl!, placeholderImage: UIImage(named: "user.png"), optionsInfo: nil, progressBlock: nil, completionHandler: { (image, error, cacheType, imageURL) in
+            
+            self.activityIndicator_comment.stopAnimating()
+        })
+        
+        
+        
 
         print(observationImageUrl)
         //if((observationImageUrl) != "")
@@ -335,7 +345,9 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DetailedObservationViewController.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil);
 
         getCommentsDetails(observationCommentsArrayfromExploreView)
-
+        
+        
+        
         
     }
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -916,17 +928,19 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
     
     func postCommentOnSendButton()
     {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        var userID = String()
-        if(userDefaults.objectForKey("userID") != nil)
-        {
-            userID = (userDefaults.objectForKey("userID") as? String)!
-        }
-        
-        print(userID)
         
         if(commentTF.text != "")
         {
+            activityIndicator_comment.startAnimating()
+            
+            let userDefaults = NSUserDefaults.standardUserDefaults()
+            var userID = String()
+            if(userDefaults.objectForKey("userID") != nil)
+            {
+                userID = (userDefaults.objectForKey("userID") as? String)!
+            }
+            
+            print(userID)
             var email = ""
             var password = ""
             
@@ -962,6 +976,7 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
                                             alert.addAction(action)
                                             
                                             self.presentViewController(alert, animated: true, completion: nil)
+                                            self.activityIndicator_comment.stopAnimating()
                                             
                                         }
                                         else
@@ -1000,6 +1015,7 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
                                             }
                                             alert.addAction(okAction)
                                             self.presentViewController(alert, animated: true, completion: nil)
+                                            self.activityIndicator_comment.stopAnimating()
                                         }
                                         self.getUpdatedComments()
                                         

@@ -603,32 +603,25 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
     
     func tappedView(){
         
-        activityIndicator.hidden = false
-        activityIndicator.startAnimating()
-        
-        exploreView.backgroundColor=UIColor.lightGrayColor()
-        exploreView.userInteractionEnabled = false
-        let eVC = ExploreViewController() //change this to your class name
-        eVC.exploreObservationsImagesArray = observationImagesArray
-        eVC.observerIdsfromMapView = observerIds
-        eVC.observationTextArray = observationTextArray
-        eVC.commentsDictArrayfromMapView = commentsDictArray
-        eVC.observationIdsfromMapView = observationIds
-        eVC.observationUpdatedAtTimestampsArrayFromMapview = observationUpdatedTimestampsArray
-        eVC.projectNames = observationProjectNames
-        
-        let exploreNavVC = UINavigationController()
-        exploreNavVC.viewControllers = [eVC]
-        self.presentViewController(exploreNavVC, animated: true, completion: nil)
+//        activityIndicator.hidden = false
+//        activityIndicator.startAnimating()
+//        
+//        exploreView.backgroundColor=UIColor.lightGrayColor()
+//        exploreView.userInteractionEnabled = false
+//        let eVC = ExploreViewController() //change this to your class name
+//        
+//        let exploreNavVC = UINavigationController()
+//        exploreNavVC.viewControllers = [eVC]
+//        self.presentViewController(exploreNavVC, animated: true, completion: nil)
         
     }
     
     override func viewWillAppear(animated: Bool) {
         
-        exploreView.backgroundColor=UIColor(red: 48.0/255.0, green: 204.0/255.0, blue: 114.0/255.0, alpha: 1.0)
-        exploreView.userInteractionEnabled = true
-        activityIndicator.stopAnimating()
-        activityIndicator.hidden = true
+//        exploreView.backgroundColor=UIColor(red: 48.0/255.0, green: 204.0/255.0, blue: 114.0/255.0, alpha: 1.0)
+//        exploreView.userInteractionEnabled = true
+//        activityIndicator.stopAnimating()
+//        activityIndicator.hidden = true
 
         self.getObservations()
     }

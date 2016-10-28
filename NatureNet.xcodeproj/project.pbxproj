@@ -61,6 +61,8 @@
 		9F25D3871CCA619000342B56 /* ProjectDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F25D3851CCA619000342B56 /* ProjectDetailViewController.xib */; };
 		9F25D38A1CCA65AF00342B56 /* ProjectDetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F25D3881CCA65AF00342B56 /* ProjectDetailCollectionViewCell.swift */; };
 		9F25D38B1CCA65AF00342B56 /* ProjectDetailCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F25D3891CCA65AF00342B56 /* ProjectDetailCollectionViewCell.xib */; };
+		9F28F7A61DC3AF8200C59104 /* GetObservations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F28F7A51DC3AF8200C59104 /* GetObservations.swift */; };
+		9F28F7A81DC3B65A00C59104 /* GetUserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F28F7A71DC3B65A00C59104 /* GetUserInfo.swift */; };
 		9F32D20E1CB587FD00298E02 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F32D20D1CB587FD00298E02 /* Reachability.swift */; };
 		9F32D2131CB6E92100298E02 /* CommentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F32D2111CB6E92100298E02 /* CommentsTableViewCell.swift */; };
 		9F32D2141CB6E92100298E02 /* CommentsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F32D2121CB6E92100298E02 /* CommentsTableViewCell.xib */; };
@@ -182,6 +184,8 @@
 		9F25D3851CCA619000342B56 /* ProjectDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProjectDetailViewController.xib; sourceTree = "<group>"; };
 		9F25D3881CCA65AF00342B56 /* ProjectDetailCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectDetailCollectionViewCell.swift; sourceTree = "<group>"; };
 		9F25D3891CCA65AF00342B56 /* ProjectDetailCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProjectDetailCollectionViewCell.xib; sourceTree = "<group>"; };
+		9F28F7A51DC3AF8200C59104 /* GetObservations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetObservations.swift; sourceTree = "<group>"; };
+		9F28F7A71DC3B65A00C59104 /* GetUserInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetUserInfo.swift; sourceTree = "<group>"; };
 		9F32D20D1CB587FD00298E02 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		9F32D2111CB6E92100298E02 /* CommentsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsTableViewCell.swift; sourceTree = "<group>"; };
 		9F32D2121CB6E92100298E02 /* CommentsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentsTableViewCell.xib; sourceTree = "<group>"; };
@@ -267,6 +271,8 @@
 				1816D9981D24317500F6F194 /* ObservationForLater.swift */,
 				18A725831D393734001F1148 /* Comment.swift */,
 				9FA9001C1DAFCEAD00A57721 /* LikeOrDislikeAnObservation.swift */,
+				9F28F7A51DC3AF8200C59104 /* GetObservations.swift */,
+				9F28F7A71DC3B65A00C59104 /* GetUserInfo.swift */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -734,6 +740,7 @@
 				9F45235F1CC6799500D5D92C /* NewDesignIdeasAndChallengesViewController.swift in Sources */,
 				9F9BB3BE1C9B214C0076E68E /* ViewController.swift in Sources */,
 				9F14A7971C9F158000CAB0F6 /* ProjectsViewController.swift in Sources */,
+				9F28F7A81DC3B65A00C59104 /* GetUserInfo.swift in Sources */,
 				9F25D38A1CCA65AF00342B56 /* ProjectDetailCollectionViewCell.swift in Sources */,
 				9F25D3731CC7CF2200342B56 /* UploadImageToCloudinary.swift in Sources */,
 				9F9BB3BC1C9B214C0076E68E /* AppDelegate.swift in Sources */,
@@ -750,6 +757,7 @@
 				9F4523551CC167C400D5D92C /* SWRevealViewController.m in Sources */,
 				18429F191D357BF20062F2F4 /* Utility.swift in Sources */,
 				9F32D2161CB6F6E100298E02 /* ConnectionManager.swift in Sources */,
+				9F28F7A61DC3AF8200C59104 /* GetObservations.swift in Sources */,
 				9FC2D1A01CEB7749000B398B /* DesignIdeasAndChallengesTableViewCell.swift in Sources */,
 				18508AEF1D1443FD003F31A8 /* CameraAndGalleryCollectionViewCell.swift in Sources */,
 				9F14A7811C9B53BF00CAB0F6 /* MenuTableViewCell.swift in Sources */,

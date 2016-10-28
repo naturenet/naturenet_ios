@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="16B2327e" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="16B2553a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -8,6 +8,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DetailedObservationViewController" customModule="NatureNet" customModuleProvider="target">
             <connections>
+                <outlet property="activityIndicator_comment" destination="Hqu-mu-D1g" id="sYU-YV-dZ9"/>
                 <outlet property="commentTF" destination="Rmo-Em-tTT" id="iI4-My-1bB"/>
                 <outlet property="commentView" destination="lrV-7L-obF" id="Pyr-nw-OS3"/>
                 <outlet property="commentViewBottomContraint" destination="9UZ-my-uOc" id="wlj-wa-Qke"/>
@@ -244,8 +245,15 @@
                         <constraint firstItem="Rmo-Em-tTT" firstAttribute="leading" secondItem="Jp8-3Q-AUC" secondAttribute="trailing" constant="8" id="xez-9h-AzW"/>
                     </constraints>
                 </view>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DDA-r0-uI1">
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DDA-r0-uI1">
                     <rect key="frame" x="0.0" y="8" width="375" height="609"/>
+                    <subviews>
+                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Hqu-mu-D1g">
+                            <rect key="frame" x="169" y="286" width="37" height="37"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="color" red="0.12038145209999999" green="0.80226182940000001" blue="0.42462405559999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </activityIndicatorView>
+                    </subviews>
                 </scrollView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

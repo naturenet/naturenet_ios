@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="16B2333a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="16B2553a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -7,6 +7,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SignInSignUpViewController" customModule="NatureNet" customModuleProvider="target">
             <connections>
+                <outlet property="activityIndication_signIn" destination="N9m-K1-FBO" id="Vzc-y3-jn4"/>
+                <outlet property="activityIndicator_join" destination="Zx4-kN-4ZO" id="U9d-Ig-ZbQ"/>
                 <outlet property="affiliationPickerView" destination="NiF-D1-t1H" id="GGp-wL-qwg"/>
                 <outlet property="consentForm" destination="ddg-8j-DQJ" id="xl0-zM-WbG"/>
                 <outlet property="firstConsentButton" destination="hUL-Hn-AmR" id="FJo-k9-DYh"/>
@@ -61,6 +63,11 @@
                         <constraint firstAttribute="bottom" secondItem="CkI-mp-x7f" secondAttribute="bottom" id="bAs-Jc-3pe"/>
                     </constraints>
                 </view>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Czn-gb-NJz">
+                    <rect key="frame" x="169" y="74" width="37" height="37"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="color" red="0.12038145209999999" green="0.80226182940000001" blue="0.42462405559999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
@@ -157,6 +164,11 @@
                         <constraint firstAttribute="height" constant="80" id="zFV-ad-3xb"/>
                     </constraints>
                 </imageView>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="N9m-K1-FBO">
+                    <rect key="frame" x="169" y="222" width="37" height="37"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="color" red="0.12038145209999999" green="0.80226182940000001" blue="0.42462405559999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
@@ -164,12 +176,14 @@
                 <constraint firstItem="2ro-LF-RAm" firstAttribute="centerX" secondItem="hIV-8u-Hhl" secondAttribute="centerX" id="3Ka-58-den"/>
                 <constraint firstItem="Vkd-41-SWo" firstAttribute="centerX" secondItem="hIV-8u-Hhl" secondAttribute="centerX" id="4QM-Qc-uCK"/>
                 <constraint firstItem="yF7-YN-iDd" firstAttribute="top" secondItem="2ro-LF-RAm" secondAttribute="bottom" constant="8" id="ALq-nc-ir3"/>
+                <constraint firstItem="WFn-BA-gSR" firstAttribute="top" secondItem="N9m-K1-FBO" secondAttribute="bottom" constant="25" id="Ali-c6-5HS"/>
                 <constraint firstItem="5kN-Us-rpr" firstAttribute="centerX" secondItem="hIV-8u-Hhl" secondAttribute="centerX" id="BHQ-Ah-0dO"/>
                 <constraint firstItem="Vkd-41-SWo" firstAttribute="top" secondItem="y76-c6-ccX" secondAttribute="bottom" constant="8" id="Bg1-cG-188"/>
                 <constraint firstItem="y76-c6-ccX" firstAttribute="centerX" secondItem="hIV-8u-Hhl" secondAttribute="centerX" id="OSC-Vp-Piu"/>
                 <constraint firstItem="2ro-LF-RAm" firstAttribute="top" secondItem="WFn-BA-gSR" secondAttribute="bottom" constant="8" id="QhU-9V-gVq"/>
                 <constraint firstItem="yF7-YN-iDd" firstAttribute="centerX" secondItem="hIV-8u-Hhl" secondAttribute="centerX" id="SDM-OO-7qL"/>
                 <constraint firstItem="y76-c6-ccX" firstAttribute="top" secondItem="5kN-Us-rpr" secondAttribute="bottom" constant="8" id="ZeG-hm-R4r"/>
+                <constraint firstItem="N9m-K1-FBO" firstAttribute="leading" secondItem="hIV-8u-Hhl" secondAttribute="leading" constant="169" id="fnT-5n-0fV"/>
                 <constraint firstItem="WFn-BA-gSR" firstAttribute="centerX" secondItem="hIV-8u-Hhl" secondAttribute="centerX" id="pqy-eV-urT"/>
                 <constraint firstItem="5kN-Us-rpr" firstAttribute="top" secondItem="hIV-8u-Hhl" secondAttribute="top" constant="120" id="uX5-ag-c1G"/>
             </constraints>
@@ -297,10 +311,16 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </textField>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Zx4-kN-4ZO">
+                    <rect key="frame" x="169" y="298" width="37" height="37"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="color" red="0.12038145209999999" green="0.80226182940000001" blue="0.42462405559999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="BL5-kp-5HG" firstAttribute="centerX" secondItem="R9E-Cm-tUJ" secondAttribute="centerX" id="0k4-mz-D83"/>
+                <constraint firstItem="XfY-5R-5Jq" firstAttribute="top" secondItem="Zx4-kN-4ZO" secondAttribute="bottom" constant="84" id="2XR-bc-1HG"/>
                 <constraint firstItem="XHy-zP-loL" firstAttribute="top" secondItem="R9E-Cm-tUJ" secondAttribute="top" constant="101" id="7Bh-I4-Wye"/>
                 <constraint firstItem="YlX-bV-bTx" firstAttribute="top" secondItem="R9E-Cm-tUJ" secondAttribute="top" constant="101" id="8bR-sn-xob"/>
                 <constraint firstItem="XfY-5R-5Jq" firstAttribute="top" secondItem="8U8-yU-gNi" secondAttribute="bottom" constant="8" id="B91-2I-pZd"/>
@@ -311,6 +331,7 @@
                 <constraint firstItem="kjF-9F-h0k" firstAttribute="top" secondItem="8bm-5o-629" secondAttribute="bottom" constant="8" id="OLn-28-GjO"/>
                 <constraint firstItem="zRn-Wf-s27" firstAttribute="centerX" secondItem="R9E-Cm-tUJ" secondAttribute="centerX" id="RtS-oy-zgl"/>
                 <constraint firstItem="YlX-bV-bTx" firstAttribute="centerX" secondItem="R9E-Cm-tUJ" secondAttribute="centerX" id="S0v-6P-5Hb"/>
+                <constraint firstItem="Zx4-kN-4ZO" firstAttribute="leading" secondItem="R9E-Cm-tUJ" secondAttribute="leading" constant="169" id="X9s-N9-MXv"/>
                 <constraint firstItem="8U8-yU-gNi" firstAttribute="top" secondItem="ke6-Ff-ewe" secondAttribute="bottom" constant="8" id="YYx-Kb-rkC"/>
                 <constraint firstItem="8U8-yU-gNi" firstAttribute="centerX" secondItem="R9E-Cm-tUJ" secondAttribute="centerX" id="gqK-p8-cLh"/>
                 <constraint firstItem="8bm-5o-629" firstAttribute="top" secondItem="XHy-zP-loL" secondAttribute="bottom" constant="8" id="hEq-lC-bo3"/>
