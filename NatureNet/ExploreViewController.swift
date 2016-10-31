@@ -34,6 +34,10 @@ class ExploreViewController: UIViewController,UICollectionViewDelegateFlowLayout
     var observationsCount : Int = 0
     
     let newObsAndDIViewtemp = NewObsAndDIViewController()
+    
+    let newObsAndDIView_gallery = NewObsAndDIViewController()
+    let cgVC_gallery = CameraAndGalleryViewController()
+    let diAndCVC_gallery = DesignIdeasAndChallengesViewController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -189,6 +193,73 @@ class ExploreViewController: UIViewController,UICollectionViewDelegateFlowLayout
 //            
 //        }
         
+        newObsAndDIView_gallery.view.frame = CGRectMake(0 ,UIScreen.mainScreen().bounds.size.height-newObsAndDIView_gallery.view.frame.size.height-8, UIScreen.mainScreen().bounds.size.width, newObsAndDIView_gallery.view.frame.size.height)
+        
+        newObsAndDIView_gallery.view.translatesAutoresizingMaskIntoConstraints = true
+        newObsAndDIView_gallery.view.center = CGPoint(x: view.bounds.midX, y: UIScreen.mainScreen().bounds.size.height - newObsAndDIView_gallery.view.frame.size.height/2 - 8)
+        newObsAndDIView_gallery.view.autoresizingMask = [UIViewAutoresizing.FlexibleLeftMargin, UIViewAutoresizing.FlexibleRightMargin, UIViewAutoresizing.None, UIViewAutoresizing.FlexibleBottomMargin]
+        
+        self.view.addSubview(newObsAndDIView_gallery.view)
+        //self.view.bringSubviewToFront(newObsAndDIView.view)
+        newObsAndDIView_gallery.camButton.addTarget(self, action: #selector(ExploreViewController.openNewObsView_projects), forControlEvents: .TouchUpInside)
+        
+        newObsAndDIView_gallery.designIdeaButton.addTarget(self, action: #selector(ExploreViewController.openNewDesignView_projects), forControlEvents: .TouchUpInside)
+        
+    }
+    
+    func openNewObsView_projects()
+    {
+        //print("gverver")
+        self.addChildViewController(cgVC_gallery)
+        cgVC_gallery.view.frame = CGRectMake(0, self.view.frame.size.height - cgVC_gallery.view.frame.size.height+68, cgVC_gallery.view.frame.size.width, cgVC_gallery.view.frame.size.height)
+        
+        cgVC_gallery.closeButton.addTarget(self, action: #selector(ExploreViewController.closeCamAndGalleryView), forControlEvents: .TouchUpInside)
+        
+        self.view.addSubview(cgVC_gallery.view)
+        UIView.animateWithDuration(0.3, animations: {
+            
+            self.cgVC_gallery.view.frame = CGRectMake(0, UIScreen.mainScreen().bounds.size.height - self.cgVC_gallery.view.frame.size.height+68, UIScreen.mainScreen().bounds.size.width, self.cgVC_gallery.view.frame.size.height)
+            
+            self.cgVC_gallery.view.translatesAutoresizingMaskIntoConstraints = true
+            self.cgVC_gallery.view.autoresizingMask = [UIViewAutoresizing.FlexibleLeftMargin, UIViewAutoresizing.FlexibleRightMargin, UIViewAutoresizing.None, UIViewAutoresizing.FlexibleBottomMargin]
+            
+        }) { (isComplete) in
+            
+            self.cgVC_gallery.didMoveToParentViewController(self)
+            
+        }
+    }
+    func openNewDesignView_projects()
+    {
+        //print("gverver")
+        self.addChildViewController(diAndCVC_gallery)
+        diAndCVC_gallery.view.frame = CGRectMake(0, self.view.frame.size.height - diAndCVC_gallery.view.frame.size.height+68, diAndCVC_gallery.view.frame.size.width, diAndCVC_gallery.view.frame.size.height)
+        
+        diAndCVC_gallery.closeButton.addTarget(self, action: #selector(ExploreViewController.closeDiAndChallengesView), forControlEvents: .TouchUpInside)
+        
+        self.view.addSubview(diAndCVC_gallery.view)
+        UIView.animateWithDuration(0.3, animations: {
+            
+            self.diAndCVC_gallery.view.frame = CGRectMake(0, UIScreen.mainScreen().bounds.size.height - self.diAndCVC_gallery.view.frame.size.height+68, UIScreen.mainScreen().bounds.size.width, self.diAndCVC_gallery.view.frame.size.height)
+            
+            self.diAndCVC_gallery.view.translatesAutoresizingMaskIntoConstraints = true
+            self.diAndCVC_gallery.view.autoresizingMask = [UIViewAutoresizing.FlexibleLeftMargin, UIViewAutoresizing.FlexibleRightMargin, UIViewAutoresizing.None, UIViewAutoresizing.FlexibleBottomMargin]
+            
+        }) { (isComplete) in
+            
+            self.diAndCVC_gallery.didMoveToParentViewController(self)
+            
+        }
+    }
+    func closeCamAndGalleryView()
+    {
+        cgVC_gallery.view.removeFromSuperview()
+        cgVC_gallery.removeFromParentViewController()
+    }
+    func closeDiAndChallengesView()
+    {
+        diAndCVC_gallery.view.removeFromSuperview()
+        diAndCVC_gallery.removeFromParentViewController()
     }
     
     func getObservations()
@@ -520,7 +591,7 @@ class ExploreViewController: UIViewController,UICollectionViewDelegateFlowLayout
 //        }
         
        
-        cell.exploreDate.text = affiliationDictionary.objectForKey(observerIdsGallery[indexPath.row]) as! String
+        cell.exploreDate.text = affiliationDictionary.objectForKey(observerIdsGallery[indexPath.row]) as? String ?? "No Affiliation"
         
         
         
@@ -534,8 +605,8 @@ class ExploreViewController: UIViewController,UICollectionViewDelegateFlowLayout
         let detailedObservationVC = DetailedObservationViewController()
         print(observerAvatarsUrlArray[indexPath.row].absoluteString)
         detailedObservationVC.observerImageUrl = observerAvatarsUrlArray[indexPath.row].absoluteString
-        detailedObservationVC.observerDisplayName = observerNamesArray[indexPath.row] as! String;
-        detailedObservationVC.observerAffiliation = affiliationDictionary.objectForKey(observerIdsGallery[indexPath.row]) as! String
+        detailedObservationVC.observerDisplayName = observerNamesArray[indexPath.row] as? String ?? "No Name";
+        detailedObservationVC.observerAffiliation = affiliationDictionary.objectForKey(observerIdsGallery[indexPath.row]) as? String ?? "No Affiliation"
         detailedObservationVC.observationText = observationTextArray[indexPath.row] as! String;
         
         detailedObservationVC.pageTitle = projectNames[indexPath.row] as! String

@@ -44,9 +44,12 @@ class NewObsViewController: UIViewController,UITableViewDelegate,UITableViewData
     
     var rightBarButtonItem: UIBarButtonItem!
     
+    @IBOutlet weak var whereItIsTextViewBottom: NSLayoutConstraint!
     
     @IBOutlet weak var obsProjectLabel: UILabel!
     @IBOutlet weak var obsDescTextView: UITextView!
+    
+    var kHieight: CGFloat = 0.0
     
     var activityID: String = ""
     override func viewDidLoad() {
@@ -128,47 +131,86 @@ class NewObsViewController: UIViewController,UITableViewDelegate,UITableViewData
         
         obsDescTextView.delegate = self
         whereitisTextView.delegate = self
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(NewObsViewController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(NewObsViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
 
     }
     func textViewDidBeginEditing(textView: UITextView) {
-        if(textView == whereitisTextView)
-        {
-            //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(NewObsViewController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-            //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(NewObsViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
-            self.view.frame.origin.y -= 150
+        
+        UIView.animateWithDuration(0.25, animations: { () -> Void in
             
-        }
-        else if(textView == obsDescTextView)
-        {
-            self.view.frame.origin.y -= 50
-        }
-    }
-    func textViewDidEndEditing(textView: UITextView) {
-        if(textView == whereitisTextView)
-        {
-            //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(NewObsViewController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-            //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(NewObsViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
-            self.view.frame.origin.y += 150
-        }
-        else if(textView == obsDescTextView)
-        {
-            self.view.frame.origin.y += 50
-        }
+            
+            if(textView == self.whereitisTextView)
+            {
+                //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(NewObsViewController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+                //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(NewObsViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+                self.view.frame.origin.y -= (self.kHieight-self.whereitisTextView.frame.size.height)
+                
+            }
+            else if(textView == self.obsDescTextView)
+            {
+                self.view.frame.origin.y -= self.kHieight/2
+            }
 
+        })
+
+    }
+    
+    
+    func textViewDidEndEditing(textView: UITextView) {
+        
+        
+
+    }
+    
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if(text == "\n") {
+            
+            UIView.animateWithDuration(0.25, animations: { () -> Void in
+            
+                if(textView.returnKeyType == UIReturnKeyType.Done) {
+                    
+                    if(textView == self.whereitisTextView)
+                    {
+                        
+                        self.view.frame.origin.y += (self.kHieight-self.whereitisTextView.frame.size.height)
+                    }
+                    else if(textView == self.obsDescTextView)
+                    {
+                        self.view.frame.origin.y += self.kHieight/2
+                    }
+                    
+                    
+                }
+                textView.resignFirstResponder()
+            })
+            
+            return false
+        }
+        return true
     }
     
     func keyboardWillShow(notification: NSNotification) {
         
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
-            self.view.frame.origin.y -= keyboardSize.height
+            //self.commentView.frame.origin.y -= keyboardSize.height
+            //whereItIsTextViewBottom.constant = keyboardSize.size.height
+            kHieight = keyboardSize.size.height
+            UIView.animateWithDuration(0.25, animations: { () -> Void in
+                //self.view.layoutIfNeeded()
+            })
         }
         
     }
     
     func keyboardWillHide(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
-            self.view.frame.origin.y += keyboardSize.height
-        }
+        
+        //whereItIsTextViewBottom.constant = whereitisTextView.frame.origin.y+whereitisTextView.frame.size.height
+        kHieight = 0.0
+        UIView.animateWithDuration(0.25, animations: { () -> Void in
+            self.view.layoutIfNeeded()
+        })
     }
 
     func getSiteLocationAndSetToLocValue()
@@ -302,13 +344,7 @@ class NewObsViewController: UIViewController,UITableViewDelegate,UITableViewData
         
     }
     
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
-        if(text == "\n") {
-            textView.resignFirstResponder()
-            return false
-        }
-        return true
-    }
+    
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         locValue = manager.location!.coordinate

@@ -185,6 +185,7 @@
                 <constraint firstItem="y76-c6-ccX" firstAttribute="top" secondItem="5kN-Us-rpr" secondAttribute="bottom" constant="8" id="ZeG-hm-R4r"/>
                 <constraint firstItem="N9m-K1-FBO" firstAttribute="leading" secondItem="hIV-8u-Hhl" secondAttribute="leading" constant="169" id="fnT-5n-0fV"/>
                 <constraint firstItem="WFn-BA-gSR" firstAttribute="centerX" secondItem="hIV-8u-Hhl" secondAttribute="centerX" id="pqy-eV-urT"/>
+                <constraint firstAttribute="trailing" secondItem="N9m-K1-FBO" secondAttribute="trailing" constant="169" id="qlO-AC-0O3"/>
                 <constraint firstItem="5kN-Us-rpr" firstAttribute="top" secondItem="hIV-8u-Hhl" secondAttribute="top" constant="120" id="uX5-ag-c1G"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
@@ -335,6 +336,7 @@
                 <constraint firstItem="8U8-yU-gNi" firstAttribute="top" secondItem="ke6-Ff-ewe" secondAttribute="bottom" constant="8" id="YYx-Kb-rkC"/>
                 <constraint firstItem="8U8-yU-gNi" firstAttribute="centerX" secondItem="R9E-Cm-tUJ" secondAttribute="centerX" id="gqK-p8-cLh"/>
                 <constraint firstItem="8bm-5o-629" firstAttribute="top" secondItem="XHy-zP-loL" secondAttribute="bottom" constant="8" id="hEq-lC-bo3"/>
+                <constraint firstAttribute="trailing" secondItem="Zx4-kN-4ZO" secondAttribute="trailing" constant="169" id="jdH-u8-OQ6"/>
                 <constraint firstItem="YlX-bV-bTx" firstAttribute="top" secondItem="BL5-kp-5HG" secondAttribute="bottom" constant="8" id="nwJ-jk-dbZ"/>
                 <constraint firstItem="ke6-Ff-ewe" firstAttribute="centerX" secondItem="R9E-Cm-tUJ" secondAttribute="centerX" id="o8P-3z-hOm"/>
                 <constraint firstItem="ke6-Ff-ewe" firstAttribute="top" secondItem="zRn-Wf-s27" secondAttribute="bottom" constant="8" id="rEZ-55-yzO"/>
