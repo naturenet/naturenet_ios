@@ -108,6 +108,19 @@ class ProjectDetailViewController: UIViewController,UICollectionViewDelegateFlow
         
         geoObservationsRootRef.queryLimitedToLast(UInt(projectObservationsNumber)).queryOrderedByChild("activity").queryEqualToValue(projectIdFromProjectVC).observeEventType(.Value, withBlock: { snapshot in
             
+            
+            self.commentsDictArray.removeAllObjects()
+            self.commentsCountArray_projects.removeAllObjects()
+            self.likesCountArray_projects.removeAllObjects()
+            self.observationUpdatedTimestampsArray_proj.removeAllObjects()
+            self.obsIdsArray.removeAllObjects()
+            self.observationsImagesArray.removeAllObjects()
+            self.observationsTextArray.removeAllObjects()
+            self.observersAffiliationsArray_proj.removeAllObjects()
+            self.observersNamesArray_proj.removeAllObjects()
+            self.observersAvatarUrls_proj.removeAllObjects()
+            
+            
             print(geoObservationsRootRef)
             print(snapshot.value!)
             

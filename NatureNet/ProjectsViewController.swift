@@ -243,7 +243,7 @@ class ProjectsViewController: UIViewController,UITableViewDelegate, UITableViewD
         //activitiesRootRef
         let activitiesRootRef = FIRDatabase.database().referenceWithPath("activities")
         
-        activitiesRootRef.queryOrderedByChild("latest_contribution").observeSingleEventOfType(.Value, withBlock: { snapshot in
+        activitiesRootRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
             
             //print(snapshot)
             //let acesBool = snapshot.childSnapshotForPath("sites/aces").value as! NSNumber
@@ -258,23 +258,14 @@ class ProjectsViewController: UIViewController,UITableViewDelegate, UITableViewD
             self.projectStatusKeys.removeAllObjects()
             self.projectIds.removeAllObjects()
             
-            
-            
             if !(snapshot.value is NSNull)
             {
-                let valuesArray = snapshot.value!.allKeys as NSArray
-                print(valuesArray)
-                
-                //let sortedSnapshot = valuesArray.sort({ $0.objectForKey("latest_contribution") as? Int ?? 0 > $1.objectForKey("latest_contribution") as? Int ?? 0})
-                
-                //let reversedValuesArray = valuesArray.reverse()
-                
-                
-                for j in 0 ..< valuesArray.count
+                for j in 0 ..< snapshot.value!.count
                 {
                     
-                    
-                    let activity = valuesArray[j] as! String
+                    let valuesArray = snapshot.value!.allKeys as NSArray
+                    var reversedValuesArray = valuesArray.reverse()
+                    let activity = reversedValuesArray[j] as! String
                     let activityDictionary = snapshot.value!.objectForKey(activity) as! NSDictionary
                     //print(activityDictionary.objectForKey("name"))
                     if(activityDictionary.objectForKey("name") != nil)

@@ -267,6 +267,17 @@ class ExploreViewController: UIViewController,UICollectionViewDelegateFlowLayout
         let observationsRootRef = FIRDatabase.database().referenceWithPath("observations")
         observationsRootRef.queryOrderedByChild("updated_at").queryLimitedToLast(10).observeEventType(.Value, withBlock: { snapshot in
             
+            self.observationUpdatedAtTimestampsArrayGallery.removeAllObjects()
+            self.commentsDictArrayGallery.removeAllObjects()
+            self.observationIdsGallery.removeAllObjects()
+            self.exploreObservationsImagesArray.removeAllObjects()
+            self.observationTextArray.removeAllObjects()
+            self.observerIdsGallery.removeAllObjects()
+            self.projectNames.removeAllObjects()
+            self.observerAffiliationsArray.removeAllObjects()
+            self.observerNamesArray.removeAllObjects()
+            self.observerAvatarsUrlArray.removeAllObjects()
+            
             print(observationsRootRef)
             print(snapshot.value!)
             print(snapshot.value!.allValues)
