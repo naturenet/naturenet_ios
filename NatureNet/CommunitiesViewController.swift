@@ -68,15 +68,7 @@ class CommunitiesViewController: UIViewController ,UITableViewDelegate, UITableV
                 let snap = snapshot.value!.allValues as NSArray
                 print(snap)
                 
-                if(snapshot.value!.objectForKey("latest_contribution") != nil)
-                {
-                    
-                }
-                else
-                {
-                    
-                }
-            
+                
                 let sortedSnapshot = snap.sort({ $0.objectForKey("latest_contribution") as? Int ?? 0 > $1.objectForKey("latest_contribution") as? Int ?? 0})
                 print(snap)
                 
