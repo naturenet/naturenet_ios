@@ -83,165 +83,16 @@ class ProjectsViewController: UIViewController,UITableViewDelegate, UITableViewD
             newObsAndDIView_projects.designIdeaButton.addTarget(self, action: #selector(ProjectsViewController.openNewDesignView_projects), forControlEvents: .TouchUpInside)
         }
 
-
-
-
-//        let geoActivitiesRootRef = FIRDatabase.database().referenceWithPath("geo/activities/")
-//        //Firebase(url:FIREBASE_URL + "geo/activities")
-//        geoActivitiesRootRef.observeEventType(.Value, withBlock: { snapshot in
-//
-//            //print(geoActivitiesRootRef)
-//            //print(snapshot.value!.count)
-//
-//
-//            if !(snapshot.value is NSNull)
-//            {
-//                for i in 0 ..< snapshot.value!.count
-//                {
-//                    let geoActivities = snapshot.value!.allValues[i] as! NSDictionary
-//                    print(geoActivities)
-//                    //let geoActivity = geoActivities.objectForKey("activity") as! String
-//                    let geoActivityId = geoActivities.objectForKey("id") as! String
-//
-//                    //print(geoActivity)
-//                    if(geoActivityId != "")
-//                    {
-//                        self.projectGeoIds.addObject(geoActivityId)
-//                    }
-//                    else
-//                    {
-//                        self.projectGeoIds.addObject("")
-//                    }
-//
-//
-//                }
-//            }
-//
-//
-//
-//            }, withCancelBlock: { error in
-//                print(error.description)
-//                let alert = UIAlertController(title: "Alert", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
-//                let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
-//                alert.addAction(action)
-//                self.presentViewController(alert, animated: true, completion: nil)
-//
-//        })
-
-
         
         getProjectsDetails()
 
-//                    if(self.isfromObservationVC == true)
-//                    {
-//                        let activitiesRootRef = FIRDatabase.database().referenceWithPath("activities")
-//                        //for user's site only: .queryOrderedByChild("sites/\(userAffiliation)").queryEqualToValue(true)
-//
-//                        activitiesRootRef.observeEventType(.Value, withBlock: { snapshot in
-//
-//                            //print(snapshot)
-//                            //let acesBool = snapshot.childSnapshotForPath("sites/aces").value as! NSNumber
-//                            //print(acesBool)
-//
-//                            print(activitiesRootRef)
-//                            print(snapshot.value)
-//
-//                            if !(snapshot.value is NSNull)
-//                            {
-//                                for j in 0 ..< snapshot.value!.count
-//                                {
-//
-//
-//                                    let activity = snapshot.value!.allKeys[j] as! String
-//                                    let activityDictionary = snapshot.value!.objectForKey(activity) as! NSDictionary
-//                                    //print(activityDictionary.objectForKey("name"))
-//                                    if(activityDictionary.objectForKey("name") != nil)
-//                                    {
-//                                        //print(geoActivity)
-//                                        //print(activity)
-//                                        //if(activity == geoActivity)
-//                                        //{
-//                                            self.projectKeys.addObject(activityDictionary.objectForKey("name")!)
-//                                        //}
-//                                    }
-//                                    
-//                                    if(activityDictionary.objectForKey("description") != nil )
-//                                    {
-//                                        //print(geoActivity)
-//                                        //print(activity)
-//                                        //if(activity == geoActivity)
-//                                        //{
-//                                            self.projectDescriptionKeys.addObject(activityDictionary.objectForKey("description")!)
-//                                        //}
-//                                    }
-//                                    
-//                                    if(activityDictionary.objectForKey("icon_url") != nil)
-//                                    {
-//                                        //print(geoActivity)
-//                                        //print(activity)
-//                                        //if(activity == geoActivity)
-//                                        //{
-//
-//                                            let iconUrlString = activityDictionary.objectForKey("icon_url") as! String
-//                                            let newiconUrlString = iconUrlString.stringByReplacingOccurrencesOfString("upload", withString: "upload/t_ios-thumbnail", options: NSStringCompareOptions.LiteralSearch, range: nil)
-//                                            self.projectIconKeys.addObject(newiconUrlString)
-//                                        //}
-//                                    }
-//                                    if(activityDictionary.objectForKey("status") != nil)
-//                                    {
-//                                        //print(geoActivity)
-//                                        //print(activity)
-//                                        //if(activity == geoActivity)
-//                                        //{
-//                                    self.projectStatusKeys.addObject(activityDictionary.objectForKey("status")!)
-//                                        //}
-//                                    }
-//                                    if(activityDictionary.objectForKey("id") != nil)
-//                                    {
-//                                        //print(geoActivity)
-//                                        //print(activity)
-//                                        //if(activity == geoActivity)
-//                                        //{
-//                                        self.projectIds.addObject(activityDictionary.objectForKey("id")!)
-//                                        print(self.projectIds)
-//                                        //}
-//                                    }
-//
-//
-//
-//
-//                                }
-//                                print(self.projectKeys)
-//
-//
-//
-//                                self.projectsTableView.reloadData()
-//
-//
-//                            }
-//
-//
-//
-//                            }, withCancelBlock: { error in
-//                                print(error.description)
-//                                let alert = UIAlertController(title: "Alert", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
-//                                let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
-//                                alert.addAction(action)
-//                                self.presentViewController(alert, animated: true, completion: nil)
-//
-//                        })
-//
-//                    }
-//                    else
-//                    {
-//                        
-//                    }
 
     }
     func getProjectsDetails()
     {
         //activitiesRootRef
         let activitiesRootRef = FIRDatabase.database().referenceWithPath("activities")
+        activitiesRootRef.keepSynced(true)
         
         activitiesRootRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
             

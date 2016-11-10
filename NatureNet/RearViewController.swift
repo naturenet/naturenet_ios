@@ -14,6 +14,8 @@ class RearViewController: UIViewController,UITableViewDelegate, UITableViewDataS
     
     var menuItems: [String] = ["Explore","Gallery", "Projects","Design Ideas","Communities"]
     var menuItemsImages: [String] = ["observations navy.png","gallery.png", "project.png","design ideas.png","community.png"]
+    var logoutArray:[String] = []
+    var logoutImagesArray: [String] = []
     
     @IBOutlet weak var joinButton: UIButton!
     @IBOutlet weak var signInButton: UIButton!
@@ -82,17 +84,36 @@ class RearViewController: UIViewController,UITableViewDelegate, UITableViewDataS
     // MARK: - Table view data source
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         
-        return 1
+        return 2
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return menuItems.count
+        var count = 0
+        if(section == 0)
+        {
+            count = menuItems.count
+        }
+        else if(section == 1)
+        {
+            count = logoutArray.count
+        }
+        return count
+        
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("MenuCell", forIndexPath: indexPath) as! MenuTableViewCell
-        cell.menuItemTitle.text = menuItems[indexPath.row]
-        cell.menuItemIcon.image = UIImage(named: menuItemsImages[indexPath.row])
+        if(indexPath.section==0)
+        {
+            cell.menuItemTitle.text = menuItems[indexPath.row]
+            cell.menuItemIcon.image = UIImage(named: menuItemsImages[indexPath.row])
+        }
+        else if(indexPath.section == 1)
+        {
+            cell.menuItemTitle.text = logoutArray[indexPath.row]
+            cell.menuItemIcon.image = UIImage(named: logoutImagesArray[indexPath.row])
+        }
+        
         return cell
     }
     
@@ -136,7 +157,7 @@ class RearViewController: UIViewController,UITableViewDelegate, UITableViewDataS
             revealViewController().pushFrontViewController(newFrontViewController, animated: true)
             
         }
-        else if ((indexPath.section == 0) && (indexPath.row == 5)) {
+        else if ((indexPath.section == 1) && (indexPath.row == 0)) {
             
             //NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
             //[[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
@@ -149,10 +170,10 @@ class RearViewController: UIViewController,UITableViewDelegate, UITableViewDataS
             try! FIRAuth.auth()!.signOut()
             
             
-            if(menuItems.count > 5)
+            if(menuItems.count > 0)
             {
-                menuItems.removeAtIndex(5)
-                menuItemsImages.removeAtIndex(5)
+                logoutArray.removeAtIndex(0)
+                logoutImagesArray.removeAtIndex(0)
                 profileImageView.image = UIImage(named:"user.png")
             }
             menuTableView.reloadData()
@@ -165,7 +186,25 @@ class RearViewController: UIViewController,UITableViewDelegate, UITableViewDataS
         }
         
     }
-
+    
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        var headerHeight = CGFloat()
+        if(section == 0)
+        {
+            headerHeight = 0
+        }
+        else{
+            headerHeight = 44
+        }
+        return headerHeight
+    }
+    
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let v = UIView()
+        v.backgroundColor = UIColor.clearColor()
+        return v
+    }
+    
     @IBAction func signInAction(sender: UIButton) {
         
         let signInSignUpVC=SignInSignUpViewController()
@@ -201,8 +240,8 @@ class RearViewController: UIViewController,UITableViewDelegate, UITableViewDataS
             if(allowOnce == true)
             {
                 allowOnce = false
-                menuItems.insert("Logout", atIndex: 5)
-                menuItemsImages.insert("shutdown.png", atIndex: 5)
+                logoutArray.insert("Logout", atIndex: 0)
+                logoutImagesArray.insert("shutdown.png", atIndex: 0)
                 
                 menuTableView.reloadData()
             }
@@ -278,10 +317,10 @@ class RearViewController: UIViewController,UITableViewDelegate, UITableViewDataS
         }
         else
         {
-            if(menuItems.count > 5)
+            if(logoutArray.count > 0)
             {
-                menuItems.removeAtIndex(5)
-                menuItemsImages.removeAtIndex(5)
+                logoutArray.removeAtIndex(0)
+                logoutImagesArray.removeAtIndex(0)
             }
             
             

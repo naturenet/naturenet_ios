@@ -206,7 +206,7 @@ class NewDesignIdeasAndChallengesViewController: UIViewController ,UIImagePicker
                                             let autoID = ref.childByAutoId()
                                             //let id = autoID as String
                                             print(autoID.key)
-                                            let designData = ["id": autoID.key as AnyObject,"content": self.textView.text as AnyObject,"group": self.design as AnyObject, "status": "Doing" ,"submitter": userID as AnyObject,"created_at": FIRServerValue.timestamp(),"updated_at": FIRServerValue.timestamp()]
+                                            let designData = ["id": autoID.key as AnyObject,"content": self.textView.text as AnyObject,"group": self.design as AnyObject, "status": "Doing" ,"submitter": userID as AnyObject,"created_at": FIRServerValue.timestamp(),"updated_at": FIRServerValue.timestamp(),"source": "ios"]
                                             autoID.setValue(designData)
                                             
                                             let alert = UIAlertController(title: "Alert", message: "Design Posted Successfully", preferredStyle: UIAlertControllerStyle.Alert)
