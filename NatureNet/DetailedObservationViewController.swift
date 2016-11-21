@@ -970,7 +970,7 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
                                             }
                                             else
                                             {
-                                                alert = UIAlertController(title: "Alert", message:error.debugDescription ,preferredStyle: UIAlertControllerStyle.Alert)
+                                                alert = UIAlertController(title: "Alert", message:error?.localizedDescription ,preferredStyle: UIAlertControllerStyle.Alert)
                                             }
                                             let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
                                             alert.addAction(action)
@@ -1166,7 +1166,7 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
                                 }
                                 else
                                 {
-                                    alert = UIAlertController(title: "Alert", message:error.debugDescription ,preferredStyle: UIAlertControllerStyle.Alert)
+                                    alert = UIAlertController(title: "Alert", message:error?.localizedDescription ,preferredStyle: UIAlertControllerStyle.Alert)
                                 }
 
                                 //alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
@@ -1273,7 +1273,7 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
                                 }
                                 else
                                 {
-                                    alert = UIAlertController(title: "Alert", message:error.debugDescription ,preferredStyle: UIAlertControllerStyle.Alert)
+                                    alert = UIAlertController(title: "Alert", message:error?.localizedDescription ,preferredStyle: UIAlertControllerStyle.Alert)
                                 }
 
                                 let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
