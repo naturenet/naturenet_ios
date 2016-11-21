@@ -82,6 +82,116 @@ class ExploreViewController: UIViewController,UICollectionViewDelegateFlowLayout
         
         self.getObservations()
         
+//        for i in 0 ..< observerIdsGallery.count
+//        {
+//            let usersRootRef = FIRDatabase.database().referenceWithPath("users/\(observerIdsGallery[i])")
+//            //Firebase(url:USERS_URL+"\(observerIdsfromMapView[i])")
+//            usersRootRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+//                
+//                print(usersRootRef)
+//                //print(snapshot.value.count)
+//                //self.observerNamesArray = []
+//                self.observerAffiliationsArray.removeAllObjects()
+//                
+//                if !(snapshot.value is NSNull)
+//                {
+//                    if((snapshot.value!.objectForKey("affiliation")) != nil && (snapshot.value!.objectForKey("affiliation")) as! String != "")
+//                    {
+//                        let observerAffiliationString = snapshot.value!.objectForKey("affiliation") as! String
+//                        let sitesRootRef = FIRDatabase.database().referenceWithPath("sites/"+observerAffiliationString)
+//                        //Firebase(url:FIREBASE_URL + "sites/"+aff!)
+//                        sitesRootRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+//                            
+//                            
+//                            print(sitesRootRef)
+//                            print(snapshot.value)
+//                            
+//                            if !(snapshot.value is NSNull)
+//                            {
+//                                print(snapshot.value!.objectForKey("name"))
+//                                if(snapshot.value!.objectForKey("name") != nil)
+//                                {
+//                                    //cell.exploreDate.text = snapshot.value!.objectForKey("name") as? String
+//                                    self.observerAffiliationsArray.addObject((snapshot.value!.objectForKey("name") as? String)!)
+//                                }
+//                                else
+//                                {
+//                                    self.observerAffiliationsArray.addObject("No Affiliation")
+//                                }
+//                                
+//                                
+//                                
+//                            }
+//                            self.collectionView.reloadData()
+//                            }, withCancelBlock: { error in
+//                                print(error.description)
+//                                let alert = UIAlertController(title: "Alert", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+//                                let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
+//                                alert.addAction(action)
+//                                self.presentViewController(alert, animated: true, completion: nil)
+//
+//                        })
+//
+//                        
+//                        //self.observerAffiliationsArray.addObject(observerAffiliationString)
+//                    }
+//                    else
+//                    {
+//                        self.observerAffiliationsArray.addObject("No Affiliation")
+//                    }
+//                    if((snapshot.value!.objectForKey("display_name")) != nil)
+//                    {
+//                        let observerDisplayNameString = snapshot.value!.objectForKey("display_name") as! String
+//                        self.observerNamesArray.addObject(observerDisplayNameString)
+//                    }
+//                    else
+//                    {
+//                        self.observerNamesArray.addObject("No Diaplay Name")
+//                    }
+//                    
+//                    
+//                    if((snapshot.value!.objectForKey("avatar")) != nil)
+//                    {
+//                        print(snapshot.value!)
+//                        let observerAvatar = snapshot.value!.objectForKey("avatar")
+//                        print(observerAvatar)
+//                        let observerAvatarUrl  = NSURL(string: observerAvatar as! String)
+//                        if(UIApplication.sharedApplication().canOpenURL(observerAvatarUrl!) == true)
+//                        {
+//                            //self.observerAvatarsArray.addObject(NSData(contentsOfURL: observerAvatarUrl!)!)
+//                            self.observerAvatarsUrlArray.addObject(observerAvatarUrl!)
+//                        }
+//                        else
+//                        {
+//                            let tempImageUrl = NSBundle.mainBundle().URLForResource("user", withExtension: "png")
+//                            
+//                            
+//                            //self.observerAvatarsArray.addObject(NSData(contentsOfURL: tempImageUrl!)!)
+//                            self.observerAvatarsUrlArray.addObject(tempImageUrl!)
+//                        }
+//                        //let observerAvatarData = NSData(contentsOfURL: observerAvatarUrl!)
+//                    }
+//                    else
+//                    {
+//                        let tempImageUrl = NSBundle.mainBundle().URLForResource("user", withExtension: "png")
+//                        
+//                        //self.observerAvatarsArray.addObject(NSData(contentsOfURL: tempImageUrl!)!)
+//                        self.observerAvatarsUrlArray.addObject(tempImageUrl!)
+//                        
+//                    }
+//                    
+//                }
+//                
+//                }, withCancelBlock: { error in
+//                    print(error.description)
+//                    let alert = UIAlertController(title: "Alert", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+//                    let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
+//                    alert.addAction(action)
+//                    self.presentViewController(alert, animated: true, completion: nil)
+//
+//            })
+//            
+//        }
         
         newObsAndDIView_gallery.view.frame = CGRectMake(0 ,UIScreen.mainScreen().bounds.size.height-newObsAndDIView_gallery.view.frame.size.height-8, UIScreen.mainScreen().bounds.size.width, newObsAndDIView_gallery.view.frame.size.height)
         
@@ -155,7 +265,6 @@ class ExploreViewController: UIViewController,UICollectionViewDelegateFlowLayout
     func getObservations()
     {
         let observationsRootRef = FIRDatabase.database().referenceWithPath("observations")
-        observationsRootRef.keepSynced(true)
         observationsRootRef.queryOrderedByChild("updated_at").queryLimitedToLast(10).observeEventType(.Value, withBlock: { snapshot in
             
             self.observationUpdatedAtTimestampsArrayGallery.removeAllObjects()
@@ -377,11 +486,9 @@ class ExploreViewController: UIViewController,UICollectionViewDelegateFlowLayout
                             if((snapshot.value!.objectForKey("avatar")) != nil)
                             {
                                 print(snapshot.value!)
-                                let observerAvatar = snapshot.value!.objectForKey("avatar") as! String
-                                
+                                let observerAvatar = snapshot.value!.objectForKey("avatar")
                                 print(observerAvatar)
-                                let newavatarUrlString = observerAvatar.stringByReplacingOccurrencesOfString("upload", withString: "upload/t_ios-thumbnail", options: NSStringCompareOptions.LiteralSearch, range: nil)
-                                let observerAvatarUrl  = NSURL(string: newavatarUrlString)
+                                let observerAvatarUrl  = NSURL(string: observerAvatar as! String)
                                 if(UIApplication.sharedApplication().canOpenURL(observerAvatarUrl!) == true)
                                 {
                                     //self.observerAvatarsArray.addObject(NSData(contentsOfURL: observerAvatarUrl!)!)

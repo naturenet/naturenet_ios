@@ -10,7 +10,6 @@
             <connections>
                 <outlet property="designChallengesButton" destination="OdT-gK-hYB" id="RQw-OY-4F2"/>
                 <outlet property="designDescrptionLabel" destination="iom-v6-0gh" id="U2v-5a-Qdp"/>
-                <outlet property="designIdeasAndChallengesButtonView" destination="s7j-xy-IiB" id="BpZ-yk-1I5"/>
                 <outlet property="designIdeasButton" destination="vxy-ne-mxi" id="sEJ-Ok-LC5"/>
                 <outlet property="designImageView" destination="WpB-a9-c9W" id="jnV-29-3V1"/>
                 <outlet property="designLabel" destination="8Zr-mX-P8L" id="PwE-Jp-ACZ"/>

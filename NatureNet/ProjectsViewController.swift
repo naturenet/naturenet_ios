@@ -82,19 +82,16 @@ class ProjectsViewController: UIViewController,UITableViewDelegate, UITableViewD
 
             newObsAndDIView_projects.designIdeaButton.addTarget(self, action: #selector(ProjectsViewController.openNewDesignView_projects), forControlEvents: .TouchUpInside)
         }
-
         
         getProjectsDetails()
-
 
     }
     func getProjectsDetails()
     {
         //activitiesRootRef
         let activitiesRootRef = FIRDatabase.database().referenceWithPath("activities")
-        activitiesRootRef.keepSynced(true)
         
-        activitiesRootRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+        activitiesRootRef.observeEventType(.Value, withBlock: { snapshot in
             
             //print(snapshot)
             //let acesBool = snapshot.childSnapshotForPath("sites/aces").value as! NSNumber
@@ -109,15 +106,23 @@ class ProjectsViewController: UIViewController,UITableViewDelegate, UITableViewD
             self.projectStatusKeys.removeAllObjects()
             self.projectIds.removeAllObjects()
             
+            
             if !(snapshot.value is NSNull)
             {
-                for j in 0 ..< snapshot.value!.count
+                let valuesArray = snapshot.value!.allValues as NSArray
+                
+                var sortedSnapshot = valuesArray.sort({ $0.objectForKey("latest_contribution") as? Int ?? 0 > $1.objectForKey("latest_contribution") as? Int ?? 0})
+                
+                print(sortedSnapshot)
+                
+                //sortedSnapshot = sortedSnapshot.reverse()
+                
+                for j in 0 ..< sortedSnapshot.count
                 {
                     
-                    let valuesArray = snapshot.value!.allKeys as NSArray
-                    var reversedValuesArray = valuesArray.reverse()
-                    let activity = reversedValuesArray[j] as! String
-                    let activityDictionary = snapshot.value!.objectForKey(activity) as! NSDictionary
+                    //let activity = reversedValuesArray[j] as! String
+                    
+                    let activityDictionary = sortedSnapshot[j] as! NSDictionary
                     //print(activityDictionary.objectForKey("name"))
                     if(activityDictionary.objectForKey("name") != nil)
                     {

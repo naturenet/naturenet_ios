@@ -303,7 +303,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
     {
         
         let observationsRootRef = FIRDatabase.database().referenceWithPath("observations")
-        observationsRootRef.keepSynced(true)
         observationsRootRef.queryOrderedByChild("updated_at").queryLimitedToLast(10).observeEventType(.Value, withBlock: { snapshot in
             
             //Empty all the arrays

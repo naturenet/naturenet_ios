@@ -58,7 +58,6 @@ class CommunitiesViewController: UIViewController ,UITableViewDelegate, UITableV
         
     
         let communitiesRootRef = FIRDatabase.database().referenceWithPath("users") //Firebase(url:FIREBASE_URL+"users")
-        communitiesRootRef.keepSynced(true)
         communitiesRootRef.observeEventType(.Value, withBlock: { snapshot in
             
             print(communitiesRootRef)

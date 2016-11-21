@@ -222,7 +222,7 @@ class ObservationForLater : NSObject, NSCoding, CLUploaderDelegate {
         print(self.longitude)
         let currentTimestamp = FIRServerValue.timestamp()
         
-        let obsDetails = ["data":["image": imageURL as AnyObject, "text" : self.observationDescription as AnyObject],"l":["0": self.latitude as AnyObject, "1" : self.longitude as AnyObject],"id": autoID.key,"activity": self.projectID,"where": self.whereitis,"site": self.site,"observer":self.observerID, "created_at": FIRServerValue.timestamp(),"updated_at": FIRServerValue.timestamp(),"source": "ios"]
+        let obsDetails = ["data":["image": imageURL as AnyObject, "text" : self.observationDescription as AnyObject],"l":["0": self.latitude as AnyObject, "1" : self.longitude as AnyObject],"id": autoID.key,"activity": self.projectID,"where": self.whereitis,"site": self.site,"observer":self.observerID, "created_at": FIRServerValue.timestamp(),"updated_at": FIRServerValue.timestamp()]
         autoID.setValue(obsDetails)
         
         print(autoID)
