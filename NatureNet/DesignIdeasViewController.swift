@@ -80,8 +80,11 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
     
     var designsCount = 0
     
+    let newObsAndDIView_design = NewObsAndDIViewController()
+    let cgVC_design = CameraAndGalleryViewController()
+    let diAndCVC_design = DesignIdeasAndChallengesViewController()
     
-    
+    @IBOutlet weak var designIdeasAndChallengesButtonView: UIView!
     
     //var groupChallengeArray: NSMutableArray = []
     //var groupDesignArray: NSMutableArray = []
@@ -122,16 +125,75 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
         
         designTableView.registerNib(UINib(nibName: "DesignIdeasAndChallengesTableViewCell", bundle: nil), forCellReuseIdentifier: "designIdeasAndChallengesIdentifier")
         
+        newObsAndDIView_design.view.frame = CGRectMake(0 ,UIScreen.mainScreen().bounds.size.height-newObsAndDIView_design.view.frame.size.height-(designIdeasAndChallengesButtonView.frame.size.height*2)-8, UIScreen.mainScreen().bounds.size.width, newObsAndDIView_design.view.frame.size.height)
         
+        newObsAndDIView_design.view.translatesAutoresizingMaskIntoConstraints = true
+        newObsAndDIView_design.view.center = CGPoint(x: view.bounds.midX, y: UIScreen.mainScreen().bounds.size.height - newObsAndDIView_design.view.frame.size.height/2 - (designIdeasAndChallengesButtonView.frame.size.height)-8)
+        newObsAndDIView_design.view.autoresizingMask = [UIViewAutoresizing.FlexibleLeftMargin, UIViewAutoresizing.FlexibleRightMargin, UIViewAutoresizing.None, UIViewAutoresizing.FlexibleBottomMargin]
         
-        //let ideasUrl = NSURL(string: "https://naturenet.firebaseio.com/ideas/-KFSFdMuw_jLEG9ZU-6v.json")
-        //let ideasUrl = NSURL(string: DESIGN_URL)
-        //removeAllObjectsFromArrays()
-        //firebaseForIdeas()
-        //updateTable(IDEA)
-        //firebaseForChallenges()
+        self.view.addSubview(newObsAndDIView_design.view)
+        //self.view.bringSubviewToFront(newObsAndDIView.view)
+        newObsAndDIView_design.camButton.addTarget(self, action: #selector(DesignIdeasViewController.openNewObsView_design), forControlEvents: .TouchUpInside)
+        
+        newObsAndDIView_design.designIdeaButton.addTarget(self, action: #selector(DesignIdeasViewController.openNewDesignView_design), forControlEvents: .TouchUpInside)
         
     }
+    
+    func openNewObsView_design()
+    {
+        //print("gverver")
+        self.addChildViewController(cgVC_design)
+        cgVC_design.view.frame = CGRectMake(0, self.view.frame.size.height - cgVC_design.view.frame.size.height+68, cgVC_design.view.frame.size.width, cgVC_design.view.frame.size.height)
+        
+        cgVC_design.closeButton.addTarget(self, action: #selector(ProjectsViewController.closeCamAndGalleryView), forControlEvents: .TouchUpInside)
+        
+        self.view.addSubview(cgVC_design.view)
+        UIView.animateWithDuration(0.3, animations: {
+            
+            self.cgVC_design.view.frame = CGRectMake(0, UIScreen.mainScreen().bounds.size.height - self.cgVC_design.view.frame.size.height+68, UIScreen.mainScreen().bounds.size.width, self.cgVC_design.view.frame.size.height)
+            
+            self.cgVC_design.view.translatesAutoresizingMaskIntoConstraints = true
+            self.cgVC_design.view.autoresizingMask = [UIViewAutoresizing.FlexibleLeftMargin, UIViewAutoresizing.FlexibleRightMargin, UIViewAutoresizing.None, UIViewAutoresizing.FlexibleBottomMargin]
+            
+        }) { (isComplete) in
+            
+            self.cgVC_design.didMoveToParentViewController(self)
+            
+        }
+    }
+    func openNewDesignView_design()
+    {
+        //print("gverver")
+        self.addChildViewController(diAndCVC_design)
+        diAndCVC_design.view.frame = CGRectMake(0, self.view.frame.size.height - diAndCVC_design.view.frame.size.height+68, diAndCVC_design.view.frame.size.width, diAndCVC_design.view.frame.size.height)
+        
+        diAndCVC_design.closeButton.addTarget(self, action: #selector(ProjectsViewController.closeDiAndChallengesView), forControlEvents: .TouchUpInside)
+        
+        self.view.addSubview(diAndCVC_design.view)
+        UIView.animateWithDuration(0.3, animations: {
+            
+            self.diAndCVC_design.view.frame = CGRectMake(0, UIScreen.mainScreen().bounds.size.height - self.diAndCVC_design.view.frame.size.height+68, UIScreen.mainScreen().bounds.size.width, self.diAndCVC_design.view.frame.size.height)
+            
+            self.diAndCVC_design.view.translatesAutoresizingMaskIntoConstraints = true
+            self.diAndCVC_design.view.autoresizingMask = [UIViewAutoresizing.FlexibleLeftMargin, UIViewAutoresizing.FlexibleRightMargin, UIViewAutoresizing.None, UIViewAutoresizing.FlexibleBottomMargin]
+            
+        }) { (isComplete) in
+            
+            self.diAndCVC_design.didMoveToParentViewController(self)
+            
+        }
+    }
+    func closeCamAndGalleryView()
+    {
+        cgVC_design.view.removeFromSuperview()
+        cgVC_design.removeFromParentViewController()
+    }
+    func closeDiAndChallengesView()
+    {
+        diAndCVC_design.view.removeFromSuperview()
+        diAndCVC_design.removeFromParentViewController()
+    }
+
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
