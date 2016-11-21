@@ -377,9 +377,11 @@ class ExploreViewController: UIViewController,UICollectionViewDelegateFlowLayout
                             if((snapshot.value!.objectForKey("avatar")) != nil)
                             {
                                 print(snapshot.value!)
-                                let observerAvatar = snapshot.value!.objectForKey("avatar")
+                                let observerAvatar = snapshot.value!.objectForKey("avatar") as! String
+                                
                                 print(observerAvatar)
-                                let observerAvatarUrl  = NSURL(string: observerAvatar as! String)
+                                let newavatarUrlString = observerAvatar.stringByReplacingOccurrencesOfString("upload", withString: "upload/t_ios-thumbnail", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                                let observerAvatarUrl  = NSURL(string: newavatarUrlString)
                                 if(UIApplication.sharedApplication().canOpenURL(observerAvatarUrl!) == true)
                                 {
                                     //self.observerAvatarsArray.addObject(NSData(contentsOfURL: observerAvatarUrl!)!)

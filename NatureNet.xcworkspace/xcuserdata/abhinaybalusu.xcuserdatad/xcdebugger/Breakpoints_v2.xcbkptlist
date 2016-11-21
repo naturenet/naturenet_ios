@@ -202,12 +202,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NatureNet/NewObsViewController.swift"
-            timestampString = "499625400.518899"
+            timestampString = "500496700.280732"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "163"
-            endingLineNumber = "163"
-            landmarkName = "textViewDidEndEditing(_:)"
+            startingLineNumber = "525"
+            endingLineNumber = "525"
+            landmarkName = "postToFirebase()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NatureNet/NewObsViewController.swift"
+            timestampString = "500496703.938269"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "553"
+            endingLineNumber = "553"
+            landmarkName = "postToFirebase()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
