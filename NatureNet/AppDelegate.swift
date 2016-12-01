@@ -18,8 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var viewController: UIViewController?
     var frontNavController : UINavigationController? = nil
     var laterArray : [ObservationForLater] = []
-    let date = NSDate()
-    let cal = NSCalendar.currentCalendar()
+    //let date = NSDate()
+    //let cal = NSCalendar.currentCalendar()
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
@@ -45,6 +45,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //Configuring Firebase
         FIRApp.configure()
+        
+        //FIRCrashMessage("Testing Firebase Crash")
+        //fatalError()
         
         //Enabling Firebase persistent data
         FIRDatabase.database().persistenceEnabled = true
@@ -108,31 +111,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //print(NSDate())
         //let midnightLastNight = NSDate()
         
-        cal.timeZone = NSTimeZone.localTimeZone()
+        //cal.timeZone = NSTimeZone.localTimeZone()
         
-        checkCurrentTimeIfNotLogOutTheUser(date,cal: cal)
+        //checkCurrentTimeIfNotLogOutTheUser(date,cal: cal)
         //print(cal.isDateInToday(userDefaults.objectForKey("lastStartTime") as! NSDate))
         
         
         return true
     }
     
-    func checkCurrentTimeIfNotLogOutTheUser(date: NSDate, cal: NSCalendar)
-    {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        if((userDefaults.objectForKey("lastStartTime") != nil) && !(cal.isDateInToday(userDefaults.objectForKey("lastStartTime") as! NSDate)))
-        {
-            let laterUploads = userDefaults.objectForKey("observationsForLater")
-            NSUserDefaults.standardUserDefaults().removePersistentDomainForName(NSBundle.mainBundle().bundleIdentifier!)
-            
-            userDefaults.setObject(laterUploads, forKey: "observationsForLater")
-            
-            try! FIRAuth.auth()!.signOut()
-        }
-        
-        userDefaults.setObject(date, forKey: "lastStartTime")
-
-    }
+//    func checkCurrentTimeIfNotLogOutTheUser(date: NSDate, cal: NSCalendar)
+//    {
+//        let userDefaults = NSUserDefaults.standardUserDefaults()
+//        if((userDefaults.objectForKey("lastStartTime") != nil) && !(cal.isDateInToday(userDefaults.objectForKey("lastStartTime") as! NSDate)))
+//        {
+//            let laterUploads = userDefaults.objectForKey("observationsForLater")
+//            NSUserDefaults.standardUserDefaults().removePersistentDomainForName(NSBundle.mainBundle().bundleIdentifier!)
+//            
+//            userDefaults.setObject(laterUploads, forKey: "observationsForLater")
+//            
+//            try! FIRAuth.auth()!.signOut()
+//        }
+//        
+//        userDefaults.setObject(date, forKey: "lastStartTime")
+//
+//    }
 //    func calendarDayDidChange(notification : NSNotification)
 //    {
 //        let userDefaults = NSUserDefaults.standardUserDefaults()
@@ -182,7 +185,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         //UIApplication.sharedApplication().applicationIconBadgeNumber = 0
         //NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(AppDelegate.calendarDayDidChange(_:)), name:NSCalendarDayChangedNotification, object:nil)
-        checkCurrentTimeIfNotLogOutTheUser(date,cal: cal)
+        //checkCurrentTimeIfNotLogOutTheUser(date,cal: cal)
     }
 
     func applicationWillTerminate(application: UIApplication) {

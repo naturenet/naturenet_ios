@@ -106,6 +106,8 @@
 		9FA9001D1DAFCEAD00A57721 /* LikeOrDislikeAnObservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FA9001C1DAFCEAD00A57721 /* LikeOrDislikeAnObservation.swift */; };
 		9FC2D1A01CEB7749000B398B /* DesignIdeasAndChallengesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FC2D19E1CEB7749000B398B /* DesignIdeasAndChallengesTableViewCell.swift */; };
 		9FC2D1A11CEB7749000B398B /* DesignIdeasAndChallengesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FC2D19F1CEB7749000B398B /* DesignIdeasAndChallengesTableViewCell.xib */; };
+		9FCCDDCB1DE35FC6005663D5 /* CommunitiesObservationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FCCDDC91DE35FC6005663D5 /* CommunitiesObservationsViewController.swift */; };
+		9FCCDDCC1DE35FC6005663D5 /* CommunitiesObservationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FCCDDCA1DE35FC6005663D5 /* CommunitiesObservationsViewController.xib */; };
 		EB0104401CA1E338A787C85F /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87C29FD98C2859F7E2F45E2A /* Pods.framework */; };
 /* End PBXBuildFile section */
 
@@ -235,6 +237,8 @@
 		9FA9001C1DAFCEAD00A57721 /* LikeOrDislikeAnObservation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikeOrDislikeAnObservation.swift; sourceTree = "<group>"; };
 		9FC2D19E1CEB7749000B398B /* DesignIdeasAndChallengesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DesignIdeasAndChallengesTableViewCell.swift; sourceTree = "<group>"; };
 		9FC2D19F1CEB7749000B398B /* DesignIdeasAndChallengesTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DesignIdeasAndChallengesTableViewCell.xib; sourceTree = "<group>"; };
+		9FCCDDC91DE35FC6005663D5 /* CommunitiesObservationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunitiesObservationsViewController.swift; sourceTree = "<group>"; };
+		9FCCDDCA1DE35FC6005663D5 /* CommunitiesObservationsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommunitiesObservationsViewController.xib; sourceTree = "<group>"; };
 		D913B7A34553534E9C4079BE /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		F6300F18AB76F11FF8A9C8D6 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -438,6 +442,8 @@
 				9F0ECB971CA5D0AC00594B2C /* Views */,
 				9F0ECB961CA5D06200594B2C /* Controllers */,
 				9F0ECB951CA5D03A00594B2C /* Images */,
+				9FCCDDC91DE35FC6005663D5 /* CommunitiesObservationsViewController.swift */,
+				9FCCDDCA1DE35FC6005663D5 /* CommunitiesObservationsViewController.xib */,
 			);
 			path = NatureNet;
 			sourceTree = "<group>";
@@ -622,6 +628,7 @@
 				9F9BB3C31C9B214C0076E68E /* Assets.xcassets in Resources */,
 				9F2222BF1CE2603A00A845E2 /* default-no-image.png in Resources */,
 				9F14A7881C9B739600CAB0F6 /* ExploreCollectionViewCell.xib in Resources */,
+				9FCCDDCC1DE35FC6005663D5 /* CommunitiesObservationsViewController.xib in Resources */,
 				9F7C59BE1CF0C24100371F88 /* 1-8 cloud icon 2.png in Resources */,
 				9F7C59BA1CF0C24100371F88 /* 1-7 cloud icon 1.png in Resources */,
 				9F2222AF1CE25FA400A845E2 /* gallery.png in Resources */,
@@ -763,6 +770,7 @@
 				9F14A7811C9B53BF00CAB0F6 /* MenuTableViewCell.swift in Sources */,
 				18A725841D393734001F1148 /* Comment.swift in Sources */,
 				9F32D22F1CBEB61900298E02 /* NewObsViewController.swift in Sources */,
+				9FCCDDCB1DE35FC6005663D5 /* CommunitiesObservationsViewController.swift in Sources */,
 				9F32D2131CB6E92100298E02 /* CommentsTableViewCell.swift in Sources */,
 				9F14A79F1C9F15BB00CAB0F6 /* CommunitiesViewController.swift in Sources */,
 				9F32D20E1CB587FD00298E02 /* Reachability.swift in Sources */,
