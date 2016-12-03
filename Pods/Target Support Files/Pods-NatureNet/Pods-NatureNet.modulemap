@@ -1,0 +1,6 @@
+framework module Pods_NatureNet {
+  umbrella header "Pods-NatureNet-umbrella.h"
+
+  export *
+  module * { export * }
+}

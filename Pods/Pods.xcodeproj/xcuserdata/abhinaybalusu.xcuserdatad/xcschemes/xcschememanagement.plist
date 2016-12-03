@@ -14,7 +14,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods.xcscheme</key>
+		<key>Pods-NatureNet.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -22,17 +22,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>2C35B8FD8FB1561C9273A0FDAB8FED44</key>
+		<key>25CB9DEF5FCAD4A33FADDF88D5026542</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E96E13C4D3B5B5FC0651440734C2BF4D</key>
+		<key>70EB0B28D7F74F0E5C036BACAD6DE994</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>FBBEF6AA8E8483FE9C432B16A32B8362</key>
+		<key>8B4A6F95E736D0578E54B8B9166E44C1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
