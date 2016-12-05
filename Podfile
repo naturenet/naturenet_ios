@@ -1,6 +1,8 @@
 platform :ios, '9.0'
 use_frameworks!
 
+
+
 target "NatureNet" do
     pod 'Firebase/Core'
     pod 'Firebase/Database'

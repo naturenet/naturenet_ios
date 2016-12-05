@@ -12,7 +12,6 @@
 		18429F191D357BF20062F2F4 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18429F181D357BF20062F2F4 /* Utility.swift */; };
 		18508AEF1D1443FD003F31A8 /* CameraAndGalleryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18508AED1D1443FD003F31A8 /* CameraAndGalleryCollectionViewCell.swift */; };
 		18508AF01D1443FD003F31A8 /* CameraAndGalleryCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18508AEE1D1443FD003F31A8 /* CameraAndGalleryCollectionViewCell.xib */; };
-		18A725821D392AF4001F1148 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 18A725811D392AF4001F1148 /* GoogleService-Info.plist */; };
 		18A725841D393734001F1148 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A725831D393734001F1148 /* Comment.swift */; };
 		9F14A7791C9B421F00CAB0F6 /* RearViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F14A7771C9B421F00CAB0F6 /* RearViewController.swift */; };
 		9F14A77A1C9B421F00CAB0F6 /* RearViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F14A7781C9B421F00CAB0F6 /* RearViewController.xib */; };
@@ -109,6 +108,8 @@
 		9FC2D1A11CEB7749000B398B /* DesignIdeasAndChallengesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FC2D19F1CEB7749000B398B /* DesignIdeasAndChallengesTableViewCell.xib */; };
 		9FCCDDCB1DE35FC6005663D5 /* CommunitiesObservationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FCCDDC91DE35FC6005663D5 /* CommunitiesObservationsViewController.swift */; };
 		9FCCDDCC1DE35FC6005663D5 /* CommunitiesObservationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FCCDDCA1DE35FC6005663D5 /* CommunitiesObservationsViewController.xib */; };
+		CABC41D11DF5FB0F006BF4F7 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CABC41CF1DF5FB0F006BF4F7 /* Info.plist */; };
+		CABC41D31DF5FCE1006BF4F7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CABC41D21DF5FCE1006BF4F7 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -134,7 +135,6 @@
 		18429F181D357BF20062F2F4 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		18508AED1D1443FD003F31A8 /* CameraAndGalleryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraAndGalleryCollectionViewCell.swift; sourceTree = "<group>"; };
 		18508AEE1D1443FD003F31A8 /* CameraAndGalleryCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraAndGalleryCollectionViewCell.xib; sourceTree = "<group>"; };
-		18A725811D392AF4001F1148 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		18A725831D393734001F1148 /* Comment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		2CBD39E5F54E6EEE00C0DA56 /* Pods-NatureNet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NatureNet.release.xcconfig"; path = "Pods/Target Support Files/Pods-NatureNet/Pods-NatureNet.release.xcconfig"; sourceTree = "<group>"; };
 		87C29FD98C2859F7E2F45E2A /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -160,7 +160,6 @@
 		9F1B6DD91D16FE650012F66E /* CommunitiesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunitiesTableViewCell.swift; sourceTree = "<group>"; };
 		9F1B6DDA1D16FE650012F66E /* CommunitiesTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommunitiesTableViewCell.xib; sourceTree = "<group>"; };
 		9F1B6DDD1D1AF4040012F66E /* shutdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shutdown.png; sourceTree = "<group>"; };
-		9F1B6DE01D1DAC2E0012F66E /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9F2222941CE25E9100A845E2 /* user.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user.png; sourceTree = "<group>"; };
 		9F2222961CE25FA400A845E2 /* add design challenges.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add design challenges.png"; sourceTree = "<group>"; };
 		9F2222971CE25FA400A845E2 /* add design ideas.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add design ideas.png"; sourceTree = "<group>"; };
@@ -241,6 +240,8 @@
 		9FC2D19F1CEB7749000B398B /* DesignIdeasAndChallengesTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DesignIdeasAndChallengesTableViewCell.xib; sourceTree = "<group>"; };
 		9FCCDDC91DE35FC6005663D5 /* CommunitiesObservationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunitiesObservationsViewController.swift; sourceTree = "<group>"; };
 		9FCCDDCA1DE35FC6005663D5 /* CommunitiesObservationsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommunitiesObservationsViewController.xib; sourceTree = "<group>"; };
+		CABC41CF1DF5FB0F006BF4F7 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CABC41D21DF5FCE1006BF4F7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FE2FA6F178C7A83CEA66860A /* Pods_NatureNet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NatureNet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -431,11 +432,11 @@
 		9F9BB3BA1C9B214C0076E68E /* NatureNet */ = {
 			isa = PBXGroup;
 			children = (
-				9F1B6DE01D1DAC2E0012F66E /* Info.plist */,
+				CABC41D21DF5FCE1006BF4F7 /* GoogleService-Info.plist */,
+				CABC41CF1DF5FB0F006BF4F7 /* Info.plist */,
 				9F32D20D1CB587FD00298E02 /* Reachability.swift */,
 				9F32D2151CB6F6E100298E02 /* ConnectionManager.swift */,
 				9F9BB3BB1C9B214C0076E68E /* AppDelegate.swift */,
-				18A725811D392AF4001F1148 /* GoogleService-Info.plist */,
 				18429F181D357BF20062F2F4 /* Utility.swift */,
 				9F25D3721CC7CF2200342B56 /* UploadImageToCloudinary.swift */,
 				9F4523561CC167CA00D5D92C /* SlideView */,
@@ -618,7 +619,6 @@
 				9F2222AC1CE25FA400A845E2 /* design ideas navy.png in Resources */,
 				9F7C59BC1CF0C24100371F88 /* 2-5 cancel.png in Resources */,
 				9F14A77A1C9B421F00CAB0F6 /* RearViewController.xib in Resources */,
-				18A725821D392AF4001F1148 /* GoogleService-Info.plist in Resources */,
 				9F7C59B01CEF67E800371F88 /* Logo_GreenTransp.png in Resources */,
 				9F1B6DDC1D16FE650012F66E /* CommunitiesTableViewCell.xib in Resources */,
 				9F14A7981C9F158000CAB0F6 /* ProjectsViewController.xib in Resources */,
@@ -631,6 +631,7 @@
 				9F2222BF1CE2603A00A845E2 /* default-no-image.png in Resources */,
 				9F14A7881C9B739600CAB0F6 /* ExploreCollectionViewCell.xib in Resources */,
 				9FCCDDCC1DE35FC6005663D5 /* CommunitiesObservationsViewController.xib in Resources */,
+				CABC41D11DF5FB0F006BF4F7 /* Info.plist in Resources */,
 				9F7C59BE1CF0C24100371F88 /* 1-8 cloud icon 2.png in Resources */,
 				9F7C59BA1CF0C24100371F88 /* 1-7 cloud icon 1.png in Resources */,
 				9F2222AF1CE25FA400A845E2 /* gallery.png in Resources */,
@@ -645,6 +646,7 @@
 				9F2222B51CE25FA400A845E2 /* photo.png in Resources */,
 				9F1B6DDE1D1AF4040012F66E /* shutdown.png in Resources */,
 				9F2222B01CE25FA400A845E2 /* group.png in Resources */,
+				CABC41D31DF5FCE1006BF4F7 /* GoogleService-Info.plist in Resources */,
 				9F2222C51CE26E0B00A845E2 /* Image_960px.png in Resources */,
 				9F4523601CC6799500D5D92C /* NewDesignIdeasAndChallengesViewController.xib in Resources */,
 				9F32D21D1CB7F33100298E02 /* like.png in Resources */,
@@ -718,7 +720,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Replace this with the GOOGLE_APP_ID from your GoogleService-Info.plist file\nGOOGLE_APP_ID=1:264870647126:ios:33764497eafa799d\n\n# Replace the /Path/To/ServiceAccount.json with the path to the key you just downloaded\n\"${PODS_ROOT}\"/FirebaseCrash/upload-sym \"/Users/abhinaybalusu/Documents/NN_iOS/ServiceAccount.json\"";
+			shellScript = "# Replace this with the GOOGLE_APP_ID from your GoogleService-Info.plist file\nGOOGLE_APP_ID=1:264870647126:ios:33764497eafa799d\n\n# Replace the /Path/To/ServiceAccount.json with the path to the key you just downloaded\n\"${PODS_ROOT}\"/FirebaseCrash/upload-sym \"${SRCROOT}/ServiceAccount.json\"";
 		};
 		BA9DAB874F9DB28FC303A179 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

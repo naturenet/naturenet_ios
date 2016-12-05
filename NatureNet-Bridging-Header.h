@@ -4,5 +4,5 @@
 
 #import "SWRevealViewController.h"
 #import <Firebase/Firebase.h>
-#import "Cloudinary/Cloudinary.h"
+
 
