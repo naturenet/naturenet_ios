@@ -25,14 +25,14 @@ class HomeViewController: UIViewController {
             self.view.addGestureRecognizer(revealViewController().panGestureRecognizer())
             self.revealViewController().rearViewRevealWidth = 290
             
-            let userDefaults = NSUserDefaults.standardUserDefaults()
-            if((userDefaults.stringForKey("isSignedIn")) == "true")
-            {
-                let mapVC = MapViewController()
-                let newFrontViewController = UINavigationController(rootViewController: mapVC)
-                self.revealViewController().revealToggleAnimated(true)
-                self.revealViewController().setFrontViewController(newFrontViewController, animated: false)
-            }
+//            let userDefaults = NSUserDefaults.standardUserDefaults()
+//            if((userDefaults.stringForKey("isSignedIn")) == "true")
+//            {
+//                let mapVC = MapViewController()
+//                let newFrontViewController = UINavigationController(rootViewController: mapVC)
+//                self.revealViewController().revealToggleAnimated(true)
+//                self.revealViewController().setFrontViewController(newFrontViewController, animated: false)
+//            }
             
             let barButtonItem = UIBarButtonItem(image: UIImage(named: "menu.png"), style: .Plain, target: self.revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)))
             
@@ -114,6 +114,15 @@ class HomeViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         
         hideShowJoinButton()
+        
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        if((userDefaults.stringForKey("isSignedIn")) == "true")
+        {
+            let mapVC = MapViewController()
+            let newFrontViewController = UINavigationController(rootViewController: mapVC)
+            self.revealViewController().revealToggleAnimated(true)
+            self.revealViewController().setFrontViewController(newFrontViewController, animated: false)
+        }
         
 //        let userDefaults = NSUserDefaults()
 //        
