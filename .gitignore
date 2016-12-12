@@ -2,3 +2,6 @@
 NatureNet/GoogleService-Info.plist
 NatureNet/Info.plist
 ServiceAccount.json
+NatureNet.xcworkspace/xcuserdata/**
+NatureNet.xcodeproj/xcuserdata/**
+Pods/Pods.xcodeproj/xcuserdata/**
