@@ -751,7 +751,16 @@ class DetailedObservationViewController: UIViewController, UITableViewDelegate,U
                     
                     print(autoID.key)
                     
-                    let commentData = ["id": autoID.key as AnyObject,"context": self.commentContext as AnyObject,"commenter": userID as AnyObject,"comment": self.commentTF.text as! AnyObject,"parent": self.observationId as AnyObject, "created_at": FIRServerValue.timestamp(),"updated_at": FIRServerValue.timestamp()]
+                    let commentData = [
+                        "id": autoID.key as AnyObject,
+                        "context": self.commentContext as AnyObject,
+                        "commenter": userID as AnyObject,
+                        "comment": self.commentTF.text as! AnyObject,
+                        "parent": self.observationId as AnyObject,
+                        "source": "ios",
+                        "created_at": FIRServerValue.timestamp(),
+                        "updated_at": FIRServerValue.timestamp()
+                    ]
                     autoID.setValue(commentData)
                     
                     let ref = FIRDatabase.database()

@@ -162,7 +162,16 @@ class NewDesignIdeasAndChallengesViewController: UIViewController ,UIImagePicker
                     let ref = FIRDatabase.database().referenceWithPath("ideas")
                     let autoID = ref.childByAutoId()
                     print(autoID.key)
-                    let designData = ["id": autoID.key as AnyObject,"content": self.textView.text as AnyObject,"group": self.design as AnyObject, "status": "Doing" ,"submitter": userID as AnyObject,"created_at": FIRServerValue.timestamp(),"updated_at": FIRServerValue.timestamp()]
+                    let designData = [
+                        "id": autoID.key as AnyObject,
+                        "content": self.textView.text as AnyObject,
+                        "group": self.design as AnyObject,
+                        "status": "Doing",
+                        "submitter": userID as AnyObject,
+                        "source": "ios",
+                        "created_at": FIRServerValue.timestamp(),
+                        "updated_at": FIRServerValue.timestamp()
+                    ]
                     autoID.setValue(designData)
                     
                     let alert = UIAlertController(title: "Alert", message: "Design Idea Posted Successfully", preferredStyle: UIAlertControllerStyle.Alert)

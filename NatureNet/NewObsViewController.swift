@@ -423,7 +423,24 @@ class NewObsViewController: UIViewController,UITableViewDelegate,UITableViewData
         print(self.activityID)
         print(self.locValue.latitude)
         print(self.locValue.longitude)
-        let obsDetails = ["data":["image": imageURL as AnyObject, "text" : self.descText as AnyObject],"l":["0": self.locValue.latitude as AnyObject, "1" : self.locValue.longitude as AnyObject],"id": autoID.key, "where": whereitisTextView.text,"activity": self.activityID,"site": userAffiliation, "observer":self.userID, "created_at": FIRServerValue.timestamp(),"updated_at": FIRServerValue.timestamp()]
+        let obsDetails = [
+            "data": [
+                "image": imageURL as AnyObject,
+                "text" : self.descText as AnyObject
+            ],
+            "l":[
+                "0": self.locValue.latitude as AnyObject,
+                "1" : self.locValue.longitude as AnyObject
+            ],
+            "id": autoID.key,
+            "where": whereitisTextView.text,
+            "activity": self.activityID,
+            "site": userAffiliation,
+            "observer":self.userID,
+            "source": "ios",
+            "created_at": FIRServerValue.timestamp(),
+            "updated_at": FIRServerValue.timestamp()
+        ]
         autoID.setValue(obsDetails)
         
         print(autoID)
