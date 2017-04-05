@@ -30,7 +30,6 @@ class NewDesignIdeasAndChallengesViewController: UIViewController ,UIImagePicker
         if(isDesignIdea == true)
         {
             self.navigationItem.title="Design Idea"
-            //isDesignIdea = false
             design = "idea"
         }
         else
@@ -38,7 +37,6 @@ class NewDesignIdeasAndChallengesViewController: UIViewController ,UIImagePicker
             self.navigationItem.title="Design Challenge"
             design = "challenge"
         }
-        
         
         self.navigationController!.navigationBar.barTintColor = UIColor(red: 48.0/255.0, green: 204.0/255.0, blue: 114.0/255.0, alpha: 1.0)
         self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
@@ -58,16 +56,15 @@ class NewDesignIdeasAndChallengesViewController: UIViewController ,UIImagePicker
         textView.textColor = UIColor.lightGrayColor()
         
         self.view.bringSubviewToFront(activityIndicator_design)
-        
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(NewDesignIdeasAndChallengesViewController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(NewDesignIdeasAndChallengesViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
     }
+
     func textViewDidBeginEditing(textView: UITextView) {
         if textView.textColor == UIColor.lightGrayColor() {
             textView.text = nil
             textView.textColor = UIColor.blackColor()
         }
     }
+
     func textViewDidEndEditing(textView: UITextView) {
         if textView.text.isEmpty {
             textView.text = "Enter Description for Design Idea/Challenge"
@@ -76,83 +73,53 @@ class NewDesignIdeasAndChallengesViewController: UIViewController ,UIImagePicker
     }
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
-        
-//        if(text.isEqualToString:"\n"]) {
-//            [textView resignFirstResponder];
-//            return NO;
-//        }
-        
         if(text == "\n")
         {
             textView.resignFirstResponder()
             return false
         }
+
         return true
         
     }
-    
-//    func keyboardWillShow(notification: NSNotification) {
-//        
-//        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
-//            //print(photoAndGalleryView.frame.origin.y)
-//            self.photoAndGalleryView.frame.origin.y -= keyboardSize.height
-//            //print(photoAndGalleryView.frame.origin.y)
-//            self.view.bringSubviewToFront(photoAndGalleryView)
-//        }
-//        
-//    }
-//    
-//    func keyboardWillHide(notification: NSNotification) {
-//        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
-//            self.photoAndGalleryView.frame.origin.y += keyboardSize.height
-//            print(photoAndGalleryView.frame.origin.y)
-//        }
-//    }
-    
-   
-    
-   
-    
+
     func dismissVC(){
-        
-        //self.navigationController!.dismissViewControllerAnimated(true, completion: {})
         self.presentingViewController?.dismissViewControllerAnimated(true, completion: {})
-        //self.view.window!.rootViewController?.dismissViewControllerAnimated(false, completion: nil)
-        //print("abhi")
         
     }
+    
     override func viewWillAppear(animated: Bool) {
         textView.becomeFirstResponder()
     }
+    
     func decodeString(stringToBeDecoded: String) -> String
     {
         //Encoding and Decoding String
-        
         let base64Decoded = NSData(base64EncodedString: stringToBeDecoded, options:   NSDataBase64DecodingOptions(rawValue: 0))
             .map({ NSString(data: $0, encoding: NSUTF8StringEncoding) })
         
         // Convert back to a string
         print("Decoded:  \(base64Decoded!)")
         
-        
         return base64Decoded as! String
         
     }
+    
     func postDesign()
     {
-        
         if(textView.text != "")
         {
             activityIndicator_design.startAnimating()
             let userDefaults = NSUserDefaults.standardUserDefaults()
             var userID: String = ""
+
             if(userDefaults.objectForKey("userID") != nil)
             {
                 userID = (userDefaults.objectForKey("userID") as? String)!
             }
+
             var email = ""
             var password = ""
-            
             
             if(userDefaults.objectForKey("email") as? String != nil || userDefaults.objectForKey("password") as? String != nil)
             {
@@ -160,63 +127,50 @@ class NewDesignIdeasAndChallengesViewController: UIViewController ,UIImagePicker
                 password = decodeString((userDefaults.objectForKey("password") as? String)!)
             }
             
-            
             print(userID)
             let refUser = FIRAuth.auth()!
-            refUser.signInWithEmail(email, password: password,
-                                    completion: { authData, error in
-                                        if error != nil {
-                                            
-                                            print("\(error)")
-                                            var alert = UIAlertController()
-                                            if(email == "")
-                                            {
-                                                alert = UIAlertController(title: "Alert", message:"Please Login to continue" ,preferredStyle: UIAlertControllerStyle.Alert)
-                                            }
-                                            else
-                                            {
-                                                alert = UIAlertController(title: "Alert", message:error.debugDescription ,preferredStyle: UIAlertControllerStyle.Alert)
-                                            }
-                                            
-                                            //alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-                                            let showMenuAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) {
-                                                UIAlertAction in
-                                                //print("OK Pressed")
-                                                //self.dismissVC()
-                                                
-                                                let signInSignUpVC=SignInSignUpViewController()
-                                                let signInSignUpNavVC = UINavigationController()
-                                                signInSignUpVC.pageTitle="Sign In"
-                                                signInSignUpNavVC.viewControllers = [signInSignUpVC]
-                                                self.presentViewController(signInSignUpNavVC, animated: true, completion: nil)
-                                            }
-                                            
-                                            // Add the actions
-                                            alert.addAction(showMenuAction)
-                                            
-                                            
-                                            self.presentViewController(alert, animated: true, completion: nil)
-                                            self.activityIndicator_design.stopAnimating()
-                                            
-                                        }
-                                        else
-                                        {
-                                            let ref = FIRDatabase.database().referenceWithPath("ideas")//(url: POST_IDEAS_URL)
-                                            //print(ref.childByAutoId())
-                                            let autoID = ref.childByAutoId()
-                                            //let id = autoID as String
-                                            print(autoID.key)
-                                            let designData = ["id": autoID.key as AnyObject,"content": self.textView.text as AnyObject,"group": self.design as AnyObject, "status": "Doing" ,"submitter": userID as AnyObject,"created_at": FIRServerValue.timestamp(),"updated_at": FIRServerValue.timestamp()]
-                                            autoID.setValue(designData)
-                                            
-                                            let alert = UIAlertController(title: "Alert", message: "Design Posted Successfully", preferredStyle: UIAlertControllerStyle.Alert)
-                                            let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
-                                            alert.addAction(action)
-                                            self.presentViewController(alert, animated: true, completion: nil)
-                                            self.activityIndicator_design.stopAnimating()
-                                            
-                                        }
-                                        
+            refUser.signInWithEmail(email, password: password, completion: { authData, error in
+                if (error != nil) {
+                    
+                    print("\(error)")
+                    var alert = UIAlertController()
+                    
+                    if(email == "")
+                    {
+                        alert = UIAlertController(title: "Alert", message:"Please Login to continue" ,preferredStyle: UIAlertControllerStyle.Alert)
+                    }
+                    else
+                    {
+                        alert = UIAlertController(title: "Alert", message:error.debugDescription ,preferredStyle: UIAlertControllerStyle.Alert)
+                    }
+                    
+                    let showMenuAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) { UIAlertAction in
+                        let signInSignUpVC=SignInSignUpViewController()
+                        let signInSignUpNavVC = UINavigationController()
+                        signInSignUpVC.pageTitle="Sign In"
+                        signInSignUpNavVC.viewControllers = [signInSignUpVC]
+                        self.presentViewController(signInSignUpNavVC, animated: true, completion: nil)
+                    }
+                    
+                    // Add the actions
+                    alert.addAction(showMenuAction)
+                    self.presentViewController(alert, animated: true, completion: nil)
+                    self.activityIndicator_design.stopAnimating()
+                }
+                else
+                {
+                    let ref = FIRDatabase.database().referenceWithPath("ideas")
+                    let autoID = ref.childByAutoId()
+                    print(autoID.key)
+                    let designData = ["id": autoID.key as AnyObject,"content": self.textView.text as AnyObject,"group": self.design as AnyObject, "status": "Doing" ,"submitter": userID as AnyObject,"created_at": FIRServerValue.timestamp(),"updated_at": FIRServerValue.timestamp()]
+                    autoID.setValue(designData)
+                    
+                    let alert = UIAlertController(title: "Alert", message: "Design Idea Posted Successfully", preferredStyle: UIAlertControllerStyle.Alert)
+                    let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
+                    alert.addAction(action)
+                    self.presentViewController(alert, animated: true, completion: nil)
+                    self.activityIndicator_design.stopAnimating()
+                }
             })
         }
         else
@@ -226,19 +180,14 @@ class NewDesignIdeasAndChallengesViewController: UIViewController ,UIImagePicker
             alert.addAction(action)
             self.presentViewController(alert, animated: true, completion: nil)
         }
-        
     }
 
     @IBAction func openCamera(sender: UIButton) {
-        
         self.openCam()
-        
     }
 
     @IBAction func openGallery(sender: UIButton) {
-        
         self.openGlry()
-        
     }
     
     func openCam()
@@ -253,6 +202,7 @@ class NewDesignIdeasAndChallengesViewController: UIViewController ,UIImagePicker
             openGlry()
         }
     }
+
     func openGlry()
     {
         picker!.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
@@ -266,35 +216,19 @@ class NewDesignIdeasAndChallengesViewController: UIViewController ,UIImagePicker
             popover!.presentPopoverFromRect(self.view.frame, inView: self.view, permittedArrowDirections: UIPopoverArrowDirection.Any, animated: true)
         }
     }
+
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject])
     {
         picker .dismissViewControllerAnimated(true, completion: nil)
-        //imageView.image=info[UIImagePickerControllerOriginalImage] as? UIImage
         print("****##",info[UIImagePickerControllerOriginalImage])
         
         ideaOrChallengeImageView.image = (info[UIImagePickerControllerOriginalImage] as? UIImage)!
         
     }
+
     func imagePickerControllerDidCancel(picker: UIImagePickerController)
     {
         print("picker cancel.")
         picker .dismissViewControllerAnimated(true, completion: nil)
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

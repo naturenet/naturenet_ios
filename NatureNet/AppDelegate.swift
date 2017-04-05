@@ -18,8 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var viewController: UIViewController?
     var frontNavController : UINavigationController? = nil
     var laterArray : [ObservationForLater] = []
-    //let date = NSDate()
-    //let cal = NSCalendar.currentCalendar()
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
@@ -44,19 +42,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         cache.maxDiskCacheSize = 10 * 1024 * 1024
         
         //Configuring Firebase
-        FIRApp.configure()
-        
-        //FIRCrashMessage("Testing Firebase Crash")
-        //fatalError()
+        let filePath = NSBundle.mainBundle().pathForResource("GoogleService-Info", ofType: "plist")
+        let options = FIROptions(contentsOfFile: filePath)
+        FIRApp.configureWithOptions(options)
         
         //Enabling Firebase persistent data
         FIRDatabase.database().persistenceEnabled = true
         
         //these cannot be purged from the cache
-        let geoActivitiesRootRef = FIRDatabase.database().referenceWithPath("geo/activities/")
-        let activitiesRootRef = FIRDatabase.database().referenceWithPath("activities/")
-        geoActivitiesRootRef.keepSynced(true)
-        activitiesRootRef.keepSynced(true)
+        FIRDatabase.database().referenceWithPath("sites/").keepSynced(true)
+        FIRDatabase.database().referenceWithPath("activities/").keepSynced(true)
         
         //Checking Network Connection
         let connectedRef = FIRDatabase.database().referenceWithPath(".info/connected")
@@ -79,71 +74,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 for observation in self.laterArray {
                     observation.upload()
                 }
-                
             } else {
                 print("Not connected")
             }
         })
         
         application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil))
-        
-        //Encoding and Decoding String
-//        let str = "iOS Developer Tips encoded in Base64"
-//        print("Original: \(str)")
-//        
-//        let utf8str = str.dataUsingEncoding(NSUTF8StringEncoding)
-//        
-//        if let base64Encoded = utf8str?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
-//        {
-//            
-//            print("Encoded:  \(base64Encoded)")
-//            
-//            if let base64Decoded = NSData(base64EncodedString: base64Encoded, options:   NSDataBase64DecodingOptions(rawValue: 0))
-//                .map({ NSString(data: $0, encoding: NSUTF8StringEncoding) })
-//            {
-//                // Convert back to a string
-//                print("Decoded:  \(base64Decoded)")
-//            }
-//        }
-        
-        
-        //NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(AppDelegate.calendarDayDidChange(_:)), name:NSCalendarDayChangedNotification, object:nil)
-        //print(NSDate())
-        //let midnightLastNight = NSDate()
-        
-        //cal.timeZone = NSTimeZone.localTimeZone()
-        
-        //checkCurrentTimeIfNotLogOutTheUser(date,cal: cal)
-        //print(cal.isDateInToday(userDefaults.objectForKey("lastStartTime") as! NSDate))
-        
-        
         return true
     }
-    
-//    func checkCurrentTimeIfNotLogOutTheUser(date: NSDate, cal: NSCalendar)
-//    {
-//        let userDefaults = NSUserDefaults.standardUserDefaults()
-//        if((userDefaults.objectForKey("lastStartTime") != nil) && !(cal.isDateInToday(userDefaults.objectForKey("lastStartTime") as! NSDate)))
-//        {
-//            let laterUploads = userDefaults.objectForKey("observationsForLater")
-//            NSUserDefaults.standardUserDefaults().removePersistentDomainForName(NSBundle.mainBundle().bundleIdentifier!)
-//            
-//            userDefaults.setObject(laterUploads, forKey: "observationsForLater")
-//            
-//            try! FIRAuth.auth()!.signOut()
-//        }
-//        
-//        userDefaults.setObject(date, forKey: "lastStartTime")
-//
-//    }
-//    func calendarDayDidChange(notification : NSNotification)
-//    {
-//        let userDefaults = NSUserDefaults.standardUserDefaults()
-//        let laterUploads = userDefaults.objectForKey("observationsForLater")
-//        NSUserDefaults.standardUserDefaults().removePersistentDomainForName(NSBundle.mainBundle().bundleIdentifier!)
-//        userDefaults.setObject(laterUploads, forKey: "observationsForLater")
-//
-//    }
     
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -167,13 +105,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //put later array into user defaults for storage
         let laterData = NSKeyedArchiver.archivedDataWithRootObject(laterArray)
         userDefaults.setObject(laterData, forKey: "observationsForLater")
-        
-        //NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(AppDelegate.calendarDayDidChange(_:)), name:NSCalendarDayChangedNotification, object:nil)
     }
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
-
         application.applicationIconBadgeNumber = 0
-        
     }
 
     func applicationWillEnterForeground(application: UIApplication) {

@@ -71,8 +71,8 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
     var observationUpdatedTimestampsArray : NSMutableArray = []
     var observationUpdatedTimestamp_ideas: NSNumber = 0
     
-    let ideasDataRoot = FIRDatabase.database().referenceWithPath("ideas") //Firebase(url: FIREBASE_URL + "ideas")
-    let userDataRoot = FIRDatabase.database().referenceWithPath("users") //Firebase(url: FIREBASE_URL + "users")
+    let ideasDataRoot = FIRDatabase.database().referenceWithPath("ideas")
+    let userDataRoot = FIRDatabase.database().referenceWithPath("users")
     let ideaNumber = 10
     
     let CHALLENGE = 0
@@ -86,8 +86,6 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
     
     @IBOutlet weak var designIdeasAndChallengesButtonView: UIView!
     
-    //var groupChallengeArray: NSMutableArray = []
-    //var groupDesignArray: NSMutableArray = []
     var designIdsArray: NSMutableArray = []
     var designIdsArray_ideas: NSMutableArray = []
     var designIdsArray_challenges: NSMutableArray = []
@@ -105,8 +103,6 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
             
         }
         
-        //self.navigationItem.title="DESIGN IDEAS"
-        
         self.navigationController!.navigationBar.barTintColor = UIColor(red: 48.0/255.0, green: 204.0/255.0, blue: 114.0/255.0, alpha: 1.0)
         self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
         self.navigationController!.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
@@ -116,54 +112,40 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
         self.navigationItem.title="Design Ideas"
         
         designImageView.image = UIImage(named: "add design ideas.png")
-        //designLabel.text = "Design Ideas"
         designDescrptionLabel.text = "Your design ideas can be a new way of using NatureNet in your community, and new mobile technology for learning about sustainability or changes in the environment, or a new feature for the app."
-        
         designTableView.delegate = self
         designTableView.dataSource = self
         designTableView.separatorColor = UIColor.clearColor()
-        
         designTableView.registerNib(UINib(nibName: "DesignIdeasAndChallengesTableViewCell", bundle: nil), forCellReuseIdentifier: "designIdeasAndChallengesIdentifier")
-        
         newObsAndDIView_design.view.frame = CGRectMake(0 ,UIScreen.mainScreen().bounds.size.height-newObsAndDIView_design.view.frame.size.height-(designIdeasAndChallengesButtonView.frame.size.height*2)-8, UIScreen.mainScreen().bounds.size.width, newObsAndDIView_design.view.frame.size.height)
-        
         newObsAndDIView_design.view.translatesAutoresizingMaskIntoConstraints = true
         newObsAndDIView_design.view.center = CGPoint(x: view.bounds.midX, y: UIScreen.mainScreen().bounds.size.height - newObsAndDIView_design.view.frame.size.height/2 - (designIdeasAndChallengesButtonView.frame.size.height)-8)
         newObsAndDIView_design.view.autoresizingMask = [UIViewAutoresizing.FlexibleLeftMargin, UIViewAutoresizing.FlexibleRightMargin, UIViewAutoresizing.None, UIViewAutoresizing.FlexibleBottomMargin]
         
         self.view.addSubview(newObsAndDIView_design.view)
-        //self.view.bringSubviewToFront(newObsAndDIView.view)
         newObsAndDIView_design.camButton.addTarget(self, action: #selector(DesignIdeasViewController.openNewObsView_design), forControlEvents: .TouchUpInside)
-        
         newObsAndDIView_design.designIdeaButton.addTarget(self, action: #selector(DesignIdeasViewController.openNewDesignView_design), forControlEvents: .TouchUpInside)
         
     }
     
     func openNewObsView_design()
     {
-        //print("gverver")
         self.addChildViewController(cgVC_design)
         cgVC_design.view.frame = CGRectMake(0, self.view.frame.size.height - cgVC_design.view.frame.size.height+68, cgVC_design.view.frame.size.width, cgVC_design.view.frame.size.height)
-        
         cgVC_design.closeButton.addTarget(self, action: #selector(ProjectsViewController.closeCamAndGalleryView), forControlEvents: .TouchUpInside)
         
         self.view.addSubview(cgVC_design.view)
         UIView.animateWithDuration(0.3, animations: {
-            
             self.cgVC_design.view.frame = CGRectMake(0, UIScreen.mainScreen().bounds.size.height - self.cgVC_design.view.frame.size.height+68, UIScreen.mainScreen().bounds.size.width, self.cgVC_design.view.frame.size.height)
-            
             self.cgVC_design.view.translatesAutoresizingMaskIntoConstraints = true
             self.cgVC_design.view.autoresizingMask = [UIViewAutoresizing.FlexibleLeftMargin, UIViewAutoresizing.FlexibleRightMargin, UIViewAutoresizing.None, UIViewAutoresizing.FlexibleBottomMargin]
-            
         }) { (isComplete) in
-            
             self.cgVC_design.didMoveToParentViewController(self)
-            
         }
     }
+    
     func openNewDesignView_design()
     {
-        //print("gverver")
         self.addChildViewController(diAndCVC_design)
         diAndCVC_design.view.frame = CGRectMake(0, self.view.frame.size.height - diAndCVC_design.view.frame.size.height+68, diAndCVC_design.view.frame.size.width, diAndCVC_design.view.frame.size.height)
         
@@ -173,7 +155,6 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
         UIView.animateWithDuration(0.3, animations: {
             
             self.diAndCVC_design.view.frame = CGRectMake(0, UIScreen.mainScreen().bounds.size.height - self.diAndCVC_design.view.frame.size.height+68, UIScreen.mainScreen().bounds.size.width, self.diAndCVC_design.view.frame.size.height)
-            
             self.diAndCVC_design.view.translatesAutoresizingMaskIntoConstraints = true
             self.diAndCVC_design.view.autoresizingMask = [UIViewAutoresizing.FlexibleLeftMargin, UIViewAutoresizing.FlexibleRightMargin, UIViewAutoresizing.None, UIViewAutoresizing.FlexibleBottomMargin]
             
@@ -183,39 +164,33 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
             
         }
     }
+
     func closeCamAndGalleryView()
     {
         cgVC_design.view.removeFromSuperview()
         cgVC_design.removeFromParentViewController()
     }
+
     func closeDiAndChallengesView()
     {
         diAndCVC_design.view.removeFromSuperview()
         diAndCVC_design.removeFromParentViewController()
     }
-
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        
+    override func viewDidAppear(animated: Bool)
+    {
         removeAllObjectsFromArrays()
+        
         if(designIdeasButton.selected == true)
         {
             firebaseForIdeas()
             updateTable(IDEA)
         }
-        else{
+        else
+        {
             firebaseForChallenges()
             updateTable(CHALLENGE)
         }
-        
-        
-        
-        //updateTable(IDEA)
     }
     
     func removeAllObjectsFromArrays()
@@ -252,38 +227,28 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
     }
     
     @IBAction func getDesignIdeas(sender: UIButton) {
-        
         designIdeasButton.selected = true
         designChallengesButton.selected = false
         self.navigationItem.title="Design Ideas"
-        
         designImageView.image = UIImage(named: "add design ideas.png")
-        //designLabel.text = "DESIGN IDEAS"
         designDescrptionLabel.text = "Your design ideas can be a new way of using NatureNet in your community, and new mobile technology for learning about sustainability or changes in the environment, or a new feature for the app."
-        
-        
         removeAllObjectsFromArrays()
         firebaseForIdeas()
         updateTable(IDEA)
     }
     
     @IBAction func getDesignChallenges(sender: UIButton) {
-        
         designChallengesButton.selected = true
         designIdeasButton.selected = false
         self.navigationItem.title="Design Challenges"
-        
         designImageView.image = UIImage(named: "add design challenges.png")
-        //designLabel.text = "DESIGN CHALLENGES"
         designDescrptionLabel.text = "A design challenge is a question – for example: How can the NatureNet app collect temperature data?"
-        
         removeAllObjectsFromArrays()
         firebaseForChallenges()
         updateTable(CHALLENGE)
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        
         return 1
     }
     
@@ -298,17 +263,14 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
         cell.contentLabel.text = contentArray[indexPath.row] as? String
         cell.submitterDisplayName.text = submitterDisplayName[indexPath.row] as? String
         cell.submitterAffiliation.text = submitterAffiliationDictionary.objectForKey(submitterAffiliation[indexPath.row]) as? String ?? "No Affiliation"
-        
         cell.likesLabel.text = likesCountArray[indexPath.row] as? String
         cell.dislikesLabel.text = dislikesCountArray[indexPath.row] as? String
         cell.commentsLabel.text = commentsCountArray[indexPath.row] as? String
         
         print(submitterAvatar[indexPath.row])
         
-        
         let submitterAvatarUrl  = NSURL(string: submitterAvatar[indexPath.row] as! String)
         cell.submitterAvatarView.kf_setImageWithURL(submitterAvatarUrl!, placeholderImage: UIImage(named: "user.png"))
-        
         
         if(statusArray[indexPath.row] as! String == "Done")
         {
@@ -318,54 +280,33 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
         {
             cell.statusImageView.image = UIImage(named: "4-5 discussing.png")
         }
-        
-        //        }
-        //        else
-        //        {
-        //            cell.submitterAvatarView.image = UIImage(named: "user.png")
-        //        }
-        
-        
-        
+
         return cell
         
     }
+    
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 130
     }
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
+    {
         let detailedObservationVC = DetailedObservationViewController()
         detailedObservationVC.observerImageUrl = submitterAvatar[indexPath.row] as! String
         detailedObservationVC.observerDisplayName = submitterDisplayName[indexPath.row] as! String
         detailedObservationVC.observerAffiliation =  submitterAffiliationDictionary.objectForKey(submitterAffiliation[indexPath.row]) as? String ?? "No Affiliation"
         detailedObservationVC.pageTitle = self.navigationItem.title!
-        //detailedObservationVC.observationImageUrl = NSBundle.mainBundle().URLForResource("default-no-image", withExtension: "png")!.absoluteString
         detailedObservationVC.observationImageUrl = ""
         detailedObservationVC.isfromDesignIdeasView = true
         detailedObservationVC.observationText = contentArray[indexPath.row] as! String
-        //        detailedObservationVC.commentsDictfromExploreView = commentsDicttoDetailVC
-        //        detailedObservationVC.observationId = obsevationId
         detailedObservationVC.designID = designIdsArray[indexPath.row] as! String
         detailedObservationVC.likesCountFromDesignIdeasView = likesCountArray[indexPath.row].integerValue
         detailedObservationVC.dislikesCountFromDesignIdeasView = dislikesCountArray[indexPath.row].integerValue
-        
         detailedObservationVC.obsupdateddate = observationUpdatedTimestampsArray[indexPath.row] as! NSNumber
-        
         detailedObservationVC.observationCommentsArrayfromExploreView = commentsDictArray[indexPath.row] as! NSArray
-        
         detailedObservationVC.observationId = designIdsArray[indexPath.row] as! String
         self.navigationController?.pushViewController(detailedObservationVC, animated: true)
     }
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
     
     func firebaseForChallenges() -> Void {
         ideasDataRoot.queryLimitedToLast(UInt(ideaNumber)).queryOrderedByChild("group").queryEqualToValue("challenge").observeEventType(.Value, withBlock: { snapshot in
@@ -381,21 +322,16 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
                 for i in 0 ..< snap.count
                 {
                     let designData = sortedSnapshot[i] as! NSDictionary
-                    
-                    //print(i)
-                    
+
                     print(designData.objectForKey("content"))
                     print(designData.objectForKey("group"))
                     print(designData.objectForKey("id"))
                     
-                    
                     let submitter = designData.objectForKey("submitter") as! String
-                    //print(submitter)
                     
-                    if(designData.objectForKey("group") != nil)
+                    if (designData.objectForKey("group") != nil)
                     {
                             self.designsCount = self.designsCount+1
-                     
                             self.parseDesignChallenge(designData)
                             
                             if(designData.objectForKey("content") != nil)
@@ -408,17 +344,8 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
                             }
                             
                             self.parseChallengeUser(submitter)
-                            
-                        
-                        
                     }
-                    
-                    if i == self.ideaNumber - 1 {
-                        // self.finishedDataGathering()
-                    }
-                    
                 }
-                
             }
             else
             {
@@ -428,13 +355,11 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
                 self.recentContributionsLabel.textAlignment = NSTextAlignment.Center
                 self.recentContributionsLabel.textColor = UIColor.redColor()
             }
-            
-            
         })
     }
     
     func firebaseForIdeas() -> Void {
-        
+
         ideasDataRoot.queryLimitedToLast(UInt(ideaNumber)).queryOrderedByChild("group").queryEqualToValue("idea").observeEventType(.Value, withBlock: { snapshot in
             
             if !(snapshot.value is NSNull)
@@ -451,18 +376,13 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
                 {
                     let designData = sortedSnapshot[i] as! NSDictionary
                     
-                    //print(i)
-                    
                     print(designData.objectForKey("content"))
                     print(designData.objectForKey("group"))
                     print(designData.objectForKey("id"))
                     
-                    
                     let submitter = designData.objectForKey("submitter") as! String
-                    //print(submitter)
                     
                     print(designData.objectForKey("group"))
-                    
                     
                     if(designData.objectForKey("group") != nil)
                     {
@@ -479,15 +399,8 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
                         }
                             
                         self.parseIdeaUser(submitter)
-                        
                     }
-                    
-                    if i == self.ideaNumber - 1 {
-                        // self.finishedDataGathering()
-                    }
-                    
                 }
-                
             }
             else
             {
@@ -497,35 +410,26 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
                 self.recentContributionsLabel.textAlignment = NSTextAlignment.Center
                 self.recentContributionsLabel.textColor = UIColor.redColor()
             }
-
-            //print("null")
-            
         })
     }
     
     func parseDesignChallenge(challenge: NSDictionary) -> Void {
         
         let designId = challenge.objectForKey("id") as? String
-        if(designId != nil)
+        if (designId != nil)
         {
             self.designIdsArray_challenges.addObject(designId!)
         }
         
-        if(challenge.objectForKey("comments") != nil)
+        if (challenge.objectForKey("comments") != nil)
         {
             let commentsDictionary = challenge.objectForKey("comments") as! NSDictionary
             print(commentsDictionary.allKeys)
-            
             self.commentsKeysArray = commentsDictionary.allKeys as NSArray
             print(self.commentsKeysArray)
-            
             self.commentsDictArray_challenges.addObject(self.commentsKeysArray)
-            
             print(self.commentsDictArray_challenges)
-            
             self.commentsCountArray_challenges.addObject("\(self.commentsKeysArray.count)")
-            
-            
             print(challenge.objectForKey("id"))
         }
         else
@@ -536,7 +440,7 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
             self.commentsDictArray_challenges.addObject(tempcomments)
         }
         
-        if(challenge.objectForKey("status") != nil)
+        if (challenge.objectForKey("status") != nil)
         {
             let status = challenge.objectForKey("status") as? String
             self.statusArray_challenges.addObject(status!)
@@ -546,7 +450,7 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
             self.statusArray_challenges.addObject("")
         }
         
-        if(challenge.objectForKey("updated_at") != nil)
+        if (challenge.objectForKey("updated_at") != nil)
         {
             let obsUpdatedAt = challenge.objectForKey("updated_at") as! NSNumber
             self.observationUpdatedTimestampsArray_challenges.addObject(obsUpdatedAt)
@@ -593,15 +497,14 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
     }
     
     func parseDesignIdea(idea: NSDictionary) -> Void {
-        
-        //print(idea.count)
+
         let designId = idea.objectForKey("id") as? String
         if(designId != nil)
         {
             self.designIdsArray_ideas.addObject(designId!)
         }
         
-        if(idea.objectForKey("comments") != nil)
+        if (idea.objectForKey("comments") != nil)
         {
             let commentsDictionary = idea.objectForKey("comments") as! NSDictionary
             print(commentsDictionary.allKeys)
@@ -626,7 +529,7 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
             self.commentsDictArray_ideas.addObject(tempcomments)
         }
         
-        if(idea.objectForKey("status") != nil)
+        if (idea.objectForKey("status") != nil)
         {
             let status = idea.objectForKey("status") as? String
             self.statusArray_ideas.addObject(status!)
@@ -636,7 +539,7 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
             self.statusArray_ideas.addObject("")
         }
         
-        if(idea.objectForKey("updated_at") != nil)
+        if (idea.objectForKey("updated_at") != nil)
         {
             let obsUpdatedAt = idea.objectForKey("updated_at") as! NSNumber
             self.observationUpdatedTimestampsArray_ideas.addObject(obsUpdatedAt)
@@ -684,7 +587,7 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
     
     func parseChallengeUser(id: String) -> Void {
         
-        if(id != "")
+        if (id != "")
         {
             userDataRoot.queryOrderedByChild("id").queryEqualToValue(id).observeEventType(.Value, withBlock: { snapshot in
                 if !(snapshot.value is NSNull) {
@@ -694,9 +597,7 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
                     if((submitterInfo.objectForKey("affiliation")) != nil)
                     {
                         let submiterAffiliationString = submitterInfo.objectForKey("affiliation") as! String
-                        
                         self.getActivityNames(submiterAffiliationString, ideaOrChallenge: false)
-                        
                         self.submitterAffiliation_challenges.addObject(submiterAffiliationString)
                         
                     }
@@ -715,20 +616,17 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
                     {
                         self.submitterDisplayName_challenges.addObject("")
                     }
-                    
-                    //print(observerAffiliation)
-                    //print(observerDisplayName)
+
                     if((submitterInfo.objectForKey("avatar")) != nil)
                     {
                         let submitterUrlString = submitterInfo.objectForKey("avatar") as! String
                         print(submitterUrlString)
                         let newsubmitterUrlString = submitterUrlString.stringByReplacingOccurrencesOfString("upload", withString: "upload/t_ios-thumbnail", options: NSStringCompareOptions.LiteralSearch, range: nil)
-                        
                         self.submitterAvatar_challenges.addObject(newsubmitterUrlString)
                     }
                     else
                     {
-                        let tempImageUrl = ""//NSBundle.mainBundle().URLForResource("user", withExtension: "png")
+                        let tempImageUrl = ""
                         self.submitterAvatar_challenges.addObject(tempImageUrl)
                         
                     }
@@ -737,134 +635,99 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
                 
                 self.recentContributionsLabel.hidden = true
                 self.updateTable(self.CHALLENGE)
-                
-                
             })
-            
-            
         }
-        
     }
     
     func getActivityNames(userAffiliation:String, ideaOrChallenge:Bool)
     {
         let sitesRootRef = FIRDatabase.database().referenceWithPath("sites/"+userAffiliation)
-        //Firebase(url:FIREBASE_URL + "sites/"+aff!)
+
         sitesRootRef.observeEventType(.Value, withBlock: { snapshot in
-            
-            
             print(sitesRootRef)
             print(snapshot.value)
             
             if !(snapshot.value is NSNull)
             {
-                
-                
                 print(snapshot.value!.objectForKey("name"))
-                if(snapshot.value!.objectForKey("name") != nil)
+                if (snapshot.value!.objectForKey("name") != nil)
                 {
-                    //self.observerAffiliationLabel.text = snapshot.value!.objectForKey("name") as? String
-                    if(ideaOrChallenge == true)
+                    if (ideaOrChallenge == true)
                     {
                     self.submitterAffiliationDictionary_ideas.setValue(snapshot.value!.objectForKey("name") as! String, forKey: userAffiliation)
                         self.updateTable(self.IDEA)
                     }
-                    else{
-                        
+                    else
+                    {
                         self.submitterAffiliationDictionary_challenges.setValue(snapshot.value!.objectForKey("name") as! String, forKey: userAffiliation)
                         self.updateTable(self.CHALLENGE)
                     }
-                    
                 }
-                
-                
-                
             }
             self.recentContributionsLabel.hidden = false
-            
-            }, withCancelBlock: { error in
-                print(error.description)
-                let alert = UIAlertController(title: "Alert", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
-                let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
-                alert.addAction(action)
-                self.presentViewController(alert, animated: true, completion: nil)
+        }, withCancelBlock: { error in
+            print(error.description)
+            let alert = UIAlertController(title: "Alert", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+            let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
+            alert.addAction(action)
+            self.presentViewController(alert, animated: true, completion: nil)
                 
         })
-
     }
     
     func parseIdeaUser(id: String) -> Void {
-        //let greeting = "Hello, " + id + "!"
-        //return greeting
         
-        
-        if(id != "")
+        if (id != "")
         {
             userDataRoot.queryOrderedByChild("id").queryEqualToValue(id).observeEventType(.Value, withBlock: { snapshot in
                 if !(snapshot.value is NSNull) {
                     
                     let submitterInfo = snapshot.value!.allValues[0]
                     
-                    if((submitterInfo.objectForKey("affiliation")) != nil)
+                    if ((submitterInfo.objectForKey("affiliation")) != nil)
                     {
                         let submiterAffiliationString = submitterInfo.objectForKey("affiliation") as! String
-                        
                         self.getActivityNames(submiterAffiliationString, ideaOrChallenge: true)
-                        
                         self.submitterAffiliation_ideas.addObject(submiterAffiliationString)
-                        
                     }
                     else
                     {
                         self.submitterAffiliation_ideas.addObject("No Affiliation")
                     }
                     
-                    if((submitterInfo.objectForKey("display_name")) != nil)
+                    if ((submitterInfo.objectForKey("display_name")) != nil)
                     {
                         let submitterDisplayNameString = submitterInfo.objectForKey("display_name") as! String
-                        
                         self.submitterDisplayName_ideas.addObject(submitterDisplayNameString)
                     }
                     else
                     {
                         self.submitterDisplayName_ideas.addObject("")
                     }
-                    
-                    //print(observerAffiliation)
-                    //print(observerDisplayName)
+
                     if((submitterInfo.objectForKey("avatar")) != nil)
                     {
                         let submitterUrlString = submitterInfo.objectForKey("avatar") as! String
                         print(submitterUrlString)
                         let newsubmitterUrlString = submitterUrlString.stringByReplacingOccurrencesOfString("upload", withString: "upload/t_ios-thumbnail", options: NSStringCompareOptions.LiteralSearch, range: nil)
-                        
                         self.submitterAvatar_ideas.addObject(newsubmitterUrlString)
                     }
                     else
                     {
-                        let tempImageUrl = ""//NSBundle.mainBundle().URLForResource("user", withExtension: "png")
+                        let tempImageUrl = ""
                         self.submitterAvatar_ideas.addObject(tempImageUrl)
-                        
                     }
-                    
-                   
                 }
                 
                 self.recentContributionsLabel.hidden = true
-                 self.updateTable(self.IDEA)
-                
-                
+                self.updateTable(self.IDEA)
             })
-            
-            
         }
     }
     
     func updateTable(designType: Int) -> Void {
-        
-        
-        
-        if(designType == CHALLENGE) {
+
+        if (designType == CHALLENGE) {
             contentArray = contentArray_challenges
             submitterAvatar = submitterAvatar_challenges
             submitterAffiliation = submitterAffiliation_challenges
@@ -877,33 +740,28 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
             dislikesCountArray = dislikesCountArray_challenges
             statusArray = statusArray_challenges
             commentsDictArray = commentsDictArray_challenges
-            
-        } else {
+        }
+        else
+        {
             contentArray = contentArray_ideas
             submitterAvatar = submitterAvatar_ideas
             submitterAffiliation = submitterAffiliation_ideas
             submitterAffiliationDictionary = submitterAffiliationDictionary_ideas
             print(submitterAffiliationDictionary.count)
             submitterDisplayName = submitterDisplayName_ideas
-            
             observationUpdatedTimestampsArray = observationUpdatedTimestampsArray_ideas
             
             print(contentArray)
             print(submitterDisplayName)
-            
-            
+
             designIdsArray = designIdsArray_ideas
             commentsCountArray = commentsCountArray_ideas
             likesCountArray = likesCountArray_ideas
             dislikesCountArray = dislikesCountArray_ideas
             statusArray = statusArray_ideas
             commentsDictArray = commentsDictArray_ideas
-            
         }
-        
-        
-        
-        
+
         print(commentsCountArray)
         print(likesCountArray)
         print(dislikesCountArray)
@@ -913,8 +771,7 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
         
         print(self.designsCount)
         
-        
-        if(self.designsCount == 0)
+        if (self.designsCount == 0)
         {
             self.recentContributionsLabel.text = "No Recent Contributions"
             self.recentContributionsLabel.textAlignment = NSTextAlignment.Center
@@ -925,9 +782,6 @@ class DesignIdeasViewController: UIViewController ,UITableViewDelegate, UITableV
             self.recentContributionsLabel.text = "Recent Contributions"
             self.recentContributionsLabel.textAlignment = NSTextAlignment.Left
             self.recentContributionsLabel.textColor = UIColor.blackColor()
-            
         }
-        
     }
-    
 }

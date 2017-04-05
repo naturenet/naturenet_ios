@@ -103,9 +103,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
         satelliteMapImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(MapViewController.showSatelliteMap)))
         satelliteMapImageView.userInteractionEnabled = true
         
-        
         self.navigationItem.title="NatureNet"
-        
         self.navigationController!.navigationBar.barTintColor = UIColor(red: 48.0/255.0, green: 204.0/255.0, blue: 114.0/255.0, alpha: 1.0)
         self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
         self.navigationController!.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
@@ -115,9 +113,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
         exploreView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(MapViewController.tappedView)))
         exploreView.userInteractionEnabled = true
         exploreView.hidden = true
-        
         activityIndicator.hidden = true
-        
 
         //Map View
         //mapView.frame = CGRectMake(0 , 0, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height-self.exploreView.frame.height)
@@ -132,6 +128,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
         locationManager.requestWhenInUseAuthorization()
         // Ask for Authorisation from the User.
         self.locationManager.requestAlwaysAuthorization()
+        
         if CLLocationManager.locationServicesEnabled() {
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
@@ -142,32 +139,25 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
             //Getting lat and long from sites table
             let userDefaults = NSUserDefaults()
             print(userDefaults.objectForKey("userAffiliation"))
+            
             if let userAffiliation = userDefaults.objectForKey("userAffiliation"){
-                
                 let myRootRef = FIRDatabase.database().referenceWithPath("sites/\(userAffiliation)")
                 myRootRef.observeEventType(.Value, withBlock: { snapshot in
                     print(snapshot.value!["l"])
                     let siteLocationArray = snapshot.value!["l"] as! NSArray
                     print(siteLocationArray[0])
                     print(siteLocationArray[1])
-                    
-                    //var locCoord = CLLocationCoordinate2D()
                     self.locValue.latitude = siteLocationArray[0] as! Double
                     self.locValue.longitude = siteLocationArray[1] as! Double
-                    
                     self.setMapViewCoordinates(self.locValue,zoomOut:false)
                     
-                    
-                    }, withCancelBlock: { error in
-                        print(error.description)
-                        let alert = UIAlertController(title: "Alert", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
-                        let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
-                        alert.addAction(action)
-                        self.presentViewController(alert, animated: true, completion: nil)
-
+                }, withCancelBlock: { error in
+                    print(error.description)
+                    let alert = UIAlertController(title: "Alert", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+                    let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
+                    alert.addAction(action)
+                    self.presentViewController(alert, animated: true, completion: nil)
                 })
-
-                
             }
             else
             {
@@ -176,9 +166,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
                 
                 self.setMapViewCoordinates(self.locValue, zoomOut:!CLLocationManager.locationServicesEnabled())
             }
-            
         }
-        
         
         self.view.addSubview(mapView)
         
@@ -189,9 +177,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
         
         //Getting Observations
         self.getObservations()
-        
-        //Cam and design Idea buttons view
-        //newObsAndDIView.view.frame = CGRectMake(0 ,UIScreen.mainScreen().bounds.size.height-newObsAndDIView.view.frame.size.height-exploreView.frame.size.height-8, UIScreen.mainScreen().bounds.size.width, newObsAndDIView.view.frame.size.height)
         newObsAndDIView.view.frame = CGRectMake(0 ,UIScreen.mainScreen().bounds.size.height-newObsAndDIView.view.frame.size.height-8, UIScreen.mainScreen().bounds.size.width, newObsAndDIView.view.frame.size.height)
         newObsAndDIView.view.backgroundColor = UIColor.clearColor()
         newObsAndDIView.view.translatesAutoresizingMaskIntoConstraints = true
@@ -210,7 +195,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
     func showSatelliteMap()
     {
         mapView.mapType  = .Satellite
-        
     }
     
     // MARK: - *** Setting MapView Coordinates and getting current location ***
@@ -232,38 +216,30 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
     }
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
         locationManager.stopUpdatingLocation()
         locValue = locations.last!.coordinate
         print("locations = \(locValue.latitude) \(locValue.longitude)")
-        
         self.setMapViewCoordinates(locValue,zoomOut:false)
     }
     
     //Open Camera and Gallery Selection View
     func openNewObsView()
     {
-        //print("gverver")
         self.addChildViewController(cgVC)
-        
         cgVC.view.frame = CGRectMake(0, UIScreen.mainScreen().bounds.size.height - cgVC.view.frame.size.height+68, cgVC.view.frame.size.width, cgVC.view.frame.size.height)
         self.view.addSubview(cgVC.view)
         cgVC.closeButton.hidden = false
         cgVC.closeButton.addTarget(self, action: #selector(MapViewController.closeCamAndGalleryView), forControlEvents: .TouchUpInside)
         
         UIView.animateWithDuration(0.3, animations: {
-        
             self.cgVC.view.frame = CGRectMake(0, UIScreen.mainScreen().bounds.size.height - self.cgVC.view.frame.size.height+68, UIScreen.mainScreen().bounds.size.width, self.cgVC.view.frame.size.height)
-            
             self.cgVC.view.translatesAutoresizingMaskIntoConstraints = true
             self.cgVC.view.autoresizingMask = [UIViewAutoresizing.FlexibleLeftMargin, UIViewAutoresizing.FlexibleRightMargin, UIViewAutoresizing.None, UIViewAutoresizing.FlexibleBottomMargin]
-        
         }) { (isComplete) in
-        
             self.cgVC.didMoveToParentViewController(self)
-                    
         }
     }
+
     func closeCamAndGalleryView()
     {
         cgVC.view.removeFromSuperview()
@@ -273,17 +249,14 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
     //Open Design Ideas and challenges Selection View
     func openNewDesignView()
     {
-        //print("gverver")
         self.addChildViewController(diAndCVC)
         diAndCVC.view.frame = CGRectMake(0, UIScreen.mainScreen().bounds.size.height - diAndCVC.view.frame.size.height+68, diAndCVC.view.frame.size.width, diAndCVC.view.frame.size.height)
         diAndCVC.closeButton.hidden = false
         diAndCVC.closeButton.addTarget(self, action: #selector(MapViewController.closeDiAndChallengesView), forControlEvents: .TouchUpInside)
-        
         self.view.addSubview(diAndCVC.view)
+
         UIView.animateWithDuration(0.3, animations: {
-            
             self.diAndCVC.view.frame = CGRectMake(0, UIScreen.mainScreen().bounds.size.height - self.diAndCVC.view.frame.size.height+68, UIScreen.mainScreen().bounds.size.width, self.diAndCVC.view.frame.size.height)
-            
             self.diAndCVC.view.translatesAutoresizingMaskIntoConstraints = true
             self.diAndCVC.view.autoresizingMask = [UIViewAutoresizing.FlexibleLeftMargin, UIViewAutoresizing.FlexibleRightMargin, UIViewAutoresizing.None, UIViewAutoresizing.FlexibleBottomMargin]
             
@@ -316,9 +289,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
             self.observationImagesArray.removeAllObjects()
             self.observationIds.removeAllObjects()
             self.observationUpdatedTimestampsArray.removeAllObjects()
-            //var tagAnnotation = 0;
-
-            
             print(observationsRootRef)
             print(snapshot.value!)
             print(snapshot.value!.allValues)
@@ -334,7 +304,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
                     {
                         let obsUpdatedAt = observationData.objectForKey("updated_at") as! NSNumber
                         self.observationUpdatedTimestampsArray.addObject(obsUpdatedAt)
-                        
                     }
                     else
                     {
@@ -347,29 +316,23 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
                         print(tempcomments)
                         let commentsKeysArray = tempcomments.allKeys as NSArray
                         self.commentsDictArray.addObject(commentsKeysArray)
-                        
                         print(self.commentsDictArray)
-                        
                         print(observationData.objectForKey("id"))
-                        
                         self.commentsCountArray.addObject("\(commentsKeysArray.count)")
                     }
                     else
                     {
                         let tempcomments = NSArray()
                         self.commentsDictArray.addObject(tempcomments)
-                        
                         self.commentsCountArray.addObject("0")
                     }
                     
-                    if(observationData.objectForKey("likes") != nil)
+                    if (observationData.objectForKey("likes") != nil)
                     {
                         let likesDictionary = observationData.objectForKey("likes") as! NSDictionary
                         print(likesDictionary.allValues)
-                        
                         let likesArray = likesDictionary.allValues as NSArray
                         print(likesArray)
-                        
                         
                         for l in 0 ..< likesArray.count
                         {
@@ -378,18 +341,17 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
                                 self.likesCount += 1
                             }
                         }
+
                         print(self.likesCount)
-                        
-                        
                         self.likesCountArray.addObject("\(self.likesCount)")
-                        
-                        
                     }
                     else
                     {
                         self.likesCountArray.addObject("0")
                     }
+                    
                     var obsId = "";
+                    
                     if(observationData.objectForKey("id") != nil)
                     {
                         obsId = observationData.objectForKey("id") as! String
@@ -405,24 +367,22 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
                     var observationImageAndText: NSDictionary = [:]
                     latAndLongs = (observationData.objectForKey("l") as? NSArray)!
                     print(observationData)
-                    if(((observationData.objectForKey("l") != nil) || (!(observationData.objectForKey("l") is NSNull))) && ((latAndLongs[0].intValue != 0) && (latAndLongs[1].intValue != 0)))
+
+                    if ( ((observationData.objectForKey("l") != nil) || (!(observationData.objectForKey("l") is NSNull))) && ((latAndLongs[0].intValue != 0) && (latAndLongs[1].intValue != 0)) )
                     {
-                        
                         print(latAndLongs[0])
                         print(latAndLongs[1])
                         print(latAndLongs)
                         let annotationLatAndLong = CLLocation(latitude: latAndLongs[0].doubleValue, longitude: latAndLongs[1].doubleValue)
-                        
                         self.mapViewCoordinate(annotationLatAndLong, tagForAnnotation: i)
-                        //tagAnnotation = tagAnnotation+1
-                        
                     }
-                    else{
-                        
+                    else
+                    {
                         let tempArr = NSArray()
                         latAndLongs = tempArr
                     }
-                    if(observationData.objectForKey("data") != nil)
+
+                    if (observationData.objectForKey("data") != nil)
                     {
                         observationImageAndText = observationData.objectForKey("data") as! NSDictionary
                     }
@@ -434,58 +394,41 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
                     
                     if(observationData.objectForKey("activity") != nil)
                     {
-                        
                         let obsActivity = observationData.objectForKey("activity") as! String
-                        
                         let activitiesRootRef = FIRDatabase.database().referenceWithPath("activities/\(obsActivity)")
-                        //Firebase(url:FIREBASE_URL + "activities")
                         activitiesRootRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
-                            
                             print(activitiesRootRef)
                             print(snapshot.value!)
                             
                             if !(snapshot.value is NSNull)
                             {
-                                
                                 if(snapshot.value!.objectForKey("name") != nil)
                                 {
-                                    
                                     self.observationProjectNames.addObject(snapshot.value!.objectForKey("name")!)
-                                    
                                 }
-
-                                
                             }
-                            
-                            
-                            }, withCancelBlock: { error in
-                                print(error.description)
-                                let alert = UIAlertController(title: "Alert", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
-                                let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
-                                alert.addAction(action)
-                                self.presentViewController(alert, animated: true, completion: nil)
-                                
+                        }, withCancelBlock: { error in
+                            print(error.description)
+                            let alert = UIAlertController(title: "Alert", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+                            let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
+                            alert.addAction(action)
+                            self.presentViewController(alert, animated: true, completion: nil)
                         })
-
-                        
                     }
-
-                   
+                    
                     print(self.observationIds)
                     
                     if(observationImageAndText["image"] != nil)
                     {
-                        
                         print(observationImageAndText["image"])
                         let imageURLString = observationImageAndText["image"] as! String
-                        //let aString: String = "This is my string"
-                        //let newimageURLString = imageURLString.stringByReplacingOccurrencesOfString("upload", withString: "upload/t_ios-thumbnail", options: NSStringCompareOptions.LiteralSearch, range: nil)
                         self.observationImagesArray.addObject(imageURLString)
                     }
                     else
                     {
                         self.observationImagesArray.addObject("")
                     }
+
                     if(observationImageAndText["text"] != nil)
                     {
                         //print(observationImageAndText["text"])
@@ -496,33 +439,23 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
                         self.observationTextArray.addObject("No Description")
                     }
                     
-                    if(observationData.objectForKey("observer") != nil)
+                    if (observationData.objectForKey("observer") != nil)
                     {
                         let observerId = observationData.objectForKey("observer") as! String
-                        //print(observerId)
                         self.observerIds.addObject(observerId)
                     }
                     else
                     {
                         self.observerIds.addObject("")
                     }
-                    
-
                 }
             }
-            else
-            {
-                
-            }
-            
-            
-            
-            }, withCancelBlock: { error in
-                print(error.description)
-                let alert = UIAlertController(title: "Alert", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
-                let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
-                alert.addAction(action)
-                self.presentViewController(alert, animated: true, completion: nil)
+        }, withCancelBlock: { error in
+            print(error.description)
+            let alert = UIAlertController(title: "Alert", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+            let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
+            alert.addAction(action)
+            self.presentViewController(alert, animated: true, completion: nil)
         })
 
     }
@@ -531,7 +464,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
     {
         mapTypeView.frame = CGRectMake(UIScreen.mainScreen().bounds.size.width - mapTypeView.frame.size.width-mapTypeView.frame.size.width/12,64, mapTypeView.frame.size.width, mapTypeView.frame.size.height)
         
-        if(count%2 == 0)
+        if (count % 2 == 0)
         {
             self.view.addSubview(mapTypeView)
         }
@@ -539,35 +472,21 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
         {
             mapTypeView.removeFromSuperview()
         }
+
         count += 1
-        
     }
     
     @IBAction func mapTypeStandard(sender: UIButton) {
-        
         mapView.mapType = .Standard
-        
     }
     
     @IBAction func mapTypeSatellite(sender: UIButton) {
-        
         mapView.mapType = .Satellite
-        
     }
     
     func mapViewTapped()
     {
-//        if let mapTypeViewWithTag = self.view.viewWithTag(9) {
-//            mapTypeViewWithTag.removeFromSuperview()
-//            count += 1
-//        }
-//        if let exploreViewWithTag = self.view.viewWithTag(8) {
-//            exploreViewWithTag.removeFromSuperview()
-//            
-//        }
-        
         UIView.animateWithDuration(0.3, animations: {
-            
             self.mapAnnotationClickView.removeFromSuperview()
             self.newObsAndDIView.view.frame = CGRectMake(0 ,UIScreen.mainScreen().bounds.size.height-self.newObsAndDIView.view.frame.size.height-8, self.newObsAndDIView.view.frame.size.width, self.newObsAndDIView.view.frame.size.height)
             self.newObsAndDIView.view.backgroundColor = UIColor.clearColor()
@@ -575,134 +494,63 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
             self.cgVC.removeFromParentViewController()
             self.diAndCVC.view.removeFromSuperview()
             self.diAndCVC.removeFromParentViewController()
-
-            
-            
-            })
-        
-        
-        
+        })
     }
     
     func mapViewCoordinate(annotationLocation: CLLocation, tagForAnnotation : Int)
     {
         let initialLocation = CLLocation(latitude: annotationLocation.coordinate.latitude, longitude: annotationLocation.coordinate.longitude)
-        
-        //self.setMapViewCoordinates(locValue, zoomOut: CLLocationManager.locationServicesEnabled())
         let annotation = MKPointAnnotation()
         annotation.coordinate = CLLocationCoordinate2DMake(initialLocation.coordinate.latitude, initialLocation.coordinate.longitude)
         annotation.title = String(tagForAnnotation)
         mapView.addAnnotation(annotation)
-
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func tappedView(){
-        
-//        activityIndicator.hidden = false
-//        activityIndicator.startAnimating()
-//        
-//        exploreView.backgroundColor=UIColor.lightGrayColor()
-//        exploreView.userInteractionEnabled = false
-//        let eVC = ExploreViewController() //change this to your class name
-//        
-//        let exploreNavVC = UINavigationController()
-//        exploreNavVC.viewControllers = [eVC]
-//        self.presentViewController(exploreNavVC, animated: true, completion: nil)
-        
     }
     
     override func viewWillAppear(animated: Bool) {
-        
-//        exploreView.backgroundColor=UIColor(red: 48.0/255.0, green: 204.0/255.0, blue: 114.0/255.0, alpha: 1.0)
-//        exploreView.userInteractionEnabled = true
-//        activityIndicator.stopAnimating()
-//        activityIndicator.hidden = true
-
         self.getObservations()
     }
     
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
-        
-//        let identifier = "MyPin"
-//        
-//        if annotation.isKindOfClass(MKUserLocation) {
-//            return nil
-//        }
-//        
-//        // Reuse the annotation if possible
         let annotationView = MKAnnotationView()
         let str :String? = annotation.title!
         let tag: Int? = Int(str!)
-//    
-//        
-//        //if annotationView == nil
-//        //{
-//            annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "MyPin")
-            annotationView.canShowCallout = false
-            annotationView.contentMode = UIViewContentMode.ScaleAspectFit
-            annotationView.tag = tag!
-//            
-            let annotationImageView = UIImageView(image: UIImage(named:"marker.png"))
-//            
-            var annotationImageRect = annotationImageView.frame as CGRect
-            annotationImageRect.size.height = 44
-            annotationImageRect.size.width = 44
-//            
-            annotationImageView.frame = annotationImageRect
-            annotationView.frame = annotationImageRect
-//            
-            annotationView.addSubview(annotationImageView)
-//            
-////        }
-////        else
-////        {
-////            annotationView!.annotation = annotation
-////        }
-//        
-//        
+        annotationView.canShowCallout = false
+        annotationView.contentMode = UIViewContentMode.ScaleAspectFit
+        annotationView.tag = tag!
+        let annotationImageView = UIImageView(image: UIImage(named:"marker.png"))
+        var annotationImageRect = annotationImageView.frame as CGRect
+        annotationImageRect.size.height = 44
+        annotationImageRect.size.width = 44
+        annotationImageView.frame = annotationImageRect
+        annotationView.frame = annotationImageRect
+        annotationView.addSubview(annotationImageView)
+
         return annotationView
     }
     
     func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-//        if let annotation = view.annotation as? MKPointAnnotation {
-//            mapView.removeAnnotation(annotation)
-//        }
     }
+
     func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView)
     {
         print(view.tag)
-        //let str :String? = view.title!
-        //let tag: Int? = Int(str!)
-        
+
         UIView.animateWithDuration(0.3, animations: {
-           
             self.newObsAndDIView.view.frame = CGRectMake(0 , self.mapAnnotationClickView.frame.origin.y - self.newObsAndDIView.view.frame.size.height-8, self.newObsAndDIView.view.frame.width, self.newObsAndDIView.view.frame.height)
-        
             self.view.addSubview(self.mapAnnotationClickView)
             
         })
+
         likesCountLabel.text = "\(likesCountArray[view.tag])"
         commentsCountLabel.text = "\(commentsCountArray[view.tag])"
-        
-        //observationId = ""
         observationId = observationIds[view.tag] as! String
-//        self.lButton.selected = false
-//        self.lButton.userInteractionEnabled = true
-//        getLikesToObservations()
-        
-        
         ProjectName = observationProjectNames[view.tag] as! String
         observationUpdatedTimestamp = observationUpdatedTimestampsArray[view.tag] as! NSNumber
-
         print(commentsDictArray.objectAtIndex(view.tag))
-        
         observationCommentsArray = commentsDictArray.objectAtIndex(view.tag)  as! NSArray
-        
         observationTextLabel.text = (observationTextArray[view.tag] as! String)
         
         if NSURL(string: observationImagesArray[view.tag] as! String) != nil
@@ -712,9 +560,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
             let newUrl  = NSURL(string:newimageURLString)
             print(newUrl)
             observationImageView.kf_setImageWithURL(newUrl!, placeholderImage: UIImage(named: "default-no-image.png"))
-            
         }
-        
         
         let reachability: Reachability
         do {
@@ -728,62 +574,40 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
             // this is called on a background thread, but UI updates must
             // be on the main thread, like this:
             dispatch_async(dispatch_get_main_queue()) {
-                //                if reachability.isReachableViaWiFi() {
-                //                    print("Reachable via WiFi")
-                //                } else {
-                //                    print("Reachable via Cellular")
-                //                }
                 print(self.observerIds[view.tag])
-                
-            let usersRootRef = FIRDatabase.database().referenceWithPath("users/\(self.observerIds[view.tag])")
+                let usersRootRef = FIRDatabase.database().referenceWithPath("users/\(self.observerIds[view.tag])")
                 print(usersRootRef)
-                //Firebase(url:USERS_URL+"\(self.observerIds[view.tag])")
-            usersRootRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
-                    
+                usersRootRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                     print(usersRootRef)
-                    //print(snapshot.value!.count)
                     
                     if !(snapshot.value is NSNull)
                     {
-                        
                         if((snapshot.value!.objectForKey("affiliation")) != nil)
                         {
                             let observerAffiliationString = snapshot.value!.objectForKey("affiliation") as! String
                             let sitesRootRef = FIRDatabase.database().referenceWithPath("sites/"+observerAffiliationString)
-                            //Firebase(url:FIREBASE_URL + "sites/"+aff!)
+
                             sitesRootRef.observeEventType(.Value, withBlock: { snapshot in
-                                
-                                
                                 print(sitesRootRef)
                                 print(snapshot.value)
                                 
                                 if !(snapshot.value is NSNull)
                                 {
-                                    
-                                    
                                     print(snapshot.value!.objectForKey("name"))
                                     if(snapshot.value!.objectForKey("name") != nil)
                                     {
                                         self.observerAffiliation.text = snapshot.value!.objectForKey("name") as? String
                                     }
-                                    
-                                    
-                                    
                                 }
-                                
-                                }, withCancelBlock: { error in
-                                    print(error.description)
-                                    let alert = UIAlertController(title: "Alert", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
-                                    let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
-                                    alert.addAction(action)
-                                    self.presentViewController(alert, animated: true, completion: nil)
-
-                            })
-
                             
-                            //self.observerAffiliation.text = observerAffiliationString
-                            //observerAffiliationsArray.addObject(observerAffiliationString)
-                            //print(observerAffiliationString)
+                            }, withCancelBlock: { error in
+                                print(error.description)
+                                let alert = UIAlertController(title: "Alert", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+                                let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
+                                alert.addAction(action)
+                                self.presentViewController(alert, animated: true, completion: nil)
+                                    
+                            })
                         }
                         else
                         {
@@ -794,15 +618,12 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
                         {
                             let observerDisplayNameString = snapshot.value!.objectForKey("display_name") as! String
                             self.observerDisplayName.text = observerDisplayNameString
-                            //observerNamesArray.addObject(observerDisplayNameString)
                         }
                         else
                         {
                             self.observerDisplayName.text = ""
                         }
                         
-                        //print(observerAffiliation)
-                        //print(observerDisplayName)
                         if((snapshot.value!.objectForKey("avatar")) != nil)
                         {
                             let observerAvatar = snapshot.value!.objectForKey("avatar")
@@ -810,33 +631,27 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
                                 observerAvatarData = NSData(contentsOfURL: observerAvatarUrl)
                             {
                                 self.observerAvatarImageView.image = UIImage(data: observerAvatarData)
-                                //observerAvatarsArray.addObject(observerAvatar!)
                                 self.observerAvatarUrlString = observerAvatar as! String
                             }
                         }
                         else
                         {
                             self.observerAvatarImageView.image = UIImage(named:"user.png")
-                            //observerAvatarsArray.addObject(NSBundle.mainBundle().URLForResource("user", withExtension: "png")!)
                             
                         }
-
-                        
                     }
-                    
-                    
-                    
-                    }, withCancelBlock: { error in
-                        print(error.description)
-                        let alert = UIAlertController(title: "Alert", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
-                        let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
-                        alert.addAction(action)
-                        self.presentViewController(alert, animated: true, completion: nil)
 
+                }, withCancelBlock: { error in
+                    print(error.description)
+                    let alert = UIAlertController(title: "Alert", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+                    let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
+                    alert.addAction(action)
+                    self.presentViewController(alert, animated: true, completion: nil)
                 })
            
             }
         }
+
         reachability.whenUnreachable = { reachability in
             // this is called on a background thread, but UI updates must
             // be on the main thread, like this:
@@ -847,7 +662,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
                 self.presentViewController(alert, animated: true, completion: nil)
             }
         }
-        
+
         do {
             try reachability.startNotifier()
         } catch {
@@ -881,219 +696,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDe
     
     
     @IBAction func likesButtonClicked(sender: UIButton) {
-        
-        //sender.selected = true
         mapAnnotationClickSubViewtapped()
-        
-//        let userDefaults = NSUserDefaults.standardUserDefaults()
-//        if((userDefaults.stringForKey("isSignedIn")) == "true")
-//        {
-//            if(isObservationLiked == true)
-//            {
-//                let alert = UIAlertController(title: "Alert", message: "You Already liked this post", preferredStyle: UIAlertControllerStyle.Alert)
-//                let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
-//                alert.addAction(action)
-//                self.presentViewController(alert, animated: true, completion: nil)
-//            }
-//            else
-//            {
-//                postLiketoObservation()
-//            }
-//            
-//        }
-//        else{
-//            
-//            let alert = UIAlertController(title: "Alert", message: "Please Sign In to like this post", preferredStyle: UIAlertControllerStyle.Alert)
-//            let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
-//            alert.addAction(action)
-//            self.presentViewController(alert, animated: true, completion: nil)
-//            
-//        }
-        
     }
-    
-//    func decodeString(stringToBeDecoded: String) -> String
-//    {
-//        //Encoding and Decoding String
-//        
-//        let base64Decoded = NSData(base64EncodedString: stringToBeDecoded, options:   NSDataBase64DecodingOptions(rawValue: 0))
-//            .map({ NSString(data: $0, encoding: NSUTF8StringEncoding) })
-//        
-//        // Convert back to a string
-//        print("Decoded:  \(base64Decoded!)")
-//        
-//        
-//        return base64Decoded as! String
-//        
-//    }
-//    
-//    func postLiketoObservation()
-//    {
-//        let userDefaults = NSUserDefaults.standardUserDefaults()
-//        var userID = String()
-//        if(userDefaults.objectForKey("userID") != nil)
-//        {
-//            userID = (userDefaults.objectForKey("userID") as? String)!
-//        }
-//        
-//        print(userID)
-//        
-//        var email = ""
-//        var password = ""
-//        
-//        
-//        if(userDefaults.objectForKey("email") as? String != nil || userDefaults.objectForKey("password") as? String != nil)
-//        {
-//            email = decodeString((userDefaults.objectForKey("email") as? String)!)
-//            password = decodeString((userDefaults.objectForKey("password") as? String)!)
-//        }
-//        
-//        
-//        let refUser = FIRAuth.auth()
-//        refUser!.signInWithEmail(email, password: password,
-//                                 completion: { authData, error in
-//                                    if error != nil {
-//                                        
-//                                        print("\(error)")
-//                                        
-//                                        var alert = UIAlertController()
-//                                        if(email == "")
-//                                        {
-//                                            alert = UIAlertController(title: "Alert", message:"Please Login to continue" ,preferredStyle: UIAlertControllerStyle.Alert)
-//                                        }
-//                                        else
-//                                        {
-//                                            alert = UIAlertController(title: "Alert", message:error.debugDescription ,preferredStyle: UIAlertControllerStyle.Alert)
-//                                        }
-//                                        
-//                                        
-//                                        let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
-//                                        alert.addAction(action)
-//                                        //
-//                                        self.presentViewController(alert, animated: true, completion: nil)
-//                                        
-//                                    }
-//                                    else
-//                                    {
-//                                        
-//                                        if(userID != "" || self.observationId != "")
-//                                        {
-//                                            let ref = FIRDatabase.database().referenceWithPath("observations/\(self.observationId)/likes") //Firebase(url:
-//                                            let userChild = ref.childByAppendingPath(userID)
-//                                            userChild.setValue(true)
-//                                            print(self.observationId)
-//                                            
-//                                            //let str :String? = self.likesCountLabel.text
-//                                            //let likesCount: Int? = Int(str!)
-//                                            //self.likesCountLabel.text = "\(likesCount!+1)"
-//                                            
-//                                            
-//                                            let alert = UIAlertController(title: "Alert", message: "Liked Successfully", preferredStyle: UIAlertControllerStyle.Alert)
-//                                            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-//                                            self.presentViewController(alert, animated: true, completion: nil)
-//                                            
-//                                            self.getLikesToObservations()
-//                                        }
-//                                        else
-//                                        {
-//                                            let alert = UIAlertController(title: "Alert", message: "Please Sign In to like the Observation", preferredStyle: UIAlertControllerStyle.Alert)
-//                                            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-//                                            self.presentViewController(alert, animated: true, completion: nil)
-//                                        }
-//                                        
-//                                        
-//                                    }})
-//        
-//        
-//    }
-//    
-//    func getLikesToObservations()
-//    {
-//        let userDefaults = NSUserDefaults.standardUserDefaults()
-//        var userID = String()
-//        if(userDefaults.objectForKey("userID") != nil)
-//        {
-//            userID = (userDefaults.objectForKey("userID") as? String)!
-//        }
-//        if(userID != "" || self.observationId != "")
-//        {
-//            let observationRootRef = FIRDatabase.database().referenceWithPath("observations/" + String(self.observationId)) //Firebase(url:POST_IDEAS_URL + observationId)
-//            observationRootRef.observeEventType(.Value, withBlock: { snapshot in
-//                
-//                print(observationRootRef)
-//                print(snapshot.value)
-//                
-//                if !(snapshot.value is NSNull)
-//                {
-//                    
-//                    if(snapshot.value!.objectForKey("likes") != nil)
-//                    {
-//                        let likesDictionary = snapshot.value!.objectForKey("likes") as! NSDictionary
-//                        print(likesDictionary.allValues)
-//                        
-//                        let likesArray = likesDictionary.allValues as NSArray
-//                        print(likesArray)
-//                        
-//                        let userKeys = likesDictionary.allKeys as NSArray
-//                        print(userKeys)
-//                        
-//                        //let userDefaults = NSUserDefaults.standardUserDefaults()
-//                        //var userID = String()
-//                        
-//                        if((userDefaults.stringForKey("isSignedIn")) == "true")
-//                        {
-//                            if(userKeys.containsObject(userID))
-//                            {
-//                                if(likesDictionary.objectForKey(userID) as! NSObject == 1)
-//                                {
-//                                    self.isObservationLiked = true
-//                                    
-//                                    self.lButton.selected = true
-//                                    self.lButton.userInteractionEnabled = false
-//                                    
-//                                }
-//                                else
-//                                {
-//                                    self.isObservationLiked = false
-//                                    
-//                                    self.lButton.selected = false
-//                                    self.lButton.userInteractionEnabled = true
-//                                }
-//                            }
-//                            else
-//                            {
-//                                self.isObservationLiked = false
-//                                
-//                                self.lButton.selected = false
-//                                self.lButton.userInteractionEnabled = true
-//                                
-//                            }
-//                            
-//                        }
-//                        else{
-//                            
-//                            self.isObservationLiked = false
-//                            
-//                            self.lButton.selected = false
-//                            self.lButton.userInteractionEnabled = false
-//                        }
-//                        
-//                        
-//                    }
-//                }
-//                
-//                }, withCancelBlock: { error in
-//                    print(error.description)
-//                    let alert = UIAlertController(title: "Alert", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
-//                    let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
-//                    alert.addAction(action)
-//                    self.presentViewController(alert, animated: true, completion: nil)
-//                    
-//            })
-//        }
-//        
-//        
-//    }
 
     @IBAction func commentsButtonClicked(sender: UIButton) {
         

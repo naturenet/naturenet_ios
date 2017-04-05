@@ -15,9 +15,5 @@ class ExploreCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var exploreProfileIcon: UIImageView!
     @IBOutlet weak var exploreProfileName: UILabel!
     @IBOutlet weak var exploreDate: UILabel!
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
 
 }

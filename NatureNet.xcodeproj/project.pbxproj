@@ -61,7 +61,6 @@
 		9F25D3871CCA619000342B56 /* ProjectDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F25D3851CCA619000342B56 /* ProjectDetailViewController.xib */; };
 		9F25D38A1CCA65AF00342B56 /* ProjectDetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F25D3881CCA65AF00342B56 /* ProjectDetailCollectionViewCell.swift */; };
 		9F25D38B1CCA65AF00342B56 /* ProjectDetailCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F25D3891CCA65AF00342B56 /* ProjectDetailCollectionViewCell.xib */; };
-		9F28F7A61DC3AF8200C59104 /* GetObservations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F28F7A51DC3AF8200C59104 /* GetObservations.swift */; };
 		9F28F7A81DC3B65A00C59104 /* GetUserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F28F7A71DC3B65A00C59104 /* GetUserInfo.swift */; };
 		9F32D20E1CB587FD00298E02 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F32D20D1CB587FD00298E02 /* Reachability.swift */; };
 		9F32D2131CB6E92100298E02 /* CommentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F32D2111CB6E92100298E02 /* CommentsTableViewCell.swift */; };
@@ -103,7 +102,6 @@
 		9F9BB3DC1C9B214C0076E68E /* NatureNetUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F9BB3DB1C9B214C0076E68E /* NatureNetUITests.swift */; };
 		9F9DBC6D1CA2F68A0047DE4B /* SignInSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F9DBC6B1CA2F68A0047DE4B /* SignInSignUpViewController.swift */; };
 		9F9DBC6E1CA2F68A0047DE4B /* SignInSignUpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F9DBC6C1CA2F68A0047DE4B /* SignInSignUpViewController.xib */; };
-		9FA9001D1DAFCEAD00A57721 /* LikeOrDislikeAnObservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FA9001C1DAFCEAD00A57721 /* LikeOrDislikeAnObservation.swift */; };
 		9FC2D1A01CEB7749000B398B /* DesignIdeasAndChallengesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FC2D19E1CEB7749000B398B /* DesignIdeasAndChallengesTableViewCell.swift */; };
 		9FC2D1A11CEB7749000B398B /* DesignIdeasAndChallengesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FC2D19F1CEB7749000B398B /* DesignIdeasAndChallengesTableViewCell.xib */; };
 		9FCCDDCB1DE35FC6005663D5 /* CommunitiesObservationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FCCDDC91DE35FC6005663D5 /* CommunitiesObservationsViewController.swift */; };
@@ -187,7 +185,6 @@
 		9F25D3851CCA619000342B56 /* ProjectDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProjectDetailViewController.xib; sourceTree = "<group>"; };
 		9F25D3881CCA65AF00342B56 /* ProjectDetailCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectDetailCollectionViewCell.swift; sourceTree = "<group>"; };
 		9F25D3891CCA65AF00342B56 /* ProjectDetailCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProjectDetailCollectionViewCell.xib; sourceTree = "<group>"; };
-		9F28F7A51DC3AF8200C59104 /* GetObservations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetObservations.swift; sourceTree = "<group>"; };
 		9F28F7A71DC3B65A00C59104 /* GetUserInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetUserInfo.swift; sourceTree = "<group>"; };
 		9F32D20D1CB587FD00298E02 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		9F32D2111CB6E92100298E02 /* CommentsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsTableViewCell.swift; sourceTree = "<group>"; };
@@ -221,7 +218,7 @@
 		9F7C59B91CF0C24100371F88 /* 1-8 cloud icon 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "1-8 cloud icon 2.png"; sourceTree = "<group>"; };
 		9F7C59BF1CF2434B00371F88 /* obs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = obs.png; sourceTree = "<group>"; };
 		9F8DD5491CF94D0C00803279 /* 5-1 people.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "5-1 people.png"; sourceTree = "<group>"; };
-		9F9BB3B81C9B214C0076E68E /* NatureNet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NatureNet.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9F9BB3B81C9B214C0076E68E /* NatureNet (debug).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NatureNet (debug).app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F9BB3BB1C9B214C0076E68E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9F9BB3BD1C9B214C0076E68E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		9F9BB3C01C9B214C0076E68E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -235,7 +232,6 @@
 		9F9BB3DD1C9B214C0076E68E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9F9DBC6B1CA2F68A0047DE4B /* SignInSignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInSignUpViewController.swift; sourceTree = "<group>"; };
 		9F9DBC6C1CA2F68A0047DE4B /* SignInSignUpViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignInSignUpViewController.xib; sourceTree = "<group>"; };
-		9FA9001C1DAFCEAD00A57721 /* LikeOrDislikeAnObservation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikeOrDislikeAnObservation.swift; sourceTree = "<group>"; };
 		9FC2D19E1CEB7749000B398B /* DesignIdeasAndChallengesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DesignIdeasAndChallengesTableViewCell.swift; sourceTree = "<group>"; };
 		9FC2D19F1CEB7749000B398B /* DesignIdeasAndChallengesTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DesignIdeasAndChallengesTableViewCell.xib; sourceTree = "<group>"; };
 		9FCCDDC91DE35FC6005663D5 /* CommunitiesObservationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunitiesObservationsViewController.swift; sourceTree = "<group>"; };
@@ -276,8 +272,6 @@
 			children = (
 				1816D9981D24317500F6F194 /* ObservationForLater.swift */,
 				18A725831D393734001F1148 /* Comment.swift */,
-				9FA9001C1DAFCEAD00A57721 /* LikeOrDislikeAnObservation.swift */,
-				9F28F7A51DC3AF8200C59104 /* GetObservations.swift */,
 				9F28F7A71DC3B65A00C59104 /* GetUserInfo.swift */,
 			);
 			name = Objects;
@@ -422,7 +416,7 @@
 		9F9BB3B91C9B214C0076E68E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9F9BB3B81C9B214C0076E68E /* NatureNet.app */,
+				9F9BB3B81C9B214C0076E68E /* NatureNet (debug).app */,
 				9F9BB3CC1C9B214C0076E68E /* NatureNetTests.xctest */,
 				9F9BB3D71C9B214C0076E68E /* NatureNetUITests.xctest */,
 			);
@@ -499,7 +493,7 @@
 			);
 			name = NatureNet;
 			productName = NatureNet;
-			productReference = 9F9BB3B81C9B214C0076E68E /* NatureNet.app */;
+			productReference = 9F9BB3B81C9B214C0076E68E /* NatureNet (debug).app */;
 			productType = "com.apple.product-type.application";
 		};
 		9F9BB3CB1C9B214C0076E68E /* NatureNetTests */ = {
@@ -746,7 +740,6 @@
 			files = (
 				9F14A7791C9B421F00CAB0F6 /* RearViewController.swift in Sources */,
 				1816D9991D24317500F6F194 /* ObservationForLater.swift in Sources */,
-				9FA9001D1DAFCEAD00A57721 /* LikeOrDislikeAnObservation.swift in Sources */,
 				9F14A7931C9E65B800CAB0F6 /* DetailedObservationViewController.swift in Sources */,
 				9F45235F1CC6799500D5D92C /* NewDesignIdeasAndChallengesViewController.swift in Sources */,
 				9F9BB3BE1C9B214C0076E68E /* ViewController.swift in Sources */,
@@ -768,7 +761,6 @@
 				9F4523551CC167C400D5D92C /* SWRevealViewController.m in Sources */,
 				18429F191D357BF20062F2F4 /* Utility.swift in Sources */,
 				9F32D2161CB6F6E100298E02 /* ConnectionManager.swift in Sources */,
-				9F28F7A61DC3AF8200C59104 /* GetObservations.swift in Sources */,
 				9FC2D1A01CEB7749000B398B /* DesignIdeasAndChallengesTableViewCell.swift in Sources */,
 				18508AEF1D1443FD003F31A8 /* CameraAndGalleryCollectionViewCell.swift in Sources */,
 				9F14A7811C9B53BF00CAB0F6 /* MenuTableViewCell.swift in Sources */,
@@ -932,8 +924,8 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.NatureNet.Nature;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.NatureNet.Nature.debug;
+				PRODUCT_NAME = "$(TARGET_NAME) (debug)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "NatureNet-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";

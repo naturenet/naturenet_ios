@@ -57,7 +57,6 @@ class NewObsViewController: UIViewController,UITableViewDelegate,UITableViewData
 
         // Do any additional setup after loading the view.
         self.navigationItem.title="Observation"
-        
         self.navigationController!.navigationBar.barTintColor = UIColor(red: 48.0/255.0, green: 204.0/255.0, blue: 114.0/255.0, alpha: 1.0)
         self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
         self.navigationController!.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
@@ -71,11 +70,6 @@ class NewObsViewController: UIViewController,UITableViewDelegate,UITableViewData
         navigationItem.rightBarButtonItem = rightBarButtonItem
         
         observationImageView.image = obsImage
-        
-        //spinner.startAnimating()
-        
-        //spinner.startAnimating()
-        
         observationDetailsTableView.delegate = self
         observationDetailsTableView.dataSource = self
         observationDetailsTableView.separatorColor = UIColor.clearColor()
@@ -105,9 +99,7 @@ class NewObsViewController: UIViewController,UITableViewDelegate,UITableViewData
                     locationManager.delegate = self
                     locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
                     locationManager.startUpdatingLocation()
-                
                 }
-
             }
         }
         else
@@ -123,7 +115,6 @@ class NewObsViewController: UIViewController,UITableViewDelegate,UITableViewData
         
         if(userDefaults.objectForKey("ProjectKey") != nil)
         {
-            //projectName = (userDefaults.objectForKey("Project") as? String)!
             userDefaults.setValue("", forKey:"ProjectKey")
             userDefaults.setValue("", forKey:"ProjectName")
             userDefaults.setValue("", forKey:"ActivityID")
@@ -136,77 +127,59 @@ class NewObsViewController: UIViewController,UITableViewDelegate,UITableViewData
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(NewObsViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
 
     }
+
     func textViewDidBeginEditing(textView: UITextView) {
         
         UIView.animateWithDuration(0.25, animations: { () -> Void in
-            
-            
             if(textView == self.whereitisTextView)
             {
-                //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(NewObsViewController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-                //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(NewObsViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
                 self.view.frame.origin.y -= (self.kHieight-self.whereitisTextView.frame.size.height)
-                
             }
             else if(textView == self.obsDescTextView)
             {
                 self.view.frame.origin.y -= self.kHieight/2
             }
-
         })
-
     }
     
     
     func textViewDidEndEditing(textView: UITextView) {
-        
-        
-
     }
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         if(text == "\n") {
-            
             UIView.animateWithDuration(0.25, animations: { () -> Void in
             
                 if(textView.returnKeyType == UIReturnKeyType.Done) {
                     
                     if(textView == self.whereitisTextView)
                     {
-                        
                         self.view.frame.origin.y += (self.kHieight-self.whereitisTextView.frame.size.height)
                     }
                     else if(textView == self.obsDescTextView)
                     {
                         self.view.frame.origin.y += self.kHieight/2
                     }
-                    
-                    
                 }
+
                 textView.resignFirstResponder()
             })
             
             return false
         }
+        
         return true
     }
     
     func keyboardWillShow(notification: NSNotification) {
-        
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
-            //self.commentView.frame.origin.y -= keyboardSize.height
-            //whereItIsTextViewBottom.constant = keyboardSize.size.height
             kHieight = keyboardSize.size.height
-            UIView.animateWithDuration(0.25, animations: { () -> Void in
-                //self.view.layoutIfNeeded()
-            })
+            UIView.animateWithDuration(0.25, animations: { () -> Void in })
         }
         
     }
     
     func keyboardWillHide(notification: NSNotification) {
-        
-        //whereItIsTextViewBottom.constant = whereitisTextView.frame.origin.y+whereitisTextView.frame.size.height
         kHieight = 0.0
         UIView.animateWithDuration(0.25, animations: { () -> Void in
             self.view.layoutIfNeeded()
@@ -226,57 +199,31 @@ class NewObsViewController: UIViewController,UITableViewDelegate,UITableViewData
                 let siteLocationArray = snapshot.value!["l"] as! NSArray
                 print(siteLocationArray[0])
                 print(siteLocationArray[1])
-                
-                //var locCoord = CLLocationCoordinate2D()
+
                 self.locValue.latitude = siteLocationArray[0] as! Double
                 self.locValue.longitude = siteLocationArray[1] as! Double
-                
-                //self.setMapViewCoordinates(self.locValue)
-                
-                
-                }, withCancelBlock: { error in
-                    print(error.description)
-                    let alert = UIAlertController(title: "Alert", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
-                    let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
-                    alert.addAction(action)
-                    self.presentViewController(alert, animated: true, completion: nil)
-                    
+            }, withCancelBlock: { error in
+                print(error.description)
+                let alert = UIAlertController(title: "Alert", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+                let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
+                alert.addAction(action)
+                self.presentViewController(alert, animated: true, completion: nil)
             })
-            
-            
         }
-
     }
     
     func uploadImage() {
-        
         var Cloudinary:CLCloudinary!
-        
         imageForUpload = Utility.resizeImage(obsImage)
-        
         let infoPath = NSBundle.mainBundle().pathForResource("Info.plist", ofType: nil)!
         let info = NSDictionary(contentsOfFile: infoPath)!
-        //print(info.objectForKey("CloudinaryAccessUrl"))
-        
         Cloudinary = CLCloudinary(url: info.objectForKey("CloudinaryAccessUrl") as! String)
         let uploader = CLUploader(Cloudinary, delegate: self)
-        
-        
         localNotification.alertAction = "progress"
         localNotification.alertBody = "Observation Image Uploading in Progress"
-        //localNotification.applicationIconBadgeNumber = UIApplication.sharedApplication().applicationIconBadgeNumber + 1
         localNotification.fireDate = NSDate(timeIntervalSinceNow: 0)
         UIApplication.sharedApplication().scheduleLocalNotification(localNotification)
-        
-        
         uploader.upload(imageForUpload, options: nil, withCompletion:onCloudinaryCompletion, andProgress:onCloudinaryProgress)
-        
-//        localNotification.alertAction = "progress"
-//        localNotification.alertBody = "0"+"%"
-//        localNotification.applicationIconBadgeNumber = UIApplication.sharedApplication().applicationIconBadgeNumber + 1
-//        localNotification.fireDate = NSDate(timeIntervalSinceNow: 1)
-//        UIApplication.sharedApplication().scheduleLocalNotification(localNotification)
-        
     }
     
     func onCloudinaryCompletion(successResult:[NSObject : AnyObject]!, errorResult:String!, code:Int, idContext:AnyObject!) {
@@ -284,44 +231,32 @@ class NewObsViewController: UIViewController,UITableViewDelegate,UITableViewData
             let publicId = successResult["public_id"] as! String
             let url = successResult["secure_url"] as? String
             print("now cloudinary uploaded, public id is: \(publicId) and \(url), ready for uploading media")
-            // push media after cloudinary is finished
-            //let params = ["link": publicId] as Dictionary<String, Any>
-            //self.doPushNew(self.apiService!, params: params)
-            if(url != "")
+
+            if (url != "")
             {
                 userDefaults.setValue(url, forKey: "observationImageUrl")
                 imageURL = url!
-                
                 postToFirebase()
             }
-            
         }
-        else {
+        else
+        {
             print(errorResult.localizedLowercaseString)
             saveForLater(false)
-            
             let message = "We'll try to upload this for automatically next time you have a connection."
             let alert = UIAlertController(title: "Image Upload Failed", message: message ,preferredStyle: UIAlertControllerStyle.Alert)
-            
             let showMenuAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) {
                 UIAlertAction in
                 self.dismissVC()
             }
-            
             alert.addAction(showMenuAction)
-            
             self.presentViewController(alert, animated: true, completion: nil)
         }
-        
-        
     }
-    
-    
     
     func onCloudinaryProgress(bytesWritten:Int, totalBytesWritten:Int, totalBytesExpectedToWrite:Int, idContext:AnyObject!) {
         //do any progress update you may need
         let progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite) as Float
-        //self.updateProgressDelegate?.onUpdateProgress(progress)
         UIApplication.sharedApplication().cancelLocalNotification(localNotification)
         
         print("uploading to cloudinary... wait! \(progress * 100)"+"%")
@@ -333,18 +268,10 @@ class NewObsViewController: UIViewController,UITableViewDelegate,UITableViewData
         {
             localNotification.alertAction = "progress"
             localNotification.alertBody = "Uploading Finished"
-            //localNotification.applicationIconBadgeNumber = UIApplication.sharedApplication().applicationIconBadgeNumber + 1
             localNotification.fireDate = NSDate(timeIntervalSinceNow: 5)
             UIApplication.sharedApplication().scheduleLocalNotification(localNotification)
         }
-        
-        
-        
-        //localNotification.alertBody = "\(progress * 100)"+"%"
-        
     }
-    
-    
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         locValue = manager.location!.coordinate
@@ -352,7 +279,6 @@ class NewObsViewController: UIViewController,UITableViewDelegate,UITableViewData
     }
     
     override func viewWillAppear(animated: Bool) {
-        
         let userDefaults = NSUserDefaults.standardUserDefaults()
 
         if let pName = userDefaults.objectForKey("ProjectName") as? String
@@ -360,56 +286,38 @@ class NewObsViewController: UIViewController,UITableViewDelegate,UITableViewData
             if(pName != "")
             {
                 obsProjectLabel.text = "    \(pName)"
-                //userDefaults.setValue("", forKey:"ProjectKey")
-                //userDefaults.setValue("", forKey:"ProjectName")
             }
         }
         
     }
     
     func dismissVC(){
-        
-        //self.navigationController!.dismissViewControllerAnimated(true, completion: {})
         self.presentingViewController?.dismissViewControllerAnimated(true, completion: {})
-        //self.view.window!.rootViewController?.dismissViewControllerAnimated(false, completion: nil)
-        //print("abhi")
         
     }
+
     func decodeString(stringToBeDecoded: String) -> String
     {
         //Encoding and Decoding String
-        
         let base64Decoded = NSData(base64EncodedString: stringToBeDecoded, options:   NSDataBase64DecodingOptions(rawValue: 0))
             .map({ NSString(data: $0, encoding: NSUTF8StringEncoding) })
         
         // Convert back to a string
         print("Decoded:  \(base64Decoded!)")
-        
-        
+
         return base64Decoded as! String
         
     }
+
     func postObservation()
     {
         print("post")
         self.rightBarButtonItem.enabled = false
         spinner.startAnimating()
-        
-//        var observations = Firebase(url: "https://naturenet-staging.firebaseio.com/observations")
-//        let obs = ["id": uid as! AnyObject,"display_name": self.joinName.text as! AnyObject, "affiliation": self.joinAffliation.text as! AnyObject]
-//        observations.setValue(obs)
         let userDefaults = NSUserDefaults.standardUserDefaults()
         
         descText = obsDescTextView.text
-        
-//        if(userDefaults.objectForKey("ProjectKey") != nil)
-//        {
-//            projectKey = (userDefaults.objectForKey("ProjectKey") as? String)!
-//        }
-//        else
-//        {
-//            
-//        }
+
         if(userDefaults.objectForKey("userID") != nil)
         {
             userID = (userDefaults.objectForKey("userID") as? String)!
@@ -424,19 +332,11 @@ class NewObsViewController: UIViewController,UITableViewDelegate,UITableViewData
             activityID = (userDefaults.objectForKey("ActivityID") as? String)!
             print(activityID)
         }
-        
-        //let upImage = UploadImageToCloudinary()
-        //upImage.uploadToCloudinary(obsImage)
-        
-        
-        //print((userDefaults.objectForKey("ProjectName") as! String))
-        //print(projectKey)
+
         print(descText)
         print(userID)
-        print(OBSERVATION_IMAGE_UPLOAD_URL)
         var email = ""
         var password = ""
-        
         
         if(userDefaults.objectForKey("email") as? String != nil || userDefaults.objectForKey("password") as? String != nil)
         {
@@ -444,103 +344,74 @@ class NewObsViewController: UIViewController,UITableViewDelegate,UITableViewData
             password = decodeString((userDefaults.objectForKey("password") as? String)!)
         }
         
-        
         if(userDefaults.objectForKey("observationImageUrl") as? String != nil)
         {
             imageURL = (userDefaults.objectForKey("observationImageUrl") as? String)!
         }
-        
-        if email == "" {
-            
-        }
-        
-        //print(email)
-        //print(password)
     
-        let refUser = FIRAuth.auth() //Firebase(url: FIREBASE_URL)
-        refUser!.signInWithEmail(email, password: password,
-                     completion: { authData, error in
-                        if error != nil {
-                            
-                            print("\(error)")
-                            var alert = UIAlertController()
-                            if(email == "" || error?.code == 17009 || error?.code == 17011)
-                            {
-                                alert = UIAlertController(title: "Alert", message:"Please Sign In to continue" ,preferredStyle: UIAlertControllerStyle.Alert)
-                                let showMenuAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) {
-                                    UIAlertAction in
-                                    //print("OK Pressed")
-                                    //self.dismissVC()
-                                    
-                                    let signInSignUpVC=SignInSignUpViewController()
-                                    let signInSignUpNavVC = UINavigationController()
-                                    signInSignUpVC.pageTitle="Sign In"
-                                    signInSignUpNavVC.viewControllers = [signInSignUpVC]
-                                    self.presentViewController(signInSignUpNavVC, animated: true, completion: nil)
-                                }
-                                
-                                // Add the actions
-                                alert.addAction(showMenuAction)
-                                
-                                self.presentViewController(alert, animated: true, completion: nil)
-                                
-                            }
-                            else
-                            {
-                                var message = (error?.localizedDescription)!
-                                
-                                message += "\n\nWe'll try to upload this for you automatically next time you have a connection."
-                                    
-                                self.imageForUpload = Utility.resizeImage(self.obsImage)
-                                self.saveForLater(false)
-                                
-                                alert = UIAlertController(title: "Alert", message: message ,preferredStyle: UIAlertControllerStyle.Alert)
-                                
-                                let showMenuAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) {
-                                    UIAlertAction in
-                                    self.dismissVC()
-                                }
+        let refUser = FIRAuth.auth()
+        refUser!.signInWithEmail(email, password: password, completion: { authData, error in
+            if (error != nil) {
+                print("\(error)")
+                var alert = UIAlertController()
+                
+                if (email == "" || error?.code == 17009 || error?.code == 17011)
+                {
+                    alert = UIAlertController(title: "Alert", message:"Please Sign In to continue" ,preferredStyle: UIAlertControllerStyle.Alert)
 
-                                alert.addAction(showMenuAction)
-                                
-                                self.presentViewController(alert, animated: true, completion: nil)
-                                
-                                
-                            }
-                            
-                            self.rightBarButtonItem.enabled = true
-                        }
-                        else
-                        {
-                            
-                            //this function will call the firebase post function when it is done
-                            self.uploadImage()
+                    let showMenuAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) { UIAlertAction in
+                        let signInSignUpVC=SignInSignUpViewController()
+                        let signInSignUpNavVC = UINavigationController()
+                        signInSignUpVC.pageTitle="Sign In"
+                        signInSignUpNavVC.viewControllers = [signInSignUpVC]
+                        self.presentViewController(signInSignUpNavVC, animated: true, completion: nil)
+                    }
+                    
+                    // Add the actions
+                    alert.addAction(showMenuAction)
+                    self.presentViewController(alert, animated: true, completion: nil)
+                    
+                }
+                else
+                {
+                    var message = (error?.localizedDescription)!
+                    message += "\n\nWe'll try to upload this for you automatically next time you have a connection."
+                    self.imageForUpload = Utility.resizeImage(self.obsImage)
+                    self.saveForLater(false)
+                    
+                    alert = UIAlertController(title: "Alert", message: message ,preferredStyle: UIAlertControllerStyle.Alert)
+                    
+                    let showMenuAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) {
+                        UIAlertAction in
+                        self.dismissVC()
+                    }
 
-                        }
+                    alert.addAction(showMenuAction)
+                    self.presentViewController(alert, animated: true, completion: nil)
+                }
+                
+                self.rightBarButtonItem.enabled = true
+            }
+            else
+            {
+                //this function will call the firebase post function when it is done
+                self.uploadImage()
+            }
         })
     }
     
     func postToFirebase() {
-        
         let ref = FIRDatabase.database().referenceWithPath("observations")
         let currentTimestamp = FIRServerValue.timestamp()
-        //print(ref.childByAutoId())
         let autoID = ref.childByAutoId()
         
         print(userDefaults.objectForKey("progress"))
-        
-//        if(self.projectKey == ""){
-//            
-//            self.projectKey = "-ACES_g38"
-//        }
+
         if(self.activityID == "")
         {
             self.activityID = "-ACES_a38"
         }
-        
-        
-        //    if(userDefaults.objectForKey("progress") as? String == "100.0")
-        //    {
+
         var userAffiliation = ""
         
         if(userDefaults.objectForKey("userAffiliation") as? String != nil)
@@ -549,7 +420,6 @@ class NewObsViewController: UIViewController,UITableViewDelegate,UITableViewData
         }
         
         print(userAffiliation)
-        //print(self.projectKey)
         print(self.activityID)
         print(self.locValue.latitude)
         print(self.locValue.longitude)
@@ -566,16 +436,14 @@ class NewObsViewController: UIViewController,UITableViewDelegate,UITableViewData
         aRef.child("latest_contribution").setValue(currentTimestamp)
         
         let alert = UIAlertController(title: "Alert", message:"Observation Posted Successfully" ,preferredStyle: UIAlertControllerStyle.Alert)
-        //alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
         
         if(userDefaults.objectForKey("ObservationDescription") != nil)
         {
             userDefaults.setValue("", forKey:"ObservationDescription")
         }
+
         if(userDefaults.objectForKey("Project") != nil)
         {
-            //projectName = (userDefaults.objectForKey("Project") as? String)!
-            //userDefaults.setValue("", forKey:"ProjectKey")
             userDefaults.setValue("", forKey:"ProjectName")
             userDefaults.setValue("", forKey:"ActivityID")
         }
@@ -586,20 +454,12 @@ class NewObsViewController: UIViewController,UITableViewDelegate,UITableViewData
             self.dismissVC()
             
         }
+        
         alert.addAction(dismissAction)
         self.presentViewController(alert, animated: true, completion: nil)
         
         self.rightBarButtonItem.enabled = true
         spinner.stopAnimating()
-        
-        /*    }
-         else
-         {
-         let alert = UIAlertController(title: "Alert", message:"Image uploading failed" ,preferredStyle: UIAlertControllerStyle.Alert)
-         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-         self.presentViewController(alert, animated: true, completion: nil)
-         }
-         */
     }
     
     func saveForLater(imageWasUploaded:Bool) {
@@ -608,22 +468,13 @@ class NewObsViewController: UIViewController,UITableViewDelegate,UITableViewData
         
         var project = ""
         var projectId = ""
-        
-//        if(userDefaults.objectForKey("ProjectKey") != nil)
-//        {
-//            project = (userDefaults.objectForKey("ProjectKey") as? String)!
-//        }
+
         if(userDefaults.objectForKey("ActivityID") != nil)
         {
             projectId = (userDefaults.objectForKey("ActivityID") as? String)!
         }
-//        if project == "" {
-//            
-//            //Default Free Observation
-//            project = "-ACES_g38"
-//        }
-        if projectId == "" {
-            
+
+        if (projectId == "") {
             //Default Free Observation
             projectId = "-ACES_a38"
         }
@@ -650,20 +501,21 @@ class NewObsViewController: UIViewController,UITableViewDelegate,UITableViewData
             userAffiliation = (userDefaults.objectForKey("userAffiliation") as? String)!
         }
         
-        if imageWasUploaded {
+        if (imageWasUploaded)
+        {
             forLater = ObservationForLater(whereitis:whereitisTextView.text , site:userAffiliation, projectID: projectId, projectKey: project, observationDescription: description, imageData: imageForUpload, imageURL: imageURL ,observerID: observerID, longitude: longitude, latitude: latitude, email: email, password: password, imageUploaded: imageWasUploaded)
-        } else {
+        }
+        else
+        {
             forLater = ObservationForLater(whereitis:whereitisTextView.text, site:userAffiliation, projectID: projectId, projectKey: project, observationDescription: description, imageData: imageForUpload, observerID: observerID, longitude: longitude, latitude: latitude, email: email, password: password, imageUploaded: imageWasUploaded)
         }
         
-        //userDefaults.setObject(nil, forKey: "observationsForLater")
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         appDelegate.laterArray.append(forLater)
     }
     
     // MARK: - Table view data source
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        
         return 1
     }
     
@@ -688,37 +540,15 @@ class NewObsViewController: UIViewController,UITableViewDelegate,UITableViewData
         return cell
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
-        //let obsDetailsVC = NewObservationDetailsViewController()
+
         let projectVC = ProjectsViewController()
         let navVC = UINavigationController()
+
         if(indexPath.row == 0)
         {
-            //obsDetailsVC.isDescription = false
             projectVC.isfromObservationVC = true
             navVC.viewControllers = [projectVC]
             self.presentViewController(navVC, animated: true, completion: nil)
         }
-        
-        
-        
     }
-
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

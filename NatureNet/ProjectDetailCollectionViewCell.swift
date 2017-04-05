@@ -18,10 +18,5 @@ class ProjectDetailCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var commentsCountLabel: UILabel!
     @IBOutlet weak var observerNameLabel: UILabel!
     @IBOutlet weak var observerAffiliationLabel: UILabel!
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
 
 }

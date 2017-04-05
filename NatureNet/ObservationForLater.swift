@@ -46,7 +46,6 @@ class ObservationForLater : NSObject, NSCoding, CLUploaderDelegate {
         self.password = password
         self.imageUploaded = imageUploaded
         self.toBeRemoved = false
-
     }
     
     // MARK: - *** Encoding and Decoding variables ***
@@ -70,7 +69,6 @@ class ObservationForLater : NSObject, NSCoding, CLUploaderDelegate {
     }
     
     func encodeWithCoder(coder: NSCoder) {
-        
         coder.encodeObject(self.site, forKey: "whereitis")
         coder.encodeObject(self.site, forKey: "site")
         coder.encodeObject(self.projectID, forKey: "projectID")
@@ -85,107 +83,91 @@ class ObservationForLater : NSObject, NSCoding, CLUploaderDelegate {
         coder.encodeObject(self.password, forKey: "password")
         coder.encodeBool(self.imageUploaded, forKey: "imageUploaded")
         coder.encodeBool(self.toBeRemoved, forKey: "successfullyPosted")
-        
     }
+
     func decodeString(stringToBeDecoded: String) -> String
     {
         //Encoding and Decoding String
-        
         let base64Decoded = NSData(base64EncodedString: stringToBeDecoded, options:   NSDataBase64DecodingOptions(rawValue: 0))
             .map({ NSString(data: $0, encoding: NSUTF8StringEncoding) })
-        
+
         // Convert back to a string
         print("Decoded:  \(base64Decoded!)")
         
-        
         return base64Decoded as! String
-        
     }
     
     // MARK: - *** Uploading Image to Cloudinary ***
     func upload(){
         
-        if !toBeRemoved {
-            let refUser = FIRAuth.auth() //Firebase(url: FIREBASE_URL)
-            refUser!.signInWithEmail(decodeString(email), password: decodeString(password),
-                 completion: { authData, error in
-                    if error != nil {
-                        
-                        print("\(error)")
-                        //incorrect password and user not found respectively
-                        if(self.email == "" || error?.code == 17009 || error?.code == 17011) {
-                            self.successfullyPostedObservation()
-                        }
-                        //otherwise we can assume that the internet went out again
-                        //and leave the object in the array to be tried again later
+        if (!toBeRemoved) {
+            let refUser = FIRAuth.auth()
+            refUser!.signInWithEmail(decodeString(email), password: decodeString(password), completion: { authData, error in
+                if error != nil {
+                    
+                    print("\(error)")
+                    //incorrect password and user not found respectively
+                    if(self.email == "" || error?.code == 17009 || error?.code == 17011) {
+                        self.successfullyPostedObservation()
                     }
-                    else
-                    {
-                        if !self.imageUploaded {
-                            //this function will call the firebase post function when it is done
-                            self.uploadImage()
-                        } else {
-                            self.postToFirebase()
-                        }
+                    //otherwise we can assume that the internet went out again
+                    //and leave the object in the array to be tried again later
+                }
+                else
+                {
+                    if !self.imageUploaded {
+                        //this function will call the firebase post function when it is done
+                        self.uploadImage()
+                    } else {
+                        self.postToFirebase()
                     }
+                }
             })
         } else {
             print("already posted")
         }
-        
     }
     
     private func uploadImage() {
-        
         var Cloudinary:CLCloudinary!
         
         let infoPath = NSBundle.mainBundle().pathForResource("Info.plist", ofType: nil)!
         let info = NSDictionary(contentsOfFile: infoPath)!
-        //print(info.objectForKey("CloudinaryAccessUrl"))
         
         Cloudinary = CLCloudinary(url: info.objectForKey("CloudinaryAccessUrl") as! String)
         let uploader = CLUploader(Cloudinary, delegate: self)
         
         localNotification.alertAction = "progress"
         localNotification.alertBody = "Observation Image Uploading in Progress"
-        //localNotification.applicationIconBadgeNumber = UIApplication.sharedApplication().applicationIconBadgeNumber + 1
         localNotification.fireDate = NSDate(timeIntervalSinceNow: 0)
         UIApplication.sharedApplication().scheduleLocalNotification(localNotification)
-        
-        
         uploader.upload(imageData, options: nil, withCompletion:onCloudinaryCompletion, andProgress:onCloudinaryProgress)
-        
     }
     
     func onCloudinaryCompletion(successResult:[NSObject : AnyObject]!, errorResult:String!, code:Int, idContext:AnyObject!) {
-        if(errorResult == nil) {
+        if (errorResult == nil) {
             let publicId = successResult["public_id"] as! String
             let url = successResult["secure_url"] as? String
             print("now cloudinary uploaded, public id is: \(publicId) and \(url), ready for uploading media")
+
             // push media after cloudinary is finished
-            //let params = ["link": publicId] as Dictionary<String, Any>
-            //self.doPushNew(self.apiService!, params: params)
             if(url != "")
             {
                 imageURL = url!
                 imageUploaded = true
-
                 postToFirebase()
             }
-            
         }
-        else {
+        else
+        {
             print(errorResult.localizedLowercaseString)
         }
-        
-        
     }
     
     
     func onCloudinaryProgress(bytesWritten:Int, totalBytesWritten:Int, totalBytesExpectedToWrite:Int, idContext:AnyObject!) {
         //do any progress update you may need
         let progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite) as Float
-        //self.updateProgressDelegate?.onUpdateProgress(progress)
         UIApplication.sharedApplication().cancelLocalNotification(localNotification)
         
         print("uploading to cloudinary... wait! \(progress * 100)%")
@@ -197,11 +179,9 @@ class ObservationForLater : NSObject, NSCoding, CLUploaderDelegate {
         {
             localNotification.alertAction = "progress"
             localNotification.alertBody = "Uploading Finished"
-            //localNotification.applicationIconBadgeNumber = UIApplication.sharedApplication().applicationIconBadgeNumber + 1
             localNotification.fireDate = NSDate(timeIntervalSinceNow: 5)
             UIApplication.sharedApplication().scheduleLocalNotification(localNotification)
         }
-        
     }
     
     // MARK: - *** Posting Data to Firebase ***
