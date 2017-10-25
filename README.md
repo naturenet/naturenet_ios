@@ -1,3 +1,6 @@
+DEPRECATED: see https://github.com/naturenet/naturenet-ios-app
+=======================
+
 # NatureNet iOS Application
 Developed using Swift - A platform for sharing place-based nature observations and contributing design ideas
 
